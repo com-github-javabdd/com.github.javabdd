@@ -1,3 +1,0 @@
-#!/bin/tcsh -f
-
-./bddsupportbug | egrep -v '^Garbage collection' >> result

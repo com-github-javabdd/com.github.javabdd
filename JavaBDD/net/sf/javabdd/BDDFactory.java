@@ -42,22 +42,21 @@ public abstract class BDDFactory {
     
     /**
      * <p>Initializes a BDD factory with the given initial node table size
-     * and operation cache size.  Tries to use the "buddy" native library;
-     * if it fails, it falls back to the "java" library.</p>
+     * and operation cache size.  Uses the "java" factory.</p>
      * 
      * @param nodenum initial node table size
      * @param cachesize operation cache size
      * @return BDD factory object
      */
     public static BDDFactory init(int nodenum, int cachesize) {
-        String bddpackage = getProperty("bdd", "buddy");
+        String bddpackage = getProperty("bdd", "java");
         return init(bddpackage, nodenum, cachesize);
     }
 
     /**
      * <p>Initializes a BDD factory of the given type with the given initial
      * node table size and operation cache size.  The type is a string that
-     * can be "buddy", "cudd", "cal", "j", "java", "jdd", "test", "typed", or
+     * can be "j", "java", "test", "typed", or
      * a name of a class that has an init() method that returns a BDDFactory.
      * If it fails, it falls back to the "java" factory.</p>
      * 
@@ -69,20 +68,12 @@ public abstract class BDDFactory {
   public static BDDFactory init(String bddpackage, int nodenum, int cachesize)
   {
     try {
-      if (bddpackage.equals("buddy")) {
-	return BuDDyFactory.init(nodenum, cachesize);
-      } else if (bddpackage.equals("cudd")) {
-	return CUDDFactory.init(nodenum, cachesize);
-      } else if (bddpackage.equals("cal")) {
-	return CALFactory.init(nodenum, cachesize);
-      } else if (bddpackage.equals("j") || bddpackage.equals("java")) {
+     if (bddpackage.equals("j") || bddpackage.equals("java")) {
 	return JFactory.init(nodenum, cachesize);
       } else if (bddpackage.equals("u")) {
 	return UberMicroFactory.init(nodenum, cachesize);
       } else if (bddpackage.equals("micro")) {
 	return MicroFactory.init(nodenum, cachesize);
-      } else if (bddpackage.equals("jdd")) {
-	return JDDFactory.init(nodenum, cachesize);
       } else if (bddpackage.equals("test")) {
 	return TestBDDFactory.init(nodenum, cachesize);
       } else if (bddpackage.equals("typed")) {

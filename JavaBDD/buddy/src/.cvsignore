@@ -1,9 +1,0 @@
-*.lo
-*.la
-.libs
-.deps
-Makefile.in
-Makefile
-bddtest
-
-*.o
