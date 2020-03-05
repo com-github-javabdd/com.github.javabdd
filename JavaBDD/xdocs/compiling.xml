@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <title>Building JavaBDD</title>
+    <author email="joewhaley@users.sourceforge.net">John Whaley</author> 
+  </properties>
+
+  <body>
+     <section name="Building JavaBDD">
+      <p>
+      If you have a supported system, it is easiest to just download one of
+      the pre-built binaries.  The native libraries have been optimized with
+      the Intel compiler for maximum performance.  Even if there is no
+      pre-built binary for your system, the performance of the 100% Java
+      implementation is still respectable.
+      </p>
+      <p>
+      If you still want to build it yourself, you will first need to decide
+      which native library you want to interface with.  JavaBDD can interface
+      to BuDDy, CUDD, and/or CAL.  The BuDDy source code is included; you
+      can obtain the source for the others at the following locations:
+      <ul>
+          <li><a href="http://vlsi.colorado.edu/~fabio/CUDD/cuddIntro.html">CUDD</a></li>
+          <li><a href="http://www-cad.eecs.berkeley.edu/Respep/Research/bdd/cal_bdd/">CAL</a></li>
+      </ul>
+      <a href="http://buddy.sourceforge.net">BuDDy</a> seems to have the
+      best performance and is the most well-tested, so I recommend BuDDy.
+      </p>
+      <p>
+      The easiest way to build is to use the supplied Makefile.
+      (To build JavaBDD on Windows, you will need cygwin or mingw installed.)
+      Grab the JavaBDD source code from CVS, and extract the BuDDy/CUDD/CAL
+      native code.  Edit the Makefile to specify the path where to find
+      the native code.
+      (The default in the Makefile is <code>buddy/src</code> for BuDDy,
+      <code>cudd-2.4.0</code> for CUDD, and <code>cal-2.1</code> for CAL.)
+      It will automatically identify the path to the JDK, as long as you have
+      it installed in the default location (C:/j2sdk* on Windows,
+      /usr/java/j2sdk* on Linux).  You may need to change this path if you are
+      using JDK 1.5.0.
+      </p>
+      <p>
+      The default make target will build the jar file and the BuDDy native
+      library.  You can build the other native libraries by giving them as
+      a make target (<code>libcudd.so</code> or <code>libcal.so</code>).
+      Other useful make targets are "examples", "javadoc", "jar", "test",
+      and "clean".  Take a look at the Makefile for more information.
+      </p>
+      <p>
+      You can also specify different compilers by setting the CC variable.
+      In addition to <code>gcc</code>, the Makefile supports the Microsoft
+      compiler (<code>cl</code>), the Intel compiler (<code>icc</code> on Linux,
+      <code>icl</code> on Windows), and the PathScale compiler (<code>pathcc</code> on Linux).
+      </p>
+      <p>
+      If you manage to successfully compile JavaBDD for another system,
+      please contribute your Makefile and/or any source patches.
+      </p>
+    </section>
+  </body>
+</document>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="JavaBDD">
+  <title>Java Binary Decision Diagram library</title>
+  <organizationLogo href="http://sourceforge.net/sflogo.php?group_id=72725&amp;type=5" />
+  <body>
+    <links>
+      <item name="SourceForge.net Project Page"
+            href="http://sourceforge.net/projects/javabdd" />
+      <item name="Hosted by SourceForge" 
+            href="http://sourceforge.net" />
+    </links>
+    <menu name="Overview">
+      <item name="What is it?"
+            href="index.html"/>
+    </menu>
+    <menu name="Documentation">
+      <item name="API (Javadoc)"
+            href="apidocs/index.html" />
+      <item name="Build Instructions"
+            href="compiling.html"/>
+      <item name="Installing"
+            href="installing.html"/>
+      <item name="Performance"
+            href="performance.html"/>
+      <item name="Links"
+            href="links.html"/>
+    </menu>
+    <menu name="Downloads">
+      <item name="JavaBDD for Windows"
+            href="http://prdownloads.sourceforge.net/javabdd/javabdd_1.0b2.zip"/>
+      <item name="JavaBDD for Linux"
+            href="http://prdownloads.sourceforge.net/javabdd/javabdd_1.0b2.tar.gz"/>
+      <item name="JavaBDD for Mac OS X"
+            href="http://prdownloads.sourceforge.net/javabdd/javabdd_osx_1.0b2.tar.gz"/>
+      <item name="JavaBDD Source code"
+            href="http://prdownloads.sourceforge.net/javabdd/javabdd_src_1.0b2.tar.gz"/>
+    </menu>
+    <footer>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-72567-3";
+urchinTracker();
+</script>
+    </footer>
+  </body>
+</project>

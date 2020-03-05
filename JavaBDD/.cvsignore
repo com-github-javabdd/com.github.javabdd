@@ -1,0 +1,16 @@
+buddy_jni.h
+cudd_jni.h
+cal_jni.h
+*.jar
+*.dll
+*.jnilib
+*.ext
+*.lib
+*.o
+*.class
+buddy22
+cudd-2.3.1
+cudd-2.4.0
+cal-2.1
+target
+velocity.log

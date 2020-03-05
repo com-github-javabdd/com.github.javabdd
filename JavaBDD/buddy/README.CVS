@@ -1,0 +1,20 @@
+This file is part of BuDDy's CVS repostory but is not meant to be
+distributed in release tarballsm as it simply explains how to compile
+BuDDy from CVS.
+
+First, ensure you have recent autotools (Autoconf, Automake, and
+Libtool) version.  The last time this file was updated, BuDDy did work
+with Autoconf 2.59, Automake 1.8.5 and Libtool 1.5.6.
+
+To compile from a fresh checkout do
+
+   autoreconf -vfi
+   ./configure
+   make
+
+Usually, only `make' is needed after a `cvs update'.  But if
+you are not sure, it is always safe to run all the above.
+
+To make a tarball, run `make dist'.  If you want to be sure
+that the tarball works, do use `make distcheck' instead.
+(Please use the latter when making releases.)

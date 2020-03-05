@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <title>Installing JavaBDD</title>
+    <author email="joewhaley@users.sourceforge.net">John Whaley</author> 
+  </properties>
+
+  <body>
+     <section name="Installing JavaBDD">
+      <p>
+      Download the binary archive for your system and extract the files.
+      If you want to use the native BuDDy library, put the <code>buddy.dll</code>
+      (on Windows) or <code>libbuddy.so</code> (on Unix) somewhere in
+      your library path or in the directory you will execute from.
+      (JavaBDD will automatically search the current directory for the
+      native library, so there is no need to specify the current directory
+      in the "java.library.path" system property.)  Add the JavaBDD jar
+      file to your Java class path if you want to compile and/or run with
+      JavaBDD.
+      </p>
+      <p>
+      The JavaBDD jar file contains a simple example that solves an NxN
+      queens problem.  You can run this example by simply typing:
+      <br/>
+      <code>java -jar javabdd-1.0b2.jar <i>N</i></code>
+      <br/>
+      where <code><i>N</i></code> is the size of the board (e.g. <code>8</code>).
+      </p>
+    </section>
+  </body>
+</document>

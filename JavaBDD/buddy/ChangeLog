@@ -1,0 +1,287 @@
+2004-08-03  haimcohen  <haimcohen@HaimicoLinux>
+
+	* src/kernel.c, src/kernel.h, src/prime.c, src/reorder.c:
+	rand() was replaced by lrand48() because:
+	1. rand() seems to have different implementations on different platforms.
+	2. rand man pages explain it might have not-so-random LSBs, so it is not
+	goot to use it with % to randomize numbers to to limit.
+	Since lrand48() does not have default seed, ( like rand() has ) the
+	pseudo random generator of lrand48 is seeded with arbitrary seed in bdd_init().
+
+	* examples/bddtest/bddtest.cxx, examples/bddtest/expected:
+	Fixing 'bug' [ 1002675 ] bddtest test fails on solaris.
+	Since the test uses rand() which seems to have different
+	implemetnations, it was replaced by lrand48() which man pages say it
+	has a well defined formula.
+
+2004-07-31  haimcohen  <haimcohen@HaimicoLinux>
+
+	* src/kernel.c:
+	Improvement by Alexandre Duret-Lutz:
+	This changes the default handler to abort().
+	This is much more useful because since that will preserve the
+	context in a coredump, and from their you can narrow the bug in
+	your application.
+
+	* src/bddop.c:
+	Fixing documentation typos. Patch was submitted by Alexandre
+
+2004-07-30  haimcohen  <haimcohen@HaimicoLinux>
+
+	* AUTHORS: Update authors list
+
+2004-07-30  joewhaley  <joewhaley@HaimicoLinux>
+
+	* configure.ac, examples/Makefile.am, examples/bddsatcountbug/.cvsignore, examples/bddsatcountbug/Makefile.am, examples/bddsatcountbug/bddsatcountbug.c, examples/bddsatcountbug/expected, examples/bddsatcountbug/runtest:
+	Added a regression test case for the satcount() bug.
+
+	* src/bddop.c: Fixed the bug with satcount().
+	The misccache should be cleared after changing the number of variables,
+	because satcount() results in the misccache depend on the number of
+	BDD variables.
+
+2004-07-29  haimcohen  <haimcohen@HaimicoLinux>
+
+	* ChangeLog: Updating after committing files
+
+	* configure.ac, examples/Makefile.am, examples/bddsupportbug/.cvsignore, examples/bddsupportbug/Makefile.am, examples/bddsupportbug/bddsupportbug.cxx, examples/bddsupportbug/expected, examples/bddsupportbug/runtest:
+	Adding a regression test to verify the bug fix of the bug in the
+	returned value of bdd_support when argument is constant bdd
+
+	* examples/cmilner/.cvsignore, examples/fdd/.cvsignore:
+	Adding obvious files which should not be in CVS
+
+	* src/bddop.c:
+	Applying a patch submitted by Alexandre Duret-Lutz:
+
+	This fix two things in bdd_support()
+
+	1) A memory leak, which I believe is clear enough.
+	2) The return value when bdd_support() is called on bddtrue or bddfalse.
+	   Since variable sets are conjunctions (i.e., the union of variables
+	   sets is &), the empty set should be TRUE, not FALSE.  For instance
+	   we should have
+	     bdd_support(formula1 | formula2)
+	       == bdd_support(formula1) & bdd_support(formula2)
+	   In BuDDy 2.4 this fails if any of the two formulae is a constant.
+
+2004-07-25  haimcohen  <haimcohen@HaimicoLinux>
+
+	* ChangeLog: *** empty log message ***
+
+2004-07-23  haimcohen  <haimcohen@HaimicoLinux>
+
+	* ChangeLog: *** empty log message ***
+
+	* README: Rephrasing
+
+2004-07-22  haimcohen  <haimcohen@HaimicoLinux>
+
+	* ChangeLog, NEWS: *** empty log message ***
+
+	* examples/solitare/Makefile.am, examples/solitare/expected, examples/solitare/runtest:
+	Solitare will not be included in the regression since it takes too much time to run
+
+2004-07-21  haimcohen  <haimcohen@HaimicoLinux>
+
+	* ChangeLog, examples/bddcalc/expected: *** empty log message ***
+
+	* src/depend.inf:
+	we do not need this file anymore since autotools are being used
+
+	* examples/solitare/Makefile.am: readme was added to distribution
+
+	* doc/Makefile.am: buddy.ps and tech.txt were added to distribution
+
+2004-07-14  haimcohen  <haimcohen@HaimicoLinux>
+
+	* ChangeLog, tools/.cvsignore: *** empty log message ***
+
+	* examples/solitare/expected:
+	This file is empty in purpose. The solitare test takes too much memory
+	than I can afford. Until I generate this file somehow, the solitare
+	test should not be run.
+
+	* examples/milner/expected: *** empty log message ***
+
+	* examples/queen/expected, examples/bddcalc/expected, examples/bddtest/expected, examples/cmilner/expected, examples/fdd/expected, examples/money/expected, examples/adder/expected:
+	These files are part of the new regression suite. Each file contains
+	the expected result of a test.
+
+	* examples/cmilner/Makefile.am, examples/fdd/Makefile.am, examples/milner/Makefile.am, examples/money/Makefile.am, examples/queen/Makefile.am, examples/solitare/Makefile.am:
+	Added to support autotools
+
+	* examples/fdd/makefile, examples/milner/makefile, examples/money/makefile, examples/queen/makefile, examples/solitare/makefile, examples/adder/makefile, examples/bddtest/makefile, examples/cmilner/makefile:
+	We don't need the makefles anymore since we are using autotools now,
+	thanks to Alexandre's contribution.
+
+	* examples/bddcalc/lexer.lxx, examples/bddcalc/parser.yxx, examples/bddcalc/parser_.h, examples/bddcalc/lexer.l, examples/bddcalc/makefile, examples/bddcalc/parser.h, examples/bddcalc/parser.y:
+	*** empty log message ***
+
+	* examples/runregression:
+
+2004-07-13  haimcohen  <haimcohen@HaimicoLinux>
+
+	* examples/fdd/runtest, examples/money/runtest, examples/queen/runtest, examples/solitare/runtest:
+	A simple script to run a regression test and generate output
+
+	* examples/milner/runtest: *** empty log message ***
+
+	* examples/adder/runtest, examples/bddcalc/runtest, examples/bddtest/runtest, examples/cmilner/runtest:
+	A simple script to run a regression test and generate output
+
+	* examples/Makefile.am, examples/Makefile.def, examples/adder/Makefile.am, examples/bddcalc/Makefile.am, examples/bddtest/Makefile.am:
+	Support for autotools
+
+	* examples/solitare/.cvsignore, examples/.cvsignore, examples/adder/.cvsignore, examples/bddcalc/.cvsignore, examples/bddtest/.cvsignore, examples/cmilner/.cvsignore, examples/fdd/.cvsignore, examples/milner/.cvsignore, examples/money/.cvsignore, examples/queen/.cvsignore:
+	*** empty log message ***
+
+	* src/kernel.c: Changed the returned BuDDy version format.
+
+	* src/kernel.h:
+	The default value DEFAULT_CLOCK is now defined in the file instead of in the makefile. It can be changed using parameter to configure. By Alexandre.
+
+	* src/.cvsignore, src/Makefile.am, src/makefile: for autoconf support
+
+2004-07-12  haimcohen  <haimcohen@HaimicoLinux>
+
+	* doc/makefile, doc/.cvsignore: *** empty log message ***
+
+	* doc/tech.txt: From the original BuDDy distribution
+
+	* doc/Makefile.am: Added to enable autoconf
+
+	* m4/debug.m4: *** empty log message ***
+
+	* README: Modified to exaplin how to use configure. By Alexandre.
+
+	* config, makefile, .cvsignore: *** empty log message ***
+
+	* CHANGES:
+	Empty file - autoconf require CHANGES file. Changes will appear in the NEWS file, and changes for developers will be in the ChangeLog.
+
+	* AUTHORS, ChangeLog, Makefile.am, NEWS, README.CVS, configure.ac:
+	Added for configure support
+
+2004-07-02  haimcohen  <haimcohen@HaimicoLinux>
+
+	* examples/bddcalc/makefile:
+	tokens.h was added to the 'clean' target as it is generated by yacc
+
+	* examples/bddcalc/parser.y:
+	Tokens were separated by spaces instead of commas to comply with POSIX standard.
+	Patch was supplied by Alexandre Duret-Lutz  <aduret@src.lip6.fr>
+
+2004-07-01  haimcohen  <haimcohen@HaimicoLinux>
+
+	* examples/bddcalc/parser.hxx, examples/bddcalc/tokens.h:
+	File removed since it did not have to be in CVS from the beginning - this file is generated by yacc.
+
+2004-06-25  haimcohen  <haimcohen@HaimicoLinux>
+
+	* README: Change Haim Cohen´s Email to the one in Source Forge
+
+	* src/depend.inf, src/makefile, src/tree.c: Initial import
+
+	* src/depend.inf, src/makefile, src/tree.c: New file.
+
+	* src/reorder.c: Initial import
+
+	* src/reorder.c: New file.
+
+	* src/prime.h: Initial import
+
+	* src/prime.h: New file.
+
+	* src/prime.c: Initial import
+
+	* src/prime.c: New file.
+
+	* src/kernel.c, src/kernel.h, src/pairs.c: Initial import
+
+	* src/kernel.c, src/kernel.h, src/pairs.c: New file.
+
+	* src/imatrix.c, src/imatrix.h: Initial import
+
+	* src/imatrix.c, src/imatrix.h: New file.
+
+	* src/fdd.c, src/fdd.h: Initial import
+
+	* src/fdd.c, src/fdd.h: New file.
+
+	* src/cppext.cxx: Initial import
+
+	* src/cppext.cxx: New file.
+
+	* src/bvec.c, src/bvec.h, src/cache.c, src/cache.h: Initial import
+
+	* src/bvec.c, src/bvec.h, src/cache.c, src/cache.h: New file.
+
+	* src/bddtest.cxx, src/bddtree.h: Initial import
+
+	* src/bddtest.cxx, src/bddtree.h: New file.
+
+	* src/bddop.c: Initial import
+
+	* src/bddop.c: New file.
+
+	* src/bddio.c: Initial import
+
+	* src/bddio.c: New file.
+
+	* src/bdd.h: Initial import
+
+	* src/bdd.h: New file.
+
+	* examples/bddcalc/examples/c3540.cal, examples/bddcalc/examples/c432.cal:
+	Initial import
+
+	* examples/bddcalc/examples/c3540.cal, examples/bddcalc/examples/c432.cal:
+	New file.
+
+	* examples/bddcalc/examples/c1355.cal, examples/bddcalc/examples/c499.cal:
+	Initial import
+
+	* examples/bddcalc/examples/c1355.cal, examples/bddcalc/examples/c499.cal:
+	New file.
+
+	* examples/bddcalc/examples/c1908.cal, examples/bddcalc/examples/c2670.cal, examples/bddcalc/examples/readme:
+	Initial import
+
+	* examples/bddcalc/examples/c1908.cal, examples/bddcalc/examples/c2670.cal, examples/bddcalc/examples/readme:
+	New file.
+
+	* examples/bddcalc/parser.hxx, examples/bddcalc/slist.h, examples/bddcalc/tokens.h:
+	Initial import
+
+	* examples/bddcalc/parser.hxx, examples/bddcalc/slist.h, examples/bddcalc/tokens.h:
+	New file.
+
+	* examples/bddcalc/parser.y, examples/bddcalc/readme: Initial import
+
+	* examples/bddcalc/parser.y, examples/bddcalc/readme: New file.
+
+	* examples/bddcalc/parser.h: Initial import
+
+	* examples/bddcalc/parser.h: New file.
+
+	* examples/adder/adder.cxx, examples/adder/makefile, examples/bddcalc/example.cal, examples/bddcalc/hashtbl.cxx, examples/bddcalc/hashtbl.h, examples/bddcalc/lexer.l, examples/bddcalc/makefile, examples/bddtest/bddtest.cxx, examples/bddtest/makefile, examples/cmilner/cmilner.c, examples/fdd/fdd.cxx, examples/fdd/makefile, examples/money/makefile, examples/money/money.cxx, examples/queen/makefile, examples/queen/queen.cxx, examples/solitare/makefile, examples/solitare/readme, examples/solitare/solitare.cxx:
+	Initial import
+
+	* examples/adder/adder.cxx, examples/adder/makefile, examples/bddcalc/example.cal, examples/bddcalc/hashtbl.cxx, examples/bddcalc/hashtbl.h, examples/bddcalc/lexer.l, examples/bddcalc/makefile, examples/bddtest/bddtest.cxx, examples/bddtest/makefile, examples/cmilner/cmilner.c, examples/fdd/fdd.cxx, examples/fdd/makefile, examples/money/makefile, examples/money/money.cxx, examples/queen/makefile, examples/queen/queen.cxx, examples/solitare/makefile, examples/solitare/readme, examples/solitare/solitare.cxx:
+	New file.
+
+	* doc/bddnotes.ps, doc/makefile, examples/cmilner/makefile, examples/cmilner/readme, examples/milner/makefile, examples/milner/milner.cxx, examples/milner/readme:
+	Initial import
+
+	* doc/bddnotes.ps, doc/makefile, examples/cmilner/makefile, examples/cmilner/readme, examples/milner/makefile, examples/milner/milner.cxx, examples/milner/readme:
+	New file.
+
+	* doc/buddy.ps: Initial import
+
+	* doc/buddy.ps: New file.
+
+	* CHANGES, README, config, makefile: Initial import
+
+	* CHANGES, README, config, makefile: New file.
+

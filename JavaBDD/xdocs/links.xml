@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+
+  <properties>
+    <title>JavaBDD Links</title>
+    <author email="joewhaley@users.sourceforge.net">John Whaley</author> 
+  </properties>
+
+  <body>
+     <section name="Acknowledgements">
+      <ul>
+       <li>
+           <a href="http://www.itu.dk/people/jln">Jørn Lind-Nielsen</a>, the author of
+           <a href="http://buddy.sourceforge.net">BuDDy</a>, for an outstanding package.
+       </li>
+       <li>
+           <a href="http://vlsi.colorado.edu/~fabio/">Fabio Somenzi</a>, the author of
+           <a href="http://vlsi.colorado.edu/~fabio/CUDD/cuddIntro.html">CUDD</a>.
+       </li>
+       <li>
+           <a href="http://www.chl.chalmers.se/~vahidi/index.shtml">Arash Vahidi</a>, author of
+           <a href="http://javaddlib.sourceforge.net/">JBDD</a>, a precursor to JavaBDD.
+       </li>
+      </ul>
+    </section>
+    <section name="Projects using JavaBDD">
+     <ul>
+      <li>
+       <a href="http://bddbddb.sourceforge.net/">bddbddb</a>, BDD-Based Deductive DataBase.
+      </li>
+      <li>
+       <a href="http://joeq.sourceforge.net">Joeq</a> virtual machine and compiler infrastructure.
+      </li>
+      <li>
+       <a href="http://www.sable.mcgill.ca/jedd/">Jedd</a>, a Java language extension adding BDDs as a primitive data type.
+      </li>
+      <li>
+       <a href="http://staff.aist.go.jp/tanabe.yoshinori/04/09/4D-2.pdf">Checking Satisfiability of Guarded Fragments</a>.
+      </li>
+     </ul>
+    </section>
+    <section name="Related Links">
+     <ul>
+      <li>
+       <a href="http://javaddlib.sourceforge.net/">JavaDD</a>, a decision diagram library for Java.
+      </li>
+      <li>
+       <a href="http://buddy.sourceforge.net">BuDDy</a>
+      </li>
+      <li>
+       <a href="http://vlsi.colorado.edu/~fabio/CUDD/cuddIntro.html">CUDD</a>
+      </li>
+      <li>
+       <a href="http://www-cad.eecs.berkeley.edu/Research/cal_bdd/">CAL</a>:
+       breadth-first-based BDD package
+      </li>
+      <li>
+       <a href="http://www-2.cs.cmu.edu/~bwolen/software/">PPBF</a>:
+       parallel BDD package based on partial breadth-first expansion
+      </li>
+     </ul>
+    </section>
+  </body>
+</document>

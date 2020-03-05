@@ -1,0 +1,135 @@
+<document>
+  <properties>
+    <title>Changes for JavaBDD</title>
+    <author email="joewhaley@users.sourceforge.net">John Whaley</author>
+  </properties>
+  <body>
+
+    <release version="1.0b2" date="2005-05-05">
+      <action dev="joewhaley" type="update">
+        Better error handling in BDDIterator.
+      </action>
+      <action dev="joewhaley" type="update">
+        More small performance improvements for the Java version.
+      </action>
+      <action dev="joewhaley" type="add">
+        Added ability to register callbacks for various events.
+      </action>
+      <action dev="joewhaley" type="add">
+        Added support for dynamically growing domains.
+      </action>
+      <action dev="joewhaley" type="add">
+        Added support for running JavaBDD under restricted permissions; e.g. as an applet.
+      </action>
+      <action dev="joewhaley" type="fix">
+        Fixed a bug involving finalizers.
+      </action>
+      <action dev="joewhaley" type="fix">
+        Fixed a bug involving reset() and done().
+      </action>
+      <action dev="joewhaley" type="fix">
+        Fixed a bug involving reordering in the Java implementation.
+      </action>
+    </release>
+    
+    <release version="1.0b1" date="2004-10-17">
+      <action dev="joewhaley" type="update">
+        Many, many new features and enhancements.
+      </action>
+      <action dev="joewhaley" type="update">
+        Performance for the Java version has been greatly improved, by 2x or so.
+      </action>
+      <action dev="joewhaley" type="update">
+        Many new performance improvements for the native BuDDy library.
+        Even if you are not using JavaBDD but are just using the BuDDy library
+        with C or C++, you can use the included libbuddy.so to take advantage of
+        these performance improvements.
+      </action>
+    </release>
+    
+    <release version="0.6" date="2003-10-31">
+      <action dev="joewhaley" type="fix">
+        Fixed security problems by adding better null and type checking.
+        It should no longer be possible to crash the VM by passing in unexpected values.
+      </action>
+      <action dev="joewhaley" type="update">
+        Updated API: applyWith(), etc. methods return the 'this' pointer, for easier nested operations.
+      </action>
+      <action dev="joewhaley" type="add">
+        Addition of typed BDD factory, for type checking of BDD code.
+      </action>
+      <action dev="joewhaley" type="update">
+        Code cleanups. JNI interface was made a few percent faster by moving object allocations into Java code.
+      </action>
+    </release>
+
+    <release version="0.5" date="2003-8-4">
+      <action dev="joewhaley" type="add">
+        Major update.
+        Added a 100% Java implementation of the BDD factory, so the native library is no longer necessary.
+      </action>
+      <action dev="joewhaley" type="add">
+        Java implementation of variable domains. Domains can be up to 2^64 in size!
+      </action>
+      <action dev="joewhaley" type="add">
+        Java implementation of bit vectors, along with the associated operations (add, subtract, multiply, divide, etc.)
+      </action>
+      <action dev="joewhaley" type="fix">
+        Fixes and extensions to the CUDD interface. Now CUDD can run all of the test cases correctly.
+      </action>
+      <action dev="joewhaley" type="update">
+        More small refinements to the API.
+      </action>
+    </release>
+    
+    <release version="0.4" date="2003-6-18">
+      <action dev="joewhaley" type="add">
+        Added an interface to the CUDD library.
+        Only basic operations have been implemented and tested.
+        Many features (like variable domains) have not been implemented/ported yet.
+      </action>
+      <action dev="joewhaley" type="update">
+        Improved the support for printing of BDDs.
+        Now you can specify an interface that will convert the domain indices/members into meaningful strings.
+      </action>
+      <action dev="joewhaley" type="update">
+        Some small updates to the API.
+        Notably, scanSet() now takes a BDDDomain object, rather than a domain number.
+      </action>
+    </release>
+    
+    <release version="0.3" date="2003-2-21">
+      <action dev="joewhaley" type="fix">
+        Many bugs fixed.
+      </action>
+      <action dev="joewhaley" type="update">
+        Most functionality has been tested, so this version should be moreorless stable and useable.
+      </action>
+    </release>
+
+    <release version="0.2" date="2003-2-1">
+      <action dev="joewhaley" type="update">
+        Still largely untested. Proceed at your own risk.
+      </action>
+      <action dev="joewhaley" type="add">
+        Added support for variable domains.
+      </action>
+      <action dev="joewhaley" type="add">
+        Added support for variable pairings.
+      </action>
+      <action dev="joewhaley" type="add">
+        Added support for defining variable orderings.
+      </action>
+      <action dev="joewhaley" type="fix">
+        Fixed some LinkageError exceptions.
+      </action>
+    </release>
+      
+    <release version="0.1" date="2003-1-30">
+      <action dev="joewhaley" type="add">
+        Initial release. Largely untested.
+      </action>
+    </release>
+
+  </body>
+</document>

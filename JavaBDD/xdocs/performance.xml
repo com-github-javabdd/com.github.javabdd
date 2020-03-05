@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <title>JavaBDD Performance Comparison</title>
+    <author email="joewhaley@users.sourceforge.net">John Whaley</author> 
+  </properties>
+
+  <body>
+     <section name="Performance Comparison">
+      <p>
+      Here are the timings of solving the 12x12 NQueens problem on
+      an Opteron 150 (2.4GHz, RedHat Enterprise Linux 3 in 32 bit mode,
+      Sun JDK 1.5.0).  This test simply
+      does simple logic operations.  It primarily tests the speed of node
+      creation and BDD garbage collection.  The command line I used to test
+      was:
+      <br/>
+      <code>java -mx512m -Dbdd=<i>package</i> -jar javabdd-1.0b2.jar 12</code>
+      <br/>
+      </p>
+      <table border="2">
+        <tr>
+          <td>Package        </td> <td>Time  </td> <td>Peak Memory Usage</td>
+        </tr>
+        <tr>
+          <td>buddy          </td> <td> 41s  </td> <td> 152mb </td>
+        </tr>
+        <tr>
+          <td>cudd           </td> <td> 46s  </td> <td> 171mb </td>
+        </tr>
+        <tr>
+          <td>cal            </td> <td> 68s  </td> <td> 251mb </td>
+        </tr>
+        <tr>
+          <td>java (-server) </td> <td> 53s  </td> <td> 171mb </td>
+        </tr>
+        <tr>
+          <td>java (-client) </td> <td> 54s  </td> <td> 152mb </td>
+        </tr>
+        <tr>
+          <td>jdd (-server)  </td> <td> 50s  </td> <td> 188mb </td>
+        </tr>
+        <tr>
+          <td>jdd (-client)  </td> <td> 49s  </td> <td> 169mb </td>
+        </tr>
+      </table>
+      <p>
+      As you can see, buddy seems to be the fastest of the native libraries.
+      However, the Java version is not far behind in performance and the
+      memory usage is comparable.  jdd looks promising here but it
+      currently has poor performance on other operations like relprod, which
+      the simple NQueens benchmark doesn't test.
+      </p>
+      <p>
+      Don't make any assumptions from these results about the relative
+      efficiency of C and Java.  The Java source code is a direct translation
+      of the C source code, and therefore there are many, many inefficiencies
+      that would not be present if it had been implemented from scratch in
+      Java.  At best, you could use this information as an example of the
+      type of performance you would see if you directly translate a
+      performance library written in C into Java.
+      </p>
+    </section>
+  </body>
+</document>

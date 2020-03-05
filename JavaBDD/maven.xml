@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project xmlns:j="jelly:core">
+
+  <preGoal name="native:compile">
+    <echo message="*** copying BuDDy includes ***"/> 
+    <copy todir="target/native/jni">
+      <fileset dir="buddy/src/" includes="*.h"/>
+    </copy>
+    <copy todir="target/native/jni">
+      <fileset dir="buddy/" includes="*.h"/>
+    </copy>
+  </preGoal>
+
+  <postGoal name="native:compile">
+    <echo message="*** renaming BuDDy library ***"/> 
+    <move file="target/native/libjavabdd-1.0b2.so"
+          tofile="target/native/libbuddy.so"
+          overwrite="true"/>
+  </postGoal>
+
+</project>
