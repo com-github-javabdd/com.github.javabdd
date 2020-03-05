@@ -1,7 +1,7 @@
 // JFactory.java, created Aug 1, 2003 7:06:47 PM by joewhaley
 // Copyright (C) 2003 John Whaley <jwhaley@alum.mit.edu>
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
-package net.sf.javabdd;
+package com.github.javabdd;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,7 +50,7 @@ public class JFactory extends BDDFactoryIntImpl {
     private JFactory() { }
     
     /* (non-Javadoc)
-     * @see net.sf.javabdd.BDDFactory#init(int, int)
+     * @see com.github.javabdd.BDDFactory#init(int, int)
      */
     public static BDDFactory init(int nodenum, int cachesize) {
         BDDFactory f = new JFactory();
@@ -79,19 +79,19 @@ public class JFactory extends BDDFactoryIntImpl {
         bddPair next;
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDPairing#set(int, int)
+         * @see com.github.javabdd.BDDPairing#set(int, int)
          */
         public void set(int oldvar, int newvar) {
             bdd_setpair(this, oldvar, newvar);
         }
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDPairing#set(int, net.sf.javabdd.BDD)
+         * @see com.github.javabdd.BDDPairing#set(int, com.github.javabdd.BDD)
          */
         public void set(int oldvar, BDD newvar) {
             bdd_setbddpair(this, oldvar, unwrap(newvar));
         }
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDPairing#reset()
+         * @see com.github.javabdd.BDDPairing#reset()
          */
         public void reset() {
             bdd_resetpair(this);
@@ -123,7 +123,7 @@ public class JFactory extends BDDFactoryIntImpl {
     }
     
     /* (non-Javadoc)
-     * @see net.sf.javabdd.BDDFactory#makePair()
+     * @see com.github.javabdd.BDDFactory#makePair()
      */
     public BDDPairing makePair() {
         bddPair p = new bddPair();

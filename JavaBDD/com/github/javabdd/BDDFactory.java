@@ -1,7 +1,7 @@
 // BDDFactory.java, created Jan 29, 2003 9:50:57 PM by jwhaley
 // Copyright (C) 2003 John Whaley
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
-package net.sf.javabdd;
+package com.github.javabdd;
 
 import java.util.Arrays;
 import java.util.BitSet;
@@ -25,7 +25,7 @@ import java.security.AccessControlException;
 /**
  * <p>Interface for the creation and manipulation of BDDs.</p>
  * 
- * @see net.sf.javabdd.BDD
+ * @see com.github.javabdd.BDD
  * 
  * @author John Whaley
  * @version $Id: BDDFactory.java 480 2010-11-16 01:29:49Z robimalik $
@@ -1552,7 +1552,7 @@ public abstract class BDDFactory {
      * @param reverseLocal  whether to reverse the bits of each domain
      * @param ordering  string representation of ordering
      * @return  int[] of ordering
-     * @see net.sf.javabdd.BDDFactory#setVarOrder(int[])
+     * @see com.github.javabdd.BDDFactory#setVarOrder(int[])
      */
     public int[] makeVarOrdering(boolean reverseLocal, String ordering) {
         

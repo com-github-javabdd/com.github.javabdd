@@ -1,7 +1,7 @@
 // TryVarOrder.java, created Apr 2, 2004 10:43:21 PM 2004 by jwhaley
 // Copyright (C) 2004 John Whaley <jwhaley@alum.mit.edu>
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
-package net.sf.javabdd;
+package com.github.javabdd;
 
 import java.util.StringTokenizer;
 import java.io.BufferedReader;
@@ -40,7 +40,7 @@ public class TryVarOrder {
             ClassLoader cl;
             if (bddoperation != null) cl = bddoperation.getClass().getClassLoader();
             else cl = makeClassLoader();
-            Class c = cl.loadClass("net.sf.javabdd.BDDFactory");
+            Class c = cl.loadClass("com.github.javabdd.BDDFactory");
             Method m = c.getMethod("init", new Class[] { String.class, int.class, int.class });
             bdd = m.invoke(null, new Object[] { s, new Integer(nodeTableSize), new Integer(cacheSize) });
             m = c.getMethod("setMaxIncrease", new Class[] { int.class });
@@ -106,7 +106,7 @@ public class TryVarOrder {
     static void makeDomain(Class c, String name, int bits) throws Exception {
         Method m = c.getMethod("extDomain", new Class[] { long[].class });
         Object[] ds = (Object[]) m.invoke(null, new Object[] { new long[] { 1L << bits } });
-        c = c.getClassLoader().loadClass("net.sf.javabdd.BDDDomain");
+        c = c.getClassLoader().loadClass("com.github.javabdd.BDDDomain");
         m = c.getMethod("setName", new Class[] { String.class });
         m.invoke(ds[0], new Object[] { name });
     }
@@ -120,7 +120,7 @@ public class TryVarOrder {
         } else {
             cl = makeClassLoader();
         }
-        Class bddop_class = cl.loadClass("net.sf.javabdd.TryVarOrder$BDDOperation");
+        Class bddop_class = cl.loadClass("com.github.javabdd.TryVarOrder$BDDOperation");
         Constructor c = bddop_class.getConstructor(new Class[0]);
         bddoperation = c.newInstance(null);
         Method m = bddop_class.getMethod("setOp", new Class[] { int.class });

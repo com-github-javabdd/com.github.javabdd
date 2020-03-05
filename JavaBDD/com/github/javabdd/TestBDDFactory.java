@@ -1,7 +1,7 @@
 // TestBDDFactory.java, created Aug 2, 2003 10:02:48 PM by joewhaley
 // Copyright (C) 2003 John Whaley <jwhaley@alum.mit.edu>
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
-package net.sf.javabdd;
+package com.github.javabdd;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,7 +17,7 @@ import java.math.BigInteger;
  * throws an exception if the results from the two implementations do not match.
  * </p>
  * 
- * @see net.sf.javabdd.BDDFactory
+ * @see com.github.javabdd.BDDFactory
  * 
  * @author John Whaley
  * @version $Id: TestBDDFactory.java 481 2011-02-18 14:37:09Z gismo $
@@ -90,7 +90,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#getFactory()
+         * @see com.github.javabdd.BDD#getFactory()
          */
         public BDDFactory getFactory() {
             return TestBDDFactory.this;
@@ -99,7 +99,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#toVarSet()
+         * @see com.github.javabdd.BDD#toVarSet()
          */
         public BDDVarSet toVarSet() {
             return new TestBDDVarSet(b1.toVarSet(), b2.toVarSet());
@@ -108,7 +108,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#isZero()
+         * @see com.github.javabdd.BDD#isZero()
          */
         public boolean isZero() {
             boolean r1 = b1.isZero();
@@ -120,7 +120,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#isOne()
+         * @see com.github.javabdd.BDD#isOne()
          */
         public boolean isOne() {
             boolean r1 = b1.isOne();
@@ -132,7 +132,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#var()
+         * @see com.github.javabdd.BDD#var()
          */
         public int var() {
             int r1 = b1.var();
@@ -144,7 +144,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#high()
+         * @see com.github.javabdd.BDD#high()
          */
         public BDD high() {
             BDD r1 = b1.high();
@@ -155,7 +155,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#low()
+         * @see com.github.javabdd.BDD#low()
          */
         public BDD low() {
             BDD r1 = b1.low();
@@ -166,7 +166,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#id()
+         * @see com.github.javabdd.BDD#id()
          */
         public BDD id() {
             BDD r1 = b1.id();
@@ -177,7 +177,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#not()
+         * @see com.github.javabdd.BDD#not()
          */
         public BDD not() {
             BDD r1 = b1.not();
@@ -188,7 +188,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#ite(net.sf.javabdd.BDD, net.sf.javabdd.BDD)
+         * @see com.github.javabdd.BDD#ite(com.github.javabdd.BDD, com.github.javabdd.BDD)
          */
         public BDD ite(BDD thenBDD, BDD elseBDD) {
             BDD c1 = ((TestBDD) thenBDD).b1;
@@ -203,8 +203,8 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#relprod(net.sf.javabdd.BDD,
-         *      net.sf.javabdd.BDDVarSet)
+         * @see com.github.javabdd.BDD#relprod(com.github.javabdd.BDD,
+         *      com.github.javabdd.BDDVarSet)
          */
         public BDD relprod(BDD that, BDDVarSet var) {
             BDD c1 = ((TestBDD) that).b1;
@@ -219,7 +219,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#compose(net.sf.javabdd.BDD, int)
+         * @see com.github.javabdd.BDD#compose(com.github.javabdd.BDD, int)
          */
         public BDD compose(BDD g, int var) {
             BDD c1 = ((TestBDD) g).b1;
@@ -232,7 +232,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#veccompose(net.sf.javabdd.BDDPairing)
+         * @see com.github.javabdd.BDD#veccompose(com.github.javabdd.BDDPairing)
          */
         public BDD veccompose(BDDPairing pair) {
             BDDPairing c1 = ((TestBDDPairing) pair).b1;
@@ -245,7 +245,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#constrain(net.sf.javabdd.BDD)
+         * @see com.github.javabdd.BDD#constrain(com.github.javabdd.BDD)
          */
         public BDD constrain(BDD that) {
             BDD c1 = ((TestBDD) that).b1;
@@ -258,7 +258,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#exist(net.sf.javabdd.BDDVarSet)
+         * @see com.github.javabdd.BDD#exist(com.github.javabdd.BDDVarSet)
          */
         public BDD exist(BDDVarSet var) {
             BDDVarSet c1 = ((TestBDDVarSet) var).b1;
@@ -271,7 +271,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#forAll(net.sf.javabdd.BDD)
+         * @see com.github.javabdd.BDD#forAll(com.github.javabdd.BDD)
          */
         public BDD forAll(BDDVarSet var) {
             BDDVarSet c1 = ((TestBDDVarSet) var).b1;
@@ -284,7 +284,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#unique(net.sf.javabdd.BDD)
+         * @see com.github.javabdd.BDD#unique(com.github.javabdd.BDD)
          */
         public BDD unique(BDDVarSet var) {
             BDDVarSet c1 = ((TestBDDVarSet) var).b1;
@@ -297,7 +297,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#restrict(net.sf.javabdd.BDD)
+         * @see com.github.javabdd.BDD#restrict(com.github.javabdd.BDD)
          */
         public BDD restrict(BDD var) {
             BDD c1 = ((TestBDD) var).b1;
@@ -310,7 +310,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#restrictWith(net.sf.javabdd.BDD)
+         * @see com.github.javabdd.BDD#restrictWith(com.github.javabdd.BDD)
          */
         public BDD restrictWith(BDD var) {
             BDD c1 = ((TestBDD) var).b1;
@@ -324,7 +324,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#simplify(net.sf.javabdd.BDDVarSet)
+         * @see com.github.javabdd.BDD#simplify(com.github.javabdd.BDDVarSet)
          */
         public BDD simplify(BDD d) {
             BDD c1 = ((TestBDD) d).b1;
@@ -337,7 +337,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#support()
+         * @see com.github.javabdd.BDD#support()
          */
         public BDDVarSet support() {
             BDDVarSet r1 = b1.support();
@@ -348,8 +348,8 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#apply(net.sf.javabdd.BDD,
-         *      net.sf.javabdd.BDDFactory.BDDOp)
+         * @see com.github.javabdd.BDD#apply(com.github.javabdd.BDD,
+         *      com.github.javabdd.BDDFactory.BDDOp)
          */
         public BDD apply(BDD that, BDDOp opr) {
             BDD c1 = ((TestBDD) that).b1;
@@ -362,8 +362,8 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#applyWith(net.sf.javabdd.BDD,
-         *      net.sf.javabdd.BDDFactory.BDDOp)
+         * @see com.github.javabdd.BDD#applyWith(com.github.javabdd.BDD,
+         *      com.github.javabdd.BDDFactory.BDDOp)
          */
         public BDD applyWith(BDD that, BDDOp opr) {
             BDD c1 = ((TestBDD) that).b1;
@@ -377,8 +377,8 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#applyAll(net.sf.javabdd.BDD,
-         *      net.sf.javabdd.BDDFactory.BDDOp, net.sf.javabdd.BDDVarSet)
+         * @see com.github.javabdd.BDD#applyAll(com.github.javabdd.BDD,
+         *      com.github.javabdd.BDDFactory.BDDOp, com.github.javabdd.BDDVarSet)
          */
         public BDD applyAll(BDD that, BDDOp opr, BDDVarSet var) {
             BDD c1 = ((TestBDD) that).b1;
@@ -393,8 +393,8 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#applyEx(net.sf.javabdd.BDD,
-         *      net.sf.javabdd.BDDFactory.BDDOp, net.sf.javabdd.BDDVarSet)
+         * @see com.github.javabdd.BDD#applyEx(com.github.javabdd.BDD,
+         *      com.github.javabdd.BDDFactory.BDDOp, com.github.javabdd.BDDVarSet)
          */
         public BDD applyEx(BDD that, BDDOp opr, BDDVarSet var) {
             BDD c1 = ((TestBDD) that).b1;
@@ -409,8 +409,8 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#applyUni(net.sf.javabdd.BDD,
-         *      net.sf.javabdd.BDDFactory.BDDOp, net.sf.javabdd.BDDVarSet)
+         * @see com.github.javabdd.BDD#applyUni(com.github.javabdd.BDD,
+         *      com.github.javabdd.BDDFactory.BDDOp, com.github.javabdd.BDDVarSet)
          */
         public BDD applyUni(BDD that, BDDOp opr, BDDVarSet var) {
             BDD c1 = ((TestBDD) that).b1;
@@ -425,7 +425,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#satOne()
+         * @see com.github.javabdd.BDD#satOne()
          */
         public BDD satOne() {
             BDD r1 = b1.satOne();
@@ -436,7 +436,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#fullSatOne()
+         * @see com.github.javabdd.BDD#fullSatOne()
          */
         public BDD fullSatOne() {
             BDD r1 = b1.fullSatOne();
@@ -447,7 +447,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#satOne(net.sf.javabdd.BDDVarSet, boolean)
+         * @see com.github.javabdd.BDD#satOne(com.github.javabdd.BDDVarSet, boolean)
          */
         public BDD satOne(BDDVarSet var, boolean pol) {
             BDDVarSet c1 = ((TestBDDVarSet) var).b1;
@@ -460,7 +460,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#replace(net.sf.javabdd.BDDPairing)
+         * @see com.github.javabdd.BDD#replace(com.github.javabdd.BDDPairing)
          */
         public BDD replace(BDDPairing pair) {
             BDDPairing c1 = ((TestBDDPairing) pair).b1;
@@ -473,7 +473,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#replaceWith(net.sf.javabdd.BDDPairing)
+         * @see com.github.javabdd.BDD#replaceWith(com.github.javabdd.BDDPairing)
          */
         public BDD replaceWith(BDDPairing pair) {
             BDDPairing c1 = ((TestBDDPairing) pair).b1;
@@ -487,7 +487,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#printDot()
+         * @see com.github.javabdd.BDD#printDot()
          */
         public void printDot() {
             // TODO Compare!
@@ -497,7 +497,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#toString()
+         * @see com.github.javabdd.BDD#toString()
          */
         public String toString() {
             // String already checked.
@@ -507,7 +507,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#toStringWithDomains(net.sf.javabdd.BDD.BDDToString)
+         * @see com.github.javabdd.BDD#toStringWithDomains(com.github.javabdd.BDD.BDDToString)
          */
         public String toStringWithDomains(BDDToString ts) {
             String s1 = b1.toStringWithDomains(ts);
@@ -519,7 +519,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#allsat()
+         * @see com.github.javabdd.BDD#allsat()
          */
         public AllSatIterator allsat() {
             return new AllSatIterator(TestBDDFactory.this, false) {
@@ -545,7 +545,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#scanAllVar()
+         * @see com.github.javabdd.BDD#scanAllVar()
          */
         public BigInteger[] scanAllVar() {
             BigInteger[] r1 = b1.scanAllVar();
@@ -557,7 +557,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#nodeCount()
+         * @see com.github.javabdd.BDD#nodeCount()
          */
         public int nodeCount() {
             int r1 = b1.nodeCount();
@@ -569,7 +569,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#pathCount()
+         * @see com.github.javabdd.BDD#pathCount()
          */
         public double pathCount() {
             double r1 = b1.pathCount();
@@ -581,7 +581,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#satCount()
+         * @see com.github.javabdd.BDD#satCount()
          */
         public double satCount() {
             double r1 = b1.satCount();
@@ -593,7 +593,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#varProfile()
+         * @see com.github.javabdd.BDD#varProfile()
          */
         public int[] varProfile() {
             int[] r1 = b1.varProfile();
@@ -605,7 +605,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#equals(net.sf.javabdd.BDD)
+         * @see com.github.javabdd.BDD#equals(com.github.javabdd.BDD)
          */
         public boolean equals(BDD that) {
             BDD c1 = ((TestBDD) that).b1;
@@ -619,7 +619,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#hashCode()
+         * @see com.github.javabdd.BDD#hashCode()
          */
         public int hashCode() {
             // TODO Compare!
@@ -630,7 +630,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDD#free()
+         * @see com.github.javabdd.BDD#free()
          */
         public void free() {
             b1.free();
@@ -761,7 +761,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#zero()
+     * @see com.github.javabdd.BDDFactory#zero()
      */
     public BDD zero() {
         return new TestBDD(f1.zero(), f2.zero());
@@ -770,7 +770,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#one()
+     * @see com.github.javabdd.BDDFactory#one()
      */
     public BDD one() {
         return new TestBDD(f1.one(), f2.one());
@@ -779,7 +779,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#universe()
+     * @see com.github.javabdd.BDDFactory#universe()
      */
     public BDD universe() {
         return new TestBDD(f1.universe(), f2.universe());
@@ -788,7 +788,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#emptySet()
+     * @see com.github.javabdd.BDDFactory#emptySet()
      */
     public BDDVarSet emptySet() {
         return new TestBDDVarSet(f1.emptySet(), f2.emptySet());
@@ -797,7 +797,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#initialize(int, int)
+     * @see com.github.javabdd.BDDFactory#initialize(int, int)
      */
     protected void initialize(int nodenum, int cachesize) {
         f1.initialize(nodenum, cachesize);
@@ -807,7 +807,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#isInitialized()
+     * @see com.github.javabdd.BDDFactory#isInitialized()
      */
     public boolean isInitialized() {
         boolean r1 = f1.isInitialized();
@@ -819,7 +819,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#done()
+     * @see com.github.javabdd.BDDFactory#done()
      */
     public void done() {
         f1.done();
@@ -829,7 +829,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#setError(int)
+     * @see com.github.javabdd.BDDFactory#setError(int)
      */
     public void setError(int code) {
         f1.setError(code);
@@ -839,7 +839,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#clearError()
+     * @see com.github.javabdd.BDDFactory#clearError()
      */
     public void clearError() {
         f1.clearError();
@@ -849,7 +849,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#setMaxNodeNum(int)
+     * @see com.github.javabdd.BDDFactory#setMaxNodeNum(int)
      */
     public int setMaxNodeNum(int size) {
         int r1 = f1.setMaxNodeNum(size);
@@ -861,7 +861,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#setMinFreeNodes(double)
+     * @see com.github.javabdd.BDDFactory#setMinFreeNodes(double)
      */
     public double setMinFreeNodes(double x) {
         double r1 = f1.setMinFreeNodes(x);
@@ -873,7 +873,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#setIncreaseFactor(double)
+     * @see com.github.javabdd.BDDFactory#setIncreaseFactor(double)
      */
     public double setIncreaseFactor(double x) {
         double r1 = f1.setIncreaseFactor(x);
@@ -885,7 +885,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#setMaxIncrease(int)
+     * @see com.github.javabdd.BDDFactory#setMaxIncrease(int)
      */
     public int setMaxIncrease(int x) {
         int r1 = f1.setMaxIncrease(x);
@@ -897,7 +897,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#setCacheRatio(double)
+     * @see com.github.javabdd.BDDFactory#setCacheRatio(double)
      */
     public double setCacheRatio(double x) {
         double r1 = f1.setCacheRatio(x);
@@ -909,7 +909,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#setNodeTableSize(int)
+     * @see com.github.javabdd.BDDFactory#setNodeTableSize(int)
      */
     public int setNodeTableSize(int size) {
         int r1 = f1.setNodeTableSize(size);
@@ -921,7 +921,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#setCacheSize(int)
+     * @see com.github.javabdd.BDDFactory#setCacheSize(int)
      */
     public int setCacheSize(int size) {
         int r1 = f1.setCacheSize(size);
@@ -933,7 +933,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#varNum()
+     * @see com.github.javabdd.BDDFactory#varNum()
      */
     public int varNum() {
         int r1 = f1.varNum();
@@ -945,7 +945,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#setVarNum(int)
+     * @see com.github.javabdd.BDDFactory#setVarNum(int)
      */
     public int setVarNum(int num) {
         int r1 = f1.setVarNum(num);
@@ -957,7 +957,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#ithVar(int)
+     * @see com.github.javabdd.BDDFactory#ithVar(int)
      */
     public BDD ithVar(int var) {
         return new TestBDD(f1.ithVar(var), f2.ithVar(var));
@@ -966,7 +966,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#nithVar(int)
+     * @see com.github.javabdd.BDDFactory#nithVar(int)
      */
     public BDD nithVar(int var) {
         return new TestBDD(f1.nithVar(var), f2.nithVar(var));
@@ -975,7 +975,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#printAll()
+     * @see com.github.javabdd.BDDFactory#printAll()
      */
     public void printAll() {
         // TODO Compare!
@@ -985,7 +985,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#printTable(net.sf.javabdd.BDD)
+     * @see com.github.javabdd.BDDFactory#printTable(com.github.javabdd.BDD)
      */
     public void printTable(BDD b) {
         // TODO Compare!
@@ -996,7 +996,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#load(java.lang.String)
+     * @see com.github.javabdd.BDDFactory#load(java.lang.String)
      */
     public BDD load(String filename) throws IOException {
         return new TestBDD(f1.load(filename), f2.load(filename));
@@ -1005,7 +1005,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#save(java.lang.String, net.sf.javabdd.BDD)
+     * @see com.github.javabdd.BDDFactory#save(java.lang.String, com.github.javabdd.BDD)
      */
     public void save(String filename, BDD var) throws IOException {
         // TODO Compare!
@@ -1016,7 +1016,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#level2Var(int)
+     * @see com.github.javabdd.BDDFactory#level2Var(int)
      */
     public int level2Var(int level) {
         int r1 = f1.level2Var(level);
@@ -1028,7 +1028,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#var2Level(int)
+     * @see com.github.javabdd.BDDFactory#var2Level(int)
      */
     public int var2Level(int var) {
         int r1 = f1.var2Level(var);
@@ -1040,7 +1040,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#reorder(net.sf.javabdd.BDDFactory.ReorderMethod)
+     * @see com.github.javabdd.BDDFactory#reorder(com.github.javabdd.BDDFactory.ReorderMethod)
      */
     public void reorder(ReorderMethod m) {
         f1.reorder(m);
@@ -1050,7 +1050,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#autoReorder(net.sf.javabdd.BDDFactory.ReorderMethod)
+     * @see com.github.javabdd.BDDFactory#autoReorder(com.github.javabdd.BDDFactory.ReorderMethod)
      */
     public void autoReorder(ReorderMethod method) {
         f1.autoReorder(method);
@@ -1060,7 +1060,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#autoReorder(net.sf.javabdd.BDDFactory.ReorderMethod,
+     * @see com.github.javabdd.BDDFactory#autoReorder(com.github.javabdd.BDDFactory.ReorderMethod,
      *      int)
      */
     public void autoReorder(ReorderMethod method, int max) {
@@ -1071,7 +1071,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#getReorderMethod()
+     * @see com.github.javabdd.BDDFactory#getReorderMethod()
      */
     public ReorderMethod getReorderMethod() {
         ReorderMethod r1 = f1.getReorderMethod();
@@ -1083,7 +1083,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#getReorderTimes()
+     * @see com.github.javabdd.BDDFactory#getReorderTimes()
      */
     public int getReorderTimes() {
         int r1 = f1.getReorderTimes();
@@ -1095,7 +1095,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#disableReorder()
+     * @see com.github.javabdd.BDDFactory#disableReorder()
      */
     public void disableReorder() {
         f1.disableReorder();
@@ -1105,7 +1105,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#enableReorder()
+     * @see com.github.javabdd.BDDFactory#enableReorder()
      */
     public void enableReorder() {
         f1.enableReorder();
@@ -1115,7 +1115,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#reorderVerbose(int)
+     * @see com.github.javabdd.BDDFactory#reorderVerbose(int)
      */
     public int reorderVerbose(int v) {
         int r1 = f1.reorderVerbose(v);
@@ -1127,7 +1127,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#setVarOrder(int[])
+     * @see com.github.javabdd.BDDFactory#setVarOrder(int[])
      */
     public void setVarOrder(int[] neworder) {
         f1.setVarOrder(neworder);
@@ -1137,7 +1137,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#addVarBlock(int, int, boolean)
+     * @see com.github.javabdd.BDDFactory#addVarBlock(int, int, boolean)
      */
     public void addVarBlock(int first, int last, boolean fixed) {
         f1.addVarBlock(first, last, fixed);
@@ -1147,7 +1147,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#varBlockAll()
+     * @see com.github.javabdd.BDDFactory#varBlockAll()
      */
     public void varBlockAll() {
         f1.varBlockAll();
@@ -1157,7 +1157,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#clearVarBlocks()
+     * @see com.github.javabdd.BDDFactory#clearVarBlocks()
      */
     public void clearVarBlocks() {
         f1.clearVarBlocks();
@@ -1167,7 +1167,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#printOrder()
+     * @see com.github.javabdd.BDDFactory#printOrder()
      */
     public void printOrder() {
         // TODO Compare!
@@ -1177,7 +1177,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#nodeCount(java.util.Collection)
+     * @see com.github.javabdd.BDDFactory#nodeCount(java.util.Collection)
      */
     public int nodeCount(Collection r) {
         LinkedList a1 = new LinkedList();
@@ -1196,7 +1196,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#getNodeTableSize()
+     * @see com.github.javabdd.BDDFactory#getNodeTableSize()
      */
     public int getNodeTableSize() {
         int r1 = f1.getNodeTableSize();
@@ -1208,7 +1208,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#getNodeNum()
+     * @see com.github.javabdd.BDDFactory#getNodeNum()
      */
     public int getNodeNum() {
         int r1 = f1.getNodeNum();
@@ -1220,7 +1220,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#getCacheSize()
+     * @see com.github.javabdd.BDDFactory#getCacheSize()
      */
     public int getCacheSize() {
         int r1 = f1.getCacheSize();
@@ -1232,7 +1232,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#reorderGain()
+     * @see com.github.javabdd.BDDFactory#reorderGain()
      */
     public int reorderGain() {
         int r1 = f1.reorderGain();
@@ -1244,7 +1244,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#printStat()
+     * @see com.github.javabdd.BDDFactory#printStat()
      */
     public void printStat() {
         // TODO Compare!
@@ -1254,7 +1254,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#makePair()
+     * @see com.github.javabdd.BDDFactory#makePair()
      */
     public BDDPairing makePair() {
         BDDPairing p1 = f1.makePair();
@@ -1265,7 +1265,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#swapVar(int, int)
+     * @see com.github.javabdd.BDDFactory#swapVar(int, int)
      */
     public void swapVar(int v1, int v2) {
         f1.swapVar(v1, v2);
@@ -1275,7 +1275,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#createDomain(int, BigInteger)
+     * @see com.github.javabdd.BDDFactory#createDomain(int, BigInteger)
      */
     protected BDDDomain createDomain(int a, BigInteger b) {
         return new TestBDDDomain(a, b);
@@ -1284,7 +1284,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#createBitVector(int)
+     * @see com.github.javabdd.BDDFactory#createBitVector(int)
      */
     protected BDDBitVector createBitVector(int a) {
         return new TestBDDBitVector(a);
@@ -1300,7 +1300,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDDPairing#set(int, int)
+         * @see com.github.javabdd.BDDPairing#set(int, int)
          */
         public void set(int oldvar, int newvar) {
             b1.set(oldvar, newvar);
@@ -1310,7 +1310,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDDPairing#set(int, net.sf.javabdd.BDD)
+         * @see com.github.javabdd.BDDPairing#set(int, com.github.javabdd.BDD)
          */
         public void set(int oldvar, BDD newvar) {
             b1.set(oldvar, newvar);
@@ -1320,7 +1320,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDDPairing#reset()
+         * @see com.github.javabdd.BDDPairing#reset()
          */
         public void reset() {
             b1.reset();
@@ -1335,7 +1335,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDDDomain#getFactory()
+         * @see com.github.javabdd.BDDDomain#getFactory()
          */
         public BDDFactory getFactory() {
             return TestBDDFactory.this;
@@ -1349,7 +1349,7 @@ public class TestBDDFactory extends BDDFactory {
         /*
          * (non-Javadoc)
          * 
-         * @see net.sf.javabdd.BDDBitVector#getFactory()
+         * @see com.github.javabdd.BDDBitVector#getFactory()
          */
         public BDDFactory getFactory() {
             return TestBDDFactory.this;
@@ -1360,7 +1360,7 @@ public class TestBDDFactory extends BDDFactory {
     /*
      * (non-Javadoc)
      * 
-     * @see net.sf.javabdd.BDDFactory#getVersion()
+     * @see com.github.javabdd.BDDFactory#getVersion()
      */
     public String getVersion() {
         return "TestBDD " + REVISION.substring(11, REVISION.length() - 2)

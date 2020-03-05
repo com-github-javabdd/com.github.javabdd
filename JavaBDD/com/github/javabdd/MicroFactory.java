@@ -1,7 +1,7 @@
 // MicroFactory.java, created Jan 29, 2005 8:24:17 PM by joewhaley
 // Copyright (C) 2005 John Whaley <jwhaley@alum.mit.edu>
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
-package net.sf.javabdd;
+package com.github.javabdd;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -53,7 +53,7 @@ public class MicroFactory extends BDDFactoryIntImpl {
     private MicroFactory() { }
     
     /* (non-Javadoc)
-     * @see net.sf.javabdd.BDDFactory#init(int, int)
+     * @see com.github.javabdd.BDDFactory#init(int, int)
      */
     public static BDDFactory init(int nodenum, int cachesize) {
         BDDFactory f = new MicroFactory();
@@ -80,19 +80,19 @@ public class MicroFactory extends BDDFactoryIntImpl {
         bddPair next;
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDPairing#set(int, int)
+         * @see com.github.javabdd.BDDPairing#set(int, int)
          */
         public void set(int oldvar, int newvar) {
             bdd_setpair(this, oldvar, newvar);
         }
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDPairing#set(int, net.sf.javabdd.BDD)
+         * @see com.github.javabdd.BDDPairing#set(int, com.github.javabdd.BDD)
          */
         public void set(int oldvar, BDD newvar) {
             bdd_setbddpair(this, oldvar, unwrap(newvar));
         }
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDPairing#reset()
+         * @see com.github.javabdd.BDDPairing#reset()
          */
         public void reset() {
             bdd_resetpair(this);
@@ -119,7 +119,7 @@ public class MicroFactory extends BDDFactoryIntImpl {
     }
     
     /* (non-Javadoc)
-     * @see net.sf.javabdd.BDDFactory#makePair()
+     * @see com.github.javabdd.BDDFactory#makePair()
      */
     public BDDPairing makePair() {
         bddPair p = new bddPair();
@@ -6019,7 +6019,7 @@ public class MicroFactory extends BDDFactoryIntImpl {
     }
 
     /* (non-Javadoc)
-     * @see net.sf.javabdd.BDDFactory#getCacheStats()
+     * @see com.github.javabdd.BDDFactory#getCacheStats()
      */
     public CacheStats getCacheStats() {
         cachestats.opHit = 0;

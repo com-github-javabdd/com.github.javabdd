@@ -1,7 +1,7 @@
 // BDDFactoryIntImpl.java, created Jul 16, 2006 2:59:55 PM by jwhaley
 // Copyright (C) 2004-2006 John Whaley <jwhaley@alum.mit.edu>
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
-package net.sf.javabdd;
+package com.github.javabdd;
 
 import java.util.Collection;
 import java.util.Iterator;

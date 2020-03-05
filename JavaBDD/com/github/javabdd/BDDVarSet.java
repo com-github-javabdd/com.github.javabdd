@@ -1,7 +1,7 @@
 // BDDVarSet.java, created Jul 13, 2006 8:53:13 PM by jwhaley
 // Copyright (C) 2004-2006 John Whaley <jwhaley@alum.mit.edu>
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
-package net.sf.javabdd;
+package com.github.javabdd;
 
 import java.util.Arrays;
 
@@ -203,7 +203,7 @@ public abstract class BDDVarSet {
         }
         
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#free()
+         * @see com.github.javabdd.BDDVarSet#free()
          */
         public void free() {
             if (b != null) {
@@ -213,21 +213,21 @@ public abstract class BDDVarSet {
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#getFactory()
+         * @see com.github.javabdd.BDDVarSet#getFactory()
          */
         public BDDFactory getFactory() {
             return b.getFactory();
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#id()
+         * @see com.github.javabdd.BDDVarSet#id()
          */
         public BDDVarSet id() {
             return new DefaultImpl(b.id());
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#intersect(net.sf.javabdd.BDDVarSet)
+         * @see com.github.javabdd.BDDVarSet#intersect(com.github.javabdd.BDDVarSet)
          */
         public BDDVarSet intersect(BDDVarSet s) {
             DefaultImpl i = (DefaultImpl) s;
@@ -235,7 +235,7 @@ public abstract class BDDVarSet {
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#intersectWith(net.sf.javabdd.BDDVarSet)
+         * @see com.github.javabdd.BDDVarSet#intersectWith(com.github.javabdd.BDDVarSet)
          */
         public BDDVarSet intersectWith(BDDVarSet s) {
             DefaultImpl i = (DefaultImpl) s;
@@ -244,14 +244,14 @@ public abstract class BDDVarSet {
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#isEmpty()
+         * @see com.github.javabdd.BDDVarSet#isEmpty()
          */
         public boolean isEmpty() {
             return b.isOne();
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#size()
+         * @see com.github.javabdd.BDDVarSet#size()
          */
         public int size() {
             int result = 0;
@@ -268,7 +268,7 @@ public abstract class BDDVarSet {
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#toArray()
+         * @see com.github.javabdd.BDDVarSet#toArray()
          */
         public int[] toArray() {
             int[] result = new int[size()];
@@ -286,14 +286,14 @@ public abstract class BDDVarSet {
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#toBDD()
+         * @see com.github.javabdd.BDDVarSet#toBDD()
          */
         public BDD toBDD() {
             return b.id();
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#toLevelArray()
+         * @see com.github.javabdd.BDDVarSet#toLevelArray()
          */
         public int[] toLevelArray() {
             int[] result = new int[size()];
@@ -311,7 +311,7 @@ public abstract class BDDVarSet {
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#union(net.sf.javabdd.BDDVarSet)
+         * @see com.github.javabdd.BDDVarSet#union(com.github.javabdd.BDDVarSet)
          */
         public BDDVarSet union(BDDVarSet s) {
             DefaultImpl i = (DefaultImpl) s;
@@ -319,7 +319,7 @@ public abstract class BDDVarSet {
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#union(int)
+         * @see com.github.javabdd.BDDVarSet#union(int)
          */
         public BDDVarSet union(int var) {
             BDD ith = b.getFactory().ithVar(var);
@@ -329,7 +329,7 @@ public abstract class BDDVarSet {
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#unionWith(net.sf.javabdd.BDDVarSet)
+         * @see com.github.javabdd.BDDVarSet#unionWith(com.github.javabdd.BDDVarSet)
          */
         public BDDVarSet unionWith(BDDVarSet s) {
             DefaultImpl i = (DefaultImpl) s;
@@ -338,7 +338,7 @@ public abstract class BDDVarSet {
         }
 
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#unionWith(int)
+         * @see com.github.javabdd.BDDVarSet#unionWith(int)
          */
         public BDDVarSet unionWith(int var) {
             b.andWith(b.getFactory().ithVar(var));
@@ -346,14 +346,14 @@ public abstract class BDDVarSet {
         }
         
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#hashCode()
+         * @see com.github.javabdd.BDDVarSet#hashCode()
          */
         public int hashCode() {
             return b.hashCode();
         }
         
         /* (non-Javadoc)
-         * @see net.sf.javabdd.BDDVarSet#equals(net.sf.javabdd.BDDVarSet)
+         * @see com.github.javabdd.BDDVarSet#equals(com.github.javabdd.BDDVarSet)
          */
         public boolean equals(BDDVarSet s) {
             if (s instanceof DefaultImpl)

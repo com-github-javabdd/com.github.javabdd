@@ -1,10 +1,11 @@
 // BDDDomain.java, created Jan 29, 2003 9:50:57 PM by jwhaley
 // Copyright (C) 2003 John Whaley
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
-package net.sf.javabdd;
+package com.github.javabdd;
 
 import java.math.BigInteger;
-import net.sf.javabdd.BDD.BDDIterator;
+
+import com.github.javabdd.BDD.BDDIterator;
 
 /**
  * Represents a domain of BDD variables.  This is useful for finite state
@@ -19,7 +20,7 @@ import net.sf.javabdd.BDD.BDDIterator;
  * 
  * @author John Whaley
  * @version $Id: BDDDomain.java 468 2006-11-29 08:07:13Z joewhaley $
- * @see net.sf.javabdd.BDDFactory#extDomain(int[])
+ * @see com.github.javabdd.BDDFactory#extDomain(int[])
  */
 public abstract class BDDDomain {
 
