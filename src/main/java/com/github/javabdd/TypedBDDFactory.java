@@ -19,7 +19,7 @@ import java.math.BigInteger;
  * <p>This BDD factory keeps track of what domains each BDD uses, and complains
  * if you try to do an operation where the domains do not match.</p>
  * 
- * @see com.github.javabdd.BDDFactory
+ * @see JavaBDD.BDDFactory
  * 
  * @author John Whaley
  * @version $Id: TypedBDDFactory.java 481 2011-02-18 14:37:09Z gismo $

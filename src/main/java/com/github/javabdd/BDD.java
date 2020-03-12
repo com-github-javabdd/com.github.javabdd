@@ -18,8 +18,8 @@ import java.math.BigInteger;
  * 
  * <p>Use an implementation of BDDFactory to create BDD objects.</p>
  *
- * @see com.github.javabdd.BDDFactory
- * @see com.github.javabdd.BDDDomain#set()
+ * @see JavaBDD.BDDFactory
+ * @see JavaBDD.BDDDomain#set()
  * 
  * @author John Whaley
  * @version $Id: BDD.java 481 2011-02-18 14:37:09Z gismo $
@@ -278,7 +278,7 @@ public abstract class BDD {
      * @param that the BDD to 'and' with
      * @param var the BDDVarSet to existentially quantify with
      * @return the result of the relational product
-     * @see com.github.javabdd.BDDDomain#set()
+     * @see JavaBDD.BDDDomain#set()
      */
     public BDD relprod(BDD that, BDDVarSet var) {
         return applyEx(that, BDDFactory.and, var);
@@ -332,7 +332,7 @@ public abstract class BDD {
      *
      * @param var BDDVarSet containing the variables to be existentially quantified
      * @return the result of the existential quantification
-     * @see com.github.javabdd.BDDDomain#set()
+     * @see JavaBDD.BDDDomain#set()
      */
     public abstract BDD exist(BDDVarSet var);
 
@@ -344,7 +344,7 @@ public abstract class BDD {
      * 
      * @param var BDDVarSet containing the variables to be universally quantified
      * @return the result of the universal quantification
-     * @see com.github.javabdd.BDDDomain#set()
+     * @see JavaBDD.BDDDomain#set()
      */
     public abstract BDD forAll(BDDVarSet var);
 
@@ -357,7 +357,7 @@ public abstract class BDD {
      * 
      * @param var BDDVarSet containing the variables to be uniquely quantified
      * @return the result of the unique quantification
-     * @see com.github.javabdd.BDDDomain#set()
+     * @see JavaBDD.BDDDomain#set()
      */
     public abstract BDD unique(BDDVarSet var);
     
@@ -373,7 +373,7 @@ public abstract class BDD {
      * 
      * @param var BDD containing the variables to be restricted
      * @return the result of the restrict operation
-     * @see com.github.javabdd.BDD#simplify(BDD)
+     * @see JavaBDD.BDD#simplify(BDD)
      */
     public abstract BDD restrict(BDD var);
 
@@ -389,7 +389,7 @@ public abstract class BDD {
      * <p>Compare to bdd_restrict and bdd_delref.</p>
      * 
      * @param var BDD containing the variables to be restricted
-     * @see com.github.javabdd.BDDDomain#set()
+     * @see JavaBDD.BDDDomain#set()
      */
     public abstract BDD restrictWith(BDD var);
 
@@ -451,7 +451,7 @@ public abstract class BDD {
      * @param opr the operator to apply
      * @param var BDDVarSet containing the variables to quantify
      * @return the result
-     * @see com.github.javabdd.BDDDomain#set()
+     * @see JavaBDD.BDDDomain#set()
      */
     public abstract BDD applyAll(BDD that, BDDFactory.BDDOp opr, BDDVarSet var);
 
@@ -466,7 +466,7 @@ public abstract class BDD {
      * @param opr the operator to apply
      * @param var BDDVarSet containing the variables to quantify
      * @return the result
-     * @see com.github.javabdd.BDDDomain#set()
+     * @see JavaBDD.BDDDomain#set()
      */
     public abstract BDD applyEx(BDD that, BDDFactory.BDDOp opr, BDDVarSet var);
 
@@ -481,7 +481,7 @@ public abstract class BDD {
      * @param opr the operator to apply
      * @param var BDDVarSet containing the variables to quantify
      * @return the result
-     * @see com.github.javabdd.BDDDomain#set()
+     * @see JavaBDD.BDDDomain#set()
      */
     public abstract BDD applyUni(BDD that, BDDFactory.BDDOp opr, BDDVarSet var);
 
@@ -520,7 +520,7 @@ public abstract class BDD {
      * @param var BDDVarSet containing the set of variables that must be mentioned in the result
      * @param pol the polarity of the result
      * @return one satisfying variable assignment
-     * @see com.github.javabdd.BDDDomain#set()
+     * @see JavaBDD.BDDDomain#set()
      */
     public abstract BDD satOne(BDDVarSet var, boolean pol);
 
@@ -786,7 +786,7 @@ public abstract class BDD {
      * 
      * @param var  set of variables to mention in result
      * @return an iteration of minterms
-     * @see com.github.javabdd.BDDDomain#set()
+     * @see JavaBDD.BDDDomain#set()
      */
     public BDDIterator iterator(final BDDVarSet var) {
         return new BDDIterator(this, var);
@@ -1367,7 +1367,7 @@ public abstract class BDD {
      * <p>Returns a string representation of this BDD on the defined domains,
      * using the given BDDToString converter.</p>
      * 
-     * @see com.github.javabdd.BDD.BDDToString
+     * @see JavaBDD.BDD.BDDToString
      * 
      * @return string representation of this BDD using the given BDDToString converter
      */
