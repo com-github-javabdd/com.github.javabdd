@@ -17,7 +17,7 @@ import java.math.BigInteger;
  * throws an exception if the results from the two implementations do not match.
  * </p>
  * 
- * @see JavaBDD.BDDFactory
+ * @see com.github.javabdd.BDDFactory
  * 
  * @author John Whaley
  * @version $Id: TestBDDFactory.java 481 2011-02-18 14:37:09Z gismo $
