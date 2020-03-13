@@ -18,6 +18,15 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <id>dhendriks</id>
+            <name>Dennis Hendriks</name>
+            <email>dh_tue@hotmail.com</email>
+            <timezone>Europe/Amsterdam</timezone>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>
             UTF-8
