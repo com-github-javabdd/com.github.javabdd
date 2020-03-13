@@ -4495,6 +4495,7 @@ public class MicroFactory extends BDDFactoryIntImpl {
     BddTree reorder_win2ite(BddTree t) {
         BddTree dis, first = t;
         int lastsize;
+        //int c = 1;
 
         if (t == null)
             return t;
@@ -4525,6 +4526,7 @@ public class MicroFactory extends BDDFactoryIntImpl {
 
             if (verbose > 1)
                 System.out.println(" " + reorder_nodenum() + " nodes");
+            //c++;
         }
         while (reorder_nodenum() != lastsize);
 
