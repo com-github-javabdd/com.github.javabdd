@@ -31,10 +31,11 @@ The code from trunk revision r483 from 2011-11-24 was used.
 It has been modified as follows:
  * Only the pure Java implementations are kept. The interfaces to the JDD
    library, as well as the BuDDy, CUDD, and CAL libraries have been removed.
- * All files not essential to JAR building and deployment to Maven Central
-   have been removed.
+ * Cleaned up the project setup.
+ * Adapted project to allow deployment to Maven Central.
 
 ## License
 
 This project inherits the license from the Sourceforge project it is forked
 from, the GNU Library or Lesser General Public License version 2.0 (LGPLv2).
+See the LICENSE.txt file.
