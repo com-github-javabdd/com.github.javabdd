@@ -9,6 +9,7 @@
 
     <name>com.github.javabdd</name>
     <url>https://github.com/com-github-javabdd/com.github.javabdd</url>
+    <description>JavaBDD: A Java library for Binary Decision Diagrams (BDDs)</description>
 
     <licenses>
         <license>
