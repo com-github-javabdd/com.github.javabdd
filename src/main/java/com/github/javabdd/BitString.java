@@ -28,7 +28,7 @@ import java.util.Iterator;
  * The length of a bit set related to the logical length of a bit set
  * and is defined independently of implementation.
  * 
- * @author  John Whaley <jwhaley@alum.mit.edu>
+ * @author  John Whaley
  * @version $Id: BitString.java 2279 2005-05-28 10:24:54Z joewhaley $
  */
 public final class BitString implements Cloneable, java.io.Serializable {
