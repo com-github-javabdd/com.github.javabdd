@@ -38,4 +38,4 @@ It has been modified as follows:
 
 This project inherits the license from the Sourceforge project it is forked
 from, the GNU Library or Lesser General Public License version 2.0 (LGPLv2).
-See the LICENSE.txt file.
+See the [LICENSE.txt](LICENSE.txt) file.
