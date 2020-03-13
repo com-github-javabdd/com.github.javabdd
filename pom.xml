@@ -4,7 +4,7 @@
 
     <groupId>com.github.com-github-javabdd</groupId>
     <artifactId>com.github.javabdd</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>com.github.javabdd</name>
@@ -43,11 +43,6 @@
                     <arguments>
                         -Dgpg.passphrase=${gpg.passphrase}
                     </arguments>
-                    <checkModificationExcludes>
-                        <checkModificationExclude>
-                            pom.xml
-                        </checkModificationExclude>
-                    </checkModificationExcludes>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -75,24 +70,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
                 <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
                         <goals>
+                            <goal>jar</goal>
                             <goal>jar-no-fork</goal>
                         </goals>
                     </execution>
@@ -116,7 +99,6 @@
         </repository>
     </distributionManagement>
 
-
     <scm>
         <connection>
             scm:git:git://github.com/dexecutor/dependent-tasks-executor.git
@@ -129,7 +111,7 @@
     </scm>
 
     <profiles>
-        <!-- GPG Signature on release -->
+        <!-- GPG signature on release -->
         <profile>
             <id>release-sign-artifacts</id>
             <activation>
