@@ -76,7 +76,6 @@
                         <id>attach-sources</id>
                         <goals>
                             <goal>jar</goal>
-                            <goal>attach-javadoc</goal>
                         </goals>
                     </execution>
                 </executions>
