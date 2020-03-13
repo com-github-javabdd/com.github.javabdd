@@ -949,7 +949,7 @@ public class TestBDDFactory extends BDDFactory {
      */
     public int setVarNum(int num) {
         int r1 = f1.setVarNum(num);
-        int r2 = f2.setVarNum(num);
+        //int r2 = f2.setVarNum(num);
         // assertSame(r1 == r2, "setVarNum");
         return r1;
     }

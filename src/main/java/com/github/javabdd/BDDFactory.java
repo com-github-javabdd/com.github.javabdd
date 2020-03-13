@@ -223,7 +223,7 @@ public abstract class BDDFactory {
     public BDD buildCube(int value, List/*<BDD>*/ variables) {
         BDD result = universe();
         Iterator i = variables.iterator();
-        int z = 0;
+        //int z = 0;
         while (i.hasNext()) {
             BDD var = (BDD) i.next();
             if ((value & 0x1) != 0)
@@ -231,7 +231,7 @@ public abstract class BDDFactory {
             else
                 var = var.not();
             result.andWith(var);
-            ++z;
+            //++z;
             value >>= 1;
         }
         return result;
