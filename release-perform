@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+if [[ ! -f release.properties ]]; then
+    echo "Need to prepare release first."
+    exit 1
+fi
+mvn release:perform
+
