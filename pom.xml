@@ -10,6 +10,13 @@
     <name>com.github.javabdd</name>
     <url>https://github.com/com-github-javabdd/com.github.javabdd</url>
 
+    <licenses>
+        <license>
+            <name>LGPL-2.0-or-later</name>
+            <url>https://spdx.org/licenses/LGPL-2.0-or-later.html</url>
+        </license>
+    </licenses>
+
     <properties>
         <project.build.sourceEncoding>
             UTF-8
