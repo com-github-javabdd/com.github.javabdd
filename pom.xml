@@ -76,7 +76,7 @@
                         <id>attach-sources</id>
                         <goals>
                             <goal>jar</goal>
-                            <goal>jar-no-fork</goal>
+                            <goal>attach-javadoc</goal>
                         </goals>
                     </execution>
                 </executions>
