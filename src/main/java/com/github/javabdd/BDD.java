@@ -14,7 +14,7 @@ import java.math.BigInteger;
 /**
  * <p>Binary Decision Diagrams (BDDs) are used for efficient computation of many
  * common problems. This is done by giving a compact representation and a set of
- * efficient operations on boolean functions f: {0,1}^n --> {0,1}.</p>
+ * efficient operations on boolean functions f: {0,1}^n --&gt; {0,1}.</p>
  * 
  * <p>Use an implementation of BDDFactory to create BDD objects.</p>
  *

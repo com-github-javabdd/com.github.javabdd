@@ -240,7 +240,7 @@ public abstract class BDDFactory {
     /**
      * <p>Build a cube from an array of variables.</p>
      * 
-     * <p>Compare to bdd_ibuildcube./p>
+     * <p>Compare to bdd_ibuildcube.</p>
      */
     public BDD buildCube(int value, int[] variables) {
         BDD result = universe();
@@ -921,7 +921,7 @@ public abstract class BDDFactory {
      * of variable indices and the new variable order is exactly this sequence.
      * The array must contain all the variables defined so far.  If, for
      * instance the current number of variables is 3 and neworder contains
-     * [1; 0; 2] then the new variable order is v1<v0<v2.</p>
+     * [1; 0; 2] then the new variable order is v1 &lt; v0 &lt; v2.</p>
      * 
      * <p>Note that this operation must walk through the node table many times,
      * and therefore it is much more efficient to call this when the node table

@@ -113,7 +113,7 @@ public abstract class BDDVarSet {
      * and the given variable.  This constructs a new set; the current BDDVarSet
      * is not modified.</p>
      * 
-     * @param b  variable to add to set
+     * @param var  variable to add to set
      * @return  a new BDDVarSet that includes the given variable
      */
     public abstract BDDVarSet union(int var);
@@ -131,7 +131,7 @@ public abstract class BDDVarSet {
      * <p>Modifies this BDDVarSet to include the given variable.  This modifies
      * the current set in place.</p>
      * 
-     * @param b  variable to add to set
+     * @param var  variable to add to set
      * @return this
      */
     public abstract BDDVarSet unionWith(int var);
