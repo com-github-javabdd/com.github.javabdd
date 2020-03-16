@@ -128,8 +128,8 @@
         <developerConnection>
             scm:git:git@github.com:dexecutor/dexecutor.git
         </developerConnection>
-        <url>https://github.com/dexecutor/dependent-tasks-executor</url>
-        <tag>1.0.0</tag>
+        <url>https://github.com/com-github-javabdd/com.github.javabdd</url>
+        <tag>HEAD</tag>
     </scm>
 
     <profiles>
