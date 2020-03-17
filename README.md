@@ -33,9 +33,13 @@ It has been modified as follows:
    library, as well as the BuDDy, CUDD, and CAL libraries have been removed.
  * Cleaned up the project setup.
  * Adapted project to allow deployment to Maven Central.
+ 
+Subsequent changes are recorded in the [CHANGES.md](CHANGES.md) file.
 
 ## License
 
 This project inherits the license from the Sourceforge project it is forked
-from, the GNU Library or Lesser General Public License version 2.0 (LGPLv2).
-See the [LICENSE.txt](LICENSE.txt) file.
+from, the GNU Library General Public License v2 (LGPLv2) or later. See the
+[LICENSE.txt](LICENSE.txt) file.
+
+SPDX-License-Identifier: LGPL-2.0-or-later
