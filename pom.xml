@@ -60,6 +60,7 @@
                     <arguments>
                         -Dgpg.passphrase=${gpg.passphrase}
                     </arguments>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
                 </configuration>
                 <dependencies>
                     <dependency>
