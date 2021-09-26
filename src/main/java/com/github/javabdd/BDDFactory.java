@@ -1360,6 +1360,10 @@ public abstract class BDDFactory {
         	measuring = true;
         }
         
+        public void newMeasurement(int newBddNodes) {
+            maxUsedBddNodes = Math.max(newBddNodes, maxUsedBddNodes);
+        }
+        
         public void newMeasurement(int newBddNodes, long newMemory) {
             maxUsedBddNodes = Math.max(newBddNodes, maxUsedBddNodes);
             maxUsedMemory = Math.max(newMemory, maxUsedMemory);
@@ -1374,9 +1378,15 @@ public abstract class BDDFactory {
             sb.append("----------------");
             sb.append(newLine);
             
-            sb.append("Max used memory:  ");
-            sb.append(maxUsedMemory);
-            sb.append(newLine);
+            // 'max memory usages'.
+            // Measuring max memory usages fluctuates over time, tool implementation,
+            // used hardware, etc. Therefore, if one wants to display this information,
+            // he/she should uncomment lines below.
+            //sb.append("Max used memory:  ");
+            //sb.append(maxUsedMemory);
+            //sb.append(newLine);
+            // End of 'max memory usages' comment.
+            
             sb.append("Max used BDD nodes:  ");
             sb.append(maxUsedBddNodes);
             sb.append(newLine);
@@ -1405,8 +1415,8 @@ public abstract class BDDFactory {
      */
     public static class ContinousStats {
     	public boolean measuring = false;
-        public List<Integer> contMemory = new ArrayList<Integer> ();
-        public List<Long> contOperations = new ArrayList<Long> ();
+        public List<Integer> contMemory = new ArrayList<Integer>();
+        public List<Long> contOperations = new ArrayList<Long>();
         
         protected ContinousStats() { }
 
@@ -1420,6 +1430,8 @@ public abstract class BDDFactory {
             sb.append(newLine);
             sb.append("Continuous memory statistics");
             sb.append(newLine);
+            sb.append("Cumulative BDD operations, BDD nodes");
+            sb.append(newLine);
             sb.append("----------------");
             sb.append(newLine);
             
@@ -1431,9 +1443,9 @@ public abstract class BDDFactory {
             }
             
             for (int i = 0; i < contMemory.size(); i++) {
-                sb.append(contMemory.get(i));
-                sb.append(",");
                 sb.append(contOperations.get(i));
+                sb.append(",");
+                sb.append(contMemory.get(i));
                 sb.append(newLine);
             }
            
