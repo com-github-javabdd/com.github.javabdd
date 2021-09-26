@@ -39,15 +39,7 @@ public class JFactory extends BDDFactoryIntImpl {
     
     static final boolean VERIFY_ASSERTIONS = false;
     static final boolean SWAPCOUNT = false;
-    public static final boolean CACHESTATS = true;
     public static final String REVISION = "$Revision: 480 $";
-
-    // MeasureEffort: values below may be adapted
-    // TODO: add option to communicate to JFactory whether it needs to measure stats and which, so no hard coded
-    // options need to be changed manually.
-    public boolean measureEffort_MaxRAM = true;
-    public boolean measureEffort_MaxBDDnodes = true;
-    public boolean measureEffort_TrackContinuous = false; 
     
     public String getVersion() {
         return "JFactory "+REVISION.substring(11, REVISION.length()-2);
@@ -3504,7 +3496,7 @@ public class JFactory extends BDDFactoryIntImpl {
         return root;
     }
 
-    int MeasureEffort_BDDCOUNT() {
+    int bdd_count() {
         for (int r = 0; r < bddrefstacktop; r++)
             bdd_mark(bddrefstack[r]);
 
@@ -3524,16 +3516,20 @@ public class JFactory extends BDDFactoryIntImpl {
 
         return bddnodesize - MeasureEffort_BDD_FREECOUNT;
     }
-
+ 
+    // TODO move max function to maxmemorystats.
+    
     int bdd_delref(int root) {
-    	if (measureEffort_MaxBDDnodes) 
-            maxmemorystats.maxUsedBddNodes = Math.max(MeasureEffort_BDDCOUNT(), maxmemorystats.maxUsedBddNodes);
-        if (measureEffort_MaxRAM) 
+    	if (maxmemorystats.measuring) {
+            maxmemorystats.maxUsedBddNodes = Math.max(bdd_count(), maxmemorystats.maxUsedBddNodes);
             maxmemorystats.maxUsedMemory = Math.max(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(),
                                                     maxmemorystats.maxUsedMemory);
-        if (measureEffort_TrackContinuous) 
-        	continousstats.contMemory.add(MeasureEffort_BDDCOUNT());
+    	}
+    	
+        if (continousstats.measuring) {
+        	continousstats.contMemory.add(bdd_count());
         	continousstats.contOperations.add(cachestats.opMiss);
+        }
         
         if (root == INVALID_BDD)
             bdd_error(BDD_BREAK); /* distinctive */
@@ -5062,15 +5058,10 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     public void done() { 
-    	if (measureEffort_MaxRAM) {
+    	if (maxmemorystats.measuring) {
             maxmemorystats.maxUsedMemory = Math.max(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(), 
                                                     maxmemorystats.maxUsedMemory);
-    		bdd_gbc(); // To make sure new test is accurate.
-    		System.gc(); // To make sure new test is accurate.
-        }
-        
-    	if (measureEffort_MaxBDDnodes) {
-    	    maxmemorystats.maxUsedBddNodes = Math.max(MeasureEffort_BDDCOUNT(), maxmemorystats.maxUsedBddNodes);    		
+    	    maxmemorystats.maxUsedBddNodes = Math.max(bdd_count(), maxmemorystats.maxUsedBddNodes);    		
     		bdd_gbc(); // To make sure new test is accurate.
     		System.gc(); // To make sure new test is accurate.
     	}

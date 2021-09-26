@@ -1263,6 +1263,10 @@ public abstract class BDDFactory {
             this.swapCount = that.swapCount;
         }
         
+        public void enableMeasurements() {
+        	CACHESTATS = true;
+        }
+        
         /* (non-Javadoc)
          * @see java.lang.Object#toString()
          */
@@ -1320,6 +1324,11 @@ public abstract class BDDFactory {
             return sb.toString();
         }
     }
+    
+    /**
+     * Whether to measure cache statistics.
+     */
+    public static boolean CACHESTATS;
 
     /**
      * Singleton object for cache statistics.
@@ -1341,10 +1350,15 @@ public abstract class BDDFactory {
      * @author mgoorden
      */
     public static class MaxMemoryStats {
+    	public boolean measuring = false;
         public long maxUsedMemory;
         public int maxUsedBddNodes;
         
         protected MaxMemoryStats() { }
+        
+        public void enableMeasurments() {
+        	measuring = true;
+        }
         
         public String toString() {
             StringBuffer sb = new StringBuffer();
@@ -1385,10 +1399,15 @@ public abstract class BDDFactory {
      * @author mgoorden
      */
     public static class ContinousStats {
+    	public boolean measuring = false;
         public List<Integer> contMemory = new ArrayList<Integer> ();
         public List<Long> contOperations = new ArrayList<Long> ();
         
         protected ContinousStats() { }
+
+        public void enableMeasurments() {
+        	measuring = true;
+        }
         
         public String toString() {
             StringBuffer sb = new StringBuffer();
