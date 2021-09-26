@@ -3524,14 +3524,14 @@ public class JFactory extends BDDFactoryIntImpl {
             // 'max memory usages'.
             // Measuring max memory usages fluctuates over time, tool implementation,
             // used hardware, etc. Therefore, if one wants to collect this information,
-            // he/she should uncomment lines below.
+            // he/she should uncomment lines below and in BDDFactory.java.
             //long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
             //maxmemorystats.newMeasurement(bdd_count(), memory);
             // End of 'max memory usages' comment.
     	}
     	
         if (continousstats.measuring) {
-        	continousstats.contMemory.add(bdd_count());
+        	continousstats.contNodes.add(bdd_count());
         	continousstats.contOperations.add(cachestats.opMiss);
         }
         
@@ -5068,7 +5068,7 @@ public class JFactory extends BDDFactoryIntImpl {
             // 'max memory usages'.
             // Measuring max memory usages fluctuates over time, tool implementation,
             // used hardware, etc. Therefore, if one wants to collect this information,
-            // he/she should uncomment lines below.
+            // he/she should uncomment lines below and in BDDFactory.java.
             //long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
             //maxmemorystats.newMeasurement(bdd_count(), memory);
             // End of 'max memory usages' comment.

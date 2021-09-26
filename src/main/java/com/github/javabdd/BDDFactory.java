@@ -1369,29 +1369,18 @@ public abstract class BDDFactory {
             maxUsedMemory = Math.max(newMemory, maxUsedMemory);
         }
         
-        public String toString() {
-            StringBuffer sb = new StringBuffer();
-            String newLine = getProperty("line.separator", "\n");
-            sb.append(newLine);
-            sb.append("Max memory statistics");
-            sb.append(newLine);
-            sb.append("----------------");
-            sb.append(newLine);
-            
-            // 'max memory usages'.
-            // Measuring max memory usages fluctuates over time, tool implementation,
-            // used hardware, etc. Therefore, if one wants to display this information,
-            // he/she should uncomment lines below.
-            //sb.append("Max used memory:  ");
-            //sb.append(maxUsedMemory);
-            //sb.append(newLine);
-            // End of 'max memory usages' comment.
-            
-            sb.append("Max used BDD nodes:  ");
-            sb.append(maxUsedBddNodes);
-            sb.append(newLine);
-            return sb.toString();
+        public int getMaxNodes() {
+        	return maxUsedBddNodes;
         }
+        
+        // 'max memory usages'.
+        // Measuring max memory usages fluctuates over time, tool implementation,
+        // used hardware, etc. Therefore, if one wants to collect this information,
+        // he/she should uncomment lines below and in JFactory.java.
+        //public long getMaxUsedMemory() {
+        //	return maxUsedMemory;
+        //}
+        // End of 'max memory usages' comment.
     }
     
     /**
@@ -1415,7 +1404,7 @@ public abstract class BDDFactory {
      */
     public static class ContinousStats {
     	public boolean measuring = false;
-        public List<Integer> contMemory = new ArrayList<Integer>();
+        public List<Integer> contNodes = new ArrayList<Integer>();
         public List<Long> contOperations = new ArrayList<Long>();
         
         protected ContinousStats() { }
@@ -1424,32 +1413,18 @@ public abstract class BDDFactory {
         	measuring = true;
         }
         
-        public String toString() {
-            StringBuffer sb = new StringBuffer();
-            String newLine = getProperty("line.separator", "\n");
-            sb.append(newLine);
-            sb.append("Continuous memory statistics");
-            sb.append(newLine);
-            sb.append("Cumulative BDD operations, BDD nodes");
-            sb.append(newLine);
-            sb.append("----------------");
-            sb.append(newLine);
-            
-            if (contMemory.size() != contOperations.size()) {
-                sb.append("Incorrect data collection.");
-                sb.append(newLine);
-                
-                return sb.toString();
+        public List<Integer> getNodesStats() {
+        	if (contNodes.size() != contOperations.size()) {
+            	throw new AssertionError("Incorrect data collection.");
             }
-            
-            for (int i = 0; i < contMemory.size(); i++) {
-                sb.append(contOperations.get(i));
-                sb.append(",");
-                sb.append(contMemory.get(i));
-                sb.append(newLine);
+        	return contNodes;
+        }
+        
+        public List<Long> getOperationsStats() {
+        	if (contNodes.size() != contOperations.size()) {
+            	throw new AssertionError("Incorrect data collection.");
             }
-           
-            return sb.toString();
+        	return contOperations;
         }
     }
     
