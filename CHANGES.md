@@ -4,7 +4,6 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 * Added CHANGES.md to track changes between releases.
-* Added the collection of performance statistics.
 
 ## [1.0.1] - 2020-03-17
 * Updated SCM URL for proper Maven Central metadata.
