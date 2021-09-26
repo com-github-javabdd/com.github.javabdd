@@ -3,6 +3,7 @@
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
 package com.github.javabdd;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
@@ -1335,21 +1336,21 @@ public abstract class BDDFactory {
     }
     
     /**
-     * Stores statistics about the memory usage.
+     * Stores statistics about the maximum memory usage.
      * 
      * @author mgoorden
      */
-    public static class MemoryStats {
+    public static class MaxMemoryStats {
         public long maxUsedMemory;
-        public long maxUsedBddNodes;
+        public int maxUsedBddNodes;
         
-        protected MemoryStats() { }
+        protected MaxMemoryStats() { }
         
         public String toString() {
             StringBuffer sb = new StringBuffer();
             String newLine = getProperty("line.separator", "\n");
             sb.append(newLine);
-            sb.append("Memory statistics");
+            sb.append("Max memory statistics");
             sb.append(newLine);
             sb.append("----------------");
             sb.append(newLine);
@@ -1365,17 +1366,69 @@ public abstract class BDDFactory {
     }
     
     /**
-     * Singleton object for memory statistics.
+     * Singleton object for maximum memory statistics.
      */
-    protected MemoryStats memorystats = new MemoryStats();
+    protected MaxMemoryStats maxmemorystats = new MaxMemoryStats();
 
     /**
-     * <p>Return the current memory statistics for this BDD factory.</p>
+     * <p>Return the current maximum memory statistics for this BDD factory.</p>
      *
-     * @return  memory statistics
+     * @return  maximum memory statistics
      */
-    public MemoryStats getMemoryStats() {
-        return memorystats;
+    public MaxMemoryStats getMemoryStats() {
+        return maxmemorystats;
+    }
+    
+    /**
+     * Stores continuously statistics about the memory usage and BDD operations.
+     * 
+     * @author mgoorden
+     */
+    public static class ContinousStats {
+        public List<Integer> contMemory = new ArrayList<Integer> ();
+        public List<Long> contOperations = new ArrayList<Long> ();
+        
+        protected ContinousStats() { }
+        
+        public String toString() {
+            StringBuffer sb = new StringBuffer();
+            String newLine = getProperty("line.separator", "\n");
+            sb.append(newLine);
+            sb.append("Continuous memory statistics");
+            sb.append(newLine);
+            sb.append("----------------");
+            sb.append(newLine);
+            
+            if (contMemory.size() != contOperations.size()) {
+                sb.append("Incorrect data collection.");
+                sb.append(newLine);
+                
+                return sb.toString();
+            }
+            
+            for (int i = 0; i < contMemory.size(); i++) {
+                sb.append(contMemory.get(i));
+                sb.append(",");
+                sb.append(contOperations.get(i));
+                sb.append(newLine);
+            }
+           
+            return sb.toString();
+        }
+    }
+    
+    /**
+     * Singleton object for continuous statistics.
+     */
+    protected ContinousStats continousstats = new ContinousStats();
+    
+    /**
+     * <p>Return the current continuous statistics for this BDD factory.</p>
+     *
+     * @return  continuous statistics
+     */
+    public ContinousStats getContinousStats() {
+        return continousstats;
     }
     
     // TODO: bdd_sizeprobe_hook

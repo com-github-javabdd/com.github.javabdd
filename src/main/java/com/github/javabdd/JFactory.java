@@ -3527,12 +3527,13 @@ public class JFactory extends BDDFactoryIntImpl {
 
     int bdd_delref(int root) {
     	if (measureEffort_MaxBDDnodes) 
-            memorystats.maxUsedBddNodes = Math.max(MeasureEffort_BDDCOUNT(), memorystats.maxUsedBddNodes);
+            maxmemorystats.maxUsedBddNodes = Math.max(MeasureEffort_BDDCOUNT(), maxmemorystats.maxUsedBddNodes);
         if (measureEffort_MaxRAM) 
-            memorystats.maxUsedMemory = Math.max(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(),
-                                                 memorystats.maxUsedMemory);
-        //if (measureEffort_TrackContinuous) 
-        //    OutputProvider.out("opMiss=" + cachestats.opMiss + ":USED_BDD_NODES=" + String.valueOf(MeasureEffort_BDDCOUNT()));
+            maxmemorystats.maxUsedMemory = Math.max(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(),
+                                                    maxmemorystats.maxUsedMemory);
+        if (measureEffort_TrackContinuous) 
+        	continousstats.contMemory.add(MeasureEffort_BDDCOUNT());
+        	continousstats.contOperations.add(cachestats.opMiss);
         
         if (root == INVALID_BDD)
             bdd_error(BDD_BREAK); /* distinctive */
@@ -5062,15 +5063,14 @@ public class JFactory extends BDDFactoryIntImpl {
 
     public void done() { 
     	if (measureEffort_MaxRAM) {
-            
-            memorystats.maxUsedMemory = Math.max(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(), 
-                                                 memorystats.maxUsedMemory);
+            maxmemorystats.maxUsedMemory = Math.max(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(), 
+                                                    maxmemorystats.maxUsedMemory);
     		bdd_gbc(); // To make sure new test is accurate.
     		System.gc(); // To make sure new test is accurate.
         }
         
     	if (measureEffort_MaxBDDnodes) {
-    	    memorystats.maxUsedBddNodes = Math.max(MeasureEffort_BDDCOUNT(), memorystats.maxUsedBddNodes);    		
+    	    maxmemorystats.maxUsedBddNodes = Math.max(MeasureEffort_BDDCOUNT(), maxmemorystats.maxUsedBddNodes);    		
     		bdd_gbc(); // To make sure new test is accurate.
     		System.gc(); // To make sure new test is accurate.
     	}
