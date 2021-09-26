@@ -38,10 +38,16 @@ public class JFactory extends BDDFactoryIntImpl {
     public static boolean FLUSH_CACHE_ON_GC = true;
     
     static final boolean VERIFY_ASSERTIONS = false;
-    static final boolean CACHESTATS = false;
     static final boolean SWAPCOUNT = false;
-
+    public static final boolean CACHESTATS = true;
     public static final String REVISION = "$Revision: 480 $";
+
+    // MeasureEffort: values below may be adapted
+    // TODO: add option to communicate to JFactory whether it needs to measure stats and which, so no hard coded
+    // options need to be changed manually.
+    public boolean measureEffort_MaxRAM = true;
+    public boolean measureEffort_MaxBDDnodes = true;
+    public boolean measureEffort_TrackContinuous = false; 
     
     public String getVersion() {
         return "JFactory "+REVISION.substring(11, REVISION.length()-2);
@@ -203,7 +209,6 @@ public class JFactory extends BDDFactoryIntImpl {
     public int setCacheSize(int v) { return bdd_setcachesize(v); }
     public boolean isZDD() { return ZDD; }
     public boolean isInitialized() { return bddrunning; }
-    public void done() { super.done(); bdd_done(); }
     public void setError(int code) { bdderrorcond = code; }
     public void clearError() { bdderrorcond = 0; }
     public int setMaxNodeNum(int size) { return bdd_setmaxnodenum(size); }
@@ -975,6 +980,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int not_rec(int r) {
         BddCacheDataI entry;
         int res;
+        
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         if (ISCONST(r))
             return 1 - r;
@@ -1034,6 +1042,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int ite_rec(int f, int g, int h) {
         BddCacheDataI entry;
         int res;
+
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         if (ISONE(f))
             return g;
@@ -1112,6 +1123,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int zite_rec(int f, int g, int h) {
         BddCacheDataI entry;
         int res;
+        
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         if (ISONE(f))
             return g;
@@ -1225,6 +1239,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int replace_rec(int r) {
         BddCacheDataI entry;
         int res;
+
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         if (ISCONST(r) || LEVEL(r) > replacelast)
             return r;
@@ -1438,6 +1455,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int apply_rec(int l, int r) {
         BddCacheDataI entry;
         int res;
+        
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         if (VERIFY_ASSERTIONS) _assert(!ZDD);
         if (VERIFY_ASSERTIONS) _assert(applyop != bddop_and && applyop != bddop_or);
@@ -1511,6 +1531,9 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
+        if (CACHESTATS)
+            cachestats.opAccess++;
+
         if (l == r)
             return l;
         if (ISZERO(l) || ISZERO(r))
@@ -1558,6 +1581,9 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
+        if (CACHESTATS)
+            cachestats.opAccess++;
+
         if (l == r)
             return l;
         if (ISZERO(l) || ISZERO(r))
@@ -1595,6 +1621,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int zrelprod_rec(int l, int r, int lev) {
         BddCacheDataI entry;
         int res;
+
+        if (CACHESTATS)
+        	cachestats.opAccess++;
 
         if (l == r)
             return zquant_rec(l, lev);
@@ -1672,6 +1701,9 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
+        if (CACHESTATS)
+            cachestats.opAccess++;
+
         if (l == r)
             return l;
         if (ISONE(l) || ISONE(r))
@@ -1717,6 +1749,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int zor_rec(int l, int r) {
         BddCacheDataI entry;
         int res;
+        
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         if (l == r)
             return l;
@@ -1763,6 +1798,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int zdiff_rec(int l, int r) {
         BddCacheDataI entry;
         int res;
+        
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         if (ISZERO(l) /*|| ISONE(r)*/ || l == r)
             return 0;
@@ -1803,6 +1841,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int relprod_rec(int l, int r) {
         BddCacheDataI entry;
         int res;
+        
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         if (VERIFY_ASSERTIONS) _assert(!ZDD);
         
@@ -1981,6 +2022,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int appquant_rec(int l, int r) {
         BddCacheDataI entry;
         int res;
+        
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         if (VERIFY_ASSERTIONS) _assert(appexop != bddop_and);
         
@@ -2073,6 +2117,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int appuni_rec(int l, int r, int var) {
         BddCacheDataI entry;
         int res;
+        
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         int LEVEL_l, LEVEL_r, LEVEL_var;
         LEVEL_l = LEVEL(l);
@@ -2161,6 +2208,9 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
         int LEVEL_r, LEVEL_q;
+        
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         LEVEL_r = LEVEL(r);
         LEVEL_q = LEVEL(q);
@@ -2204,6 +2254,9 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
+        if (CACHESTATS)
+            cachestats.opAccess++;
+
         if (r < 2 || LEVEL(r) > quantlast)
             return r;
 
@@ -2242,6 +2295,10 @@ public class JFactory extends BDDFactoryIntImpl {
     int zquant_rec(int r, int lev) {
         BddCacheDataI entry;
         int res;
+        
+        if (CACHESTATS)
+            cachestats.opAccess++;
+
 
         for (;;) {
             if (lev > quantlast)
@@ -2336,6 +2393,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int constrain_rec(int f, int c) {
         BddCacheDataI entry;
         int res;
+
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         if (ISONE(c))
             return f;
@@ -2434,6 +2494,9 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
+        if (CACHESTATS)
+            cachestats.opAccess++;
+
         if (LEVEL(f) > composelevel)
             return f;
 
@@ -2512,6 +2575,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int veccompose_rec(int f) {
         BddCacheDataI entry;
         int res;
+
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         if (LEVEL(f) > replacelast)
             return f;
@@ -2694,6 +2760,9 @@ public class JFactory extends BDDFactoryIntImpl {
     int restrict_rec(int r) {
         BddCacheDataI entry;
         int res;
+        
+        if (CACHESTATS)
+            cachestats.opAccess++;
 
         if (ISCONST(r) || LEVEL(r) > quantlast)
             return r;
@@ -2763,6 +2832,9 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
+        if (CACHESTATS)
+            cachestats.opAccess++;
+        
         if (ISONE(d) || ISCONST(f))
             return f;
         if (d == f)
@@ -3432,7 +3504,36 @@ public class JFactory extends BDDFactoryIntImpl {
         return root;
     }
 
+    int MeasureEffort_BDDCOUNT() {
+        for (int r = 0; r < bddrefstacktop; r++)
+            bdd_mark(bddrefstack[r]);
+
+        for (int n = 0; n < bddnodesize; n++) {
+            if (HASREF(n)) bdd_mark(n);
+        }
+
+        int MeasureEffort_BDD_FREECOUNT = 0;
+
+        for (int n = bddnodesize - 1; n >= 2; n--) {
+            if (MARKED(n) && LOW(n) != INVALID_BDD) {
+                  UNMARK(n);
+            } else {
+                MeasureEffort_BDD_FREECOUNT++;
+            }
+        }
+
+        return bddnodesize - MeasureEffort_BDD_FREECOUNT;
+    }
+
     int bdd_delref(int root) {
+    	if (measureEffort_MaxBDDnodes) 
+            memorystats.maxUsedBddNodes = Math.max(MeasureEffort_BDDCOUNT(), memorystats.maxUsedBddNodes);
+        if (measureEffort_MaxRAM) 
+            memorystats.maxUsedMemory = Math.max(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(),
+                                                 memorystats.maxUsedMemory);
+        //if (measureEffort_TrackContinuous) 
+        //    OutputProvider.out("opMiss=" + cachestats.opMiss + ":USED_BDD_NODES=" + String.valueOf(MeasureEffort_BDDCOUNT()));
+        
         if (root == INVALID_BDD)
             bdd_error(BDD_BREAK); /* distinctive */
         if (root < 2 || !bddrunning)
@@ -4959,6 +5060,26 @@ public class JFactory extends BDDFactoryIntImpl {
         return (100 * (usednum_before - usednum_after)) / usednum_before;
     }
 
+    public void done() { 
+    	if (measureEffort_MaxRAM) {
+            
+            memorystats.maxUsedMemory = Math.max(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(), 
+                                                 memorystats.maxUsedMemory);
+    		bdd_gbc(); // To make sure new test is accurate.
+    		System.gc(); // To make sure new test is accurate.
+        }
+        
+    	if (measureEffort_MaxBDDnodes) {
+    	    memorystats.maxUsedBddNodes = Math.max(MeasureEffort_BDDCOUNT(), memorystats.maxUsedBddNodes);    		
+    		bdd_gbc(); // To make sure new test is accurate.
+    		System.gc(); // To make sure new test is accurate.
+    	}
+    	
+    	super.done(); 
+    	bdd_done(); 
+    }
+    
+    
     void bdd_done() {
         /*sanitycheck(); FIXME */
         //bdd_fdd_done();

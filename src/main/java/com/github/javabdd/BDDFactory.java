@@ -1235,16 +1235,19 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
+     * @author sthuijsman
+     * @author mgoorden
      * @version $Id: BDDFactory.java 480 2010-11-16 01:29:49Z robimalik $
      */
     public static class CacheStats {
-        public int uniqueAccess;
-        public int uniqueChain;
-        public int uniqueHit;
-        public int uniqueMiss;
-        public int opHit;
-        public int opMiss;
-        public int swapCount;
+        public long uniqueAccess;
+        public long uniqueChain;
+        public long uniqueHit;
+        public long uniqueMiss;
+        public long opAccess;
+        public long opHit;
+        public long opMiss;
+        public long swapCount;
         
         protected CacheStats() { }
         
@@ -1253,6 +1256,7 @@ public abstract class BDDFactory {
             this.uniqueChain = that.uniqueChain;
             this.uniqueHit = that.uniqueHit;
             this.uniqueMiss = that.uniqueMiss;
+            this.opAccess = that.opAccess;
             this.opHit = that.opHit;
             this.opMiss = that.opMiss;
             this.swapCount = that.swapCount;
@@ -1294,6 +1298,9 @@ public abstract class BDDFactory {
             else
                 sb.append((float)0);
             sb.append(newLine);
+            sb.append("Operator Access:  ");
+            sb.append(opAccess);
+            sb.append(newLine);
             sb.append("Operator Hits:  ");
             sb.append(opHit);
             sb.append(newLine);
@@ -1325,6 +1332,50 @@ public abstract class BDDFactory {
      */
     public CacheStats getCacheStats() {
         return cachestats;
+    }
+    
+    /**
+     * Stores statistics about the memory usage.
+     * 
+     * @author mgoorden
+     */
+    public static class MemoryStats {
+        public long maxUsedMemory;
+        public long maxUsedBddNodes;
+        
+        protected MemoryStats() { }
+        
+        public String toString() {
+            StringBuffer sb = new StringBuffer();
+            String newLine = getProperty("line.separator", "\n");
+            sb.append(newLine);
+            sb.append("Memory statistics");
+            sb.append(newLine);
+            sb.append("----------------");
+            sb.append(newLine);
+            
+            sb.append("Max used memory:  ");
+            sb.append(maxUsedMemory);
+            sb.append(newLine);
+            sb.append("Max used BDD nodes:  ");
+            sb.append(maxUsedBddNodes);
+            sb.append(newLine);
+            return sb.toString();
+        }
+    }
+    
+    /**
+     * Singleton object for memory statistics.
+     */
+    protected MemoryStats memorystats = new MemoryStats();
+
+    /**
+     * <p>Return the current memory statistics for this BDD factory.</p>
+     *
+     * @return  memory statistics
+     */
+    public MemoryStats getMemoryStats() {
+        return memorystats;
     }
     
     // TODO: bdd_sizeprobe_hook
