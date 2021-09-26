@@ -1360,6 +1360,11 @@ public abstract class BDDFactory {
         	measuring = true;
         }
         
+        public void newMeasurement(int newBddNodes, long newMemory) {
+            maxUsedBddNodes = Math.max(newBddNodes, maxUsedBddNodes);
+            maxUsedMemory = Math.max(newMemory, maxUsedMemory);
+        }
+        
         public String toString() {
             StringBuffer sb = new StringBuffer();
             String newLine = getProperty("line.separator", "\n");

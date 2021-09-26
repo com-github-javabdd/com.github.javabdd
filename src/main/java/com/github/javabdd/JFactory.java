@@ -3517,13 +3517,10 @@ public class JFactory extends BDDFactoryIntImpl {
         return bddnodesize - MeasureEffort_BDD_FREECOUNT;
     }
  
-    // TODO move max function to maxmemorystats.
-    
     int bdd_delref(int root) {
     	if (maxmemorystats.measuring) {
-            maxmemorystats.maxUsedBddNodes = Math.max(bdd_count(), maxmemorystats.maxUsedBddNodes);
-            maxmemorystats.maxUsedMemory = Math.max(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(),
-                                                    maxmemorystats.maxUsedMemory);
+    		long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+            maxmemorystats.newMeasurement(bdd_count(), memory);
     	}
     	
         if (continousstats.measuring) {
@@ -5059,9 +5056,8 @@ public class JFactory extends BDDFactoryIntImpl {
 
     public void done() { 
     	if (maxmemorystats.measuring) {
-            maxmemorystats.maxUsedMemory = Math.max(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(), 
-                                                    maxmemorystats.maxUsedMemory);
-    	    maxmemorystats.maxUsedBddNodes = Math.max(bdd_count(), maxmemorystats.maxUsedBddNodes);    		
+    		long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+            maxmemorystats.newMeasurement(bdd_count(), memory);    		
     		bdd_gbc(); // To make sure new test is accurate.
     		System.gc(); // To make sure new test is accurate.
     	}
