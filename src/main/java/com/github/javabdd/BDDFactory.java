@@ -1350,22 +1350,22 @@ public abstract class BDDFactory {
      * @author mgoorden
      */
     public static class MaxMemoryStats {
-    	public boolean measuring = false;
-        public long maxUsedMemory;
-        public int maxUsedBddNodes;
+        protected boolean enabled = false;
+        protected long maxUsedMemory;
+        protected int maxUsedBddNodes;
         
         protected MaxMemoryStats() { }
         
-        public void enableMeasurments() {
-        	measuring = true;
+        public void enableMeasurements() {
+        	enabled = true;
         }
         
-        public void newMeasurement(int newBddNodes) {
-            maxUsedBddNodes = Math.max(newBddNodes, maxUsedBddNodes);
+        public void newMeasurement(int newUsedBddNodes) {
+            maxUsedBddNodes = Math.max(newUsedBddNodes, maxUsedBddNodes);
         }
         
-        public void newMeasurement(int newBddNodes, long newMemory) {
-            maxUsedBddNodes = Math.max(newBddNodes, maxUsedBddNodes);
+        public void newMeasurement(int newUsedBddNodes, long newMemory) {
+            maxUsedBddNodes = Math.max(newUsedBddNodes, maxUsedBddNodes);
             maxUsedMemory = Math.max(newMemory, maxUsedMemory);
         }
         
@@ -1402,44 +1402,44 @@ public abstract class BDDFactory {
      * 
      * @author mgoorden
      */
-    public static class ContinousStats {
-    	public boolean measuring = false;
-        public List<Integer> contNodes = new ArrayList<Integer>();
-        public List<Long> contOperations = new ArrayList<Long>();
+    public static class ContinuousStats {
+        protected boolean enabled = false;
+        protected List<Integer> contUsedBddNodes = new ArrayList<Integer>();
+        protected List<Long> contUsedOperations = new ArrayList<Long>();
         
-        protected ContinousStats() { }
+        protected ContinuousStats() { }
 
-        public void enableMeasurments() {
-        	measuring = true;
+        public void enableMeasurements() {
+            enabled = true;
         }
         
         public List<Integer> getNodesStats() {
-        	if (contNodes.size() != contOperations.size()) {
-            	throw new AssertionError("Incorrect data collection.");
+            if (contUsedBddNodes.size() != contUsedOperations.size()) {
+                throw new AssertionError("Incorrect data collection.");
             }
-        	return contNodes;
+            return contUsedBddNodes;
         }
         
         public List<Long> getOperationsStats() {
-        	if (contNodes.size() != contOperations.size()) {
-            	throw new AssertionError("Incorrect data collection.");
+            if (contUsedBddNodes.size() != contUsedOperations.size()) {
+                throw new AssertionError("Incorrect data collection.");
             }
-        	return contOperations;
+            return contUsedOperations;
         }
     }
     
     /**
      * Singleton object for continuous statistics.
      */
-    protected ContinousStats continousstats = new ContinousStats();
+    protected ContinuousStats continuousstats = new ContinuousStats();
     
     /**
      * <p>Return the current continuous statistics for this BDD factory.</p>
      *
      * @return  continuous statistics
      */
-    public ContinousStats getContinousStats() {
-        return continousstats;
+    public ContinuousStats getContinousStats() {
+        return continuousstats;
     }
     
     // TODO: bdd_sizeprobe_hook
