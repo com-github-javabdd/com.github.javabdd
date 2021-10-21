@@ -3498,6 +3498,8 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     int bdd_used_nodes_count() {
+        // Mark all used bdd nodes. 
+        // bdd_mark(n) also marks the children of n.
         for (int r = 0; r < bddrefstacktop; r++)
             bdd_mark(bddrefstack[r]);
 
@@ -3505,17 +3507,18 @@ public class JFactory extends BDDFactoryIntImpl {
             if (HASREF(n)) bdd_mark(n);
         }
 
-        int freeBddCount = 0;
-
+        // Now go through all nodes and count the number of marked ones.
+        // Initial value is 2, as we always have the zero and one terminal nodes.
+        int bddCount = 2;
+        
         for (int n = bddnodesize - 1; n >= 2; n--) {
             if (MARKED(n) && LOW(n) != INVALID_BDD) {
-                  UNMARK(n);
-            } else {
-                freeBddCount++;
+                UNMARK(n);
+                bddCount++;
             }
         }
 
-        return bddnodesize - freeBddCount;
+        return bddCount;
     }
  
     int bdd_delref(int root) {
@@ -5078,6 +5081,7 @@ public class JFactory extends BDDFactoryIntImpl {
         if (maxmemorystats.enabled) {
             long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
             maxmemorystats.newMeasurement(memory);
+            System.gc(); // To make sure subsequent memory measurements are accurate.
         }
             
         if (continuousstats.enabled) {
@@ -5085,9 +5089,6 @@ public class JFactory extends BDDFactoryIntImpl {
             continuousstats.contUsedBddNodes.add(usedBddNodes);
             continuousstats.contUsedOperations.add(cachestats.opMiss);
         }
-
-        bdd_gbc(); // To make sure new test is accurate.
-        System.gc(); // To make sure new test is accurate.
         
         super.done(); 
         bdd_done(); 
