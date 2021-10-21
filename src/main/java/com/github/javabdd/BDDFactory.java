@@ -1345,16 +1345,15 @@ public abstract class BDDFactory {
     }
     
     /**
-     * Stores statistics about the maximum memory usage.
+     * Stores statistics about the maximum BDD nodes usage.
      * 
      * @author mgoorden
      */
-    public static class MaxMemoryStats {
+    public static class MaxUsedBddNodesStats {
         protected boolean enabled = false;
-        protected long maxUsedMemory;
         protected int maxUsedBddNodes;
         
-        protected MaxMemoryStats() { }
+        protected MaxUsedBddNodesStats() { }
         
         public void enableMeasurements() {
         	enabled = true;
@@ -1364,23 +1363,47 @@ public abstract class BDDFactory {
             maxUsedBddNodes = Math.max(newUsedBddNodes, maxUsedBddNodes);
         }
         
-        public void newMeasurement(int newUsedBddNodes, long newMemory) {
-            maxUsedBddNodes = Math.max(newUsedBddNodes, maxUsedBddNodes);
-            maxUsedMemory = Math.max(newMemory, maxUsedMemory);
-        }
-        
         public int getMaxNodes() {
         	return maxUsedBddNodes;
         }
+    }
+    
+    /**
+     * Singleton object for maximum BDD nodes statistics.
+     */
+    protected MaxUsedBddNodesStats maxbddnodesstats = new MaxUsedBddNodesStats();
+
+    /**
+     * <p>Return the current maximum BDD nodes statistics for this BDD factory.</p>
+     *
+     * @return  maximum memory statistics
+     */
+    public MaxUsedBddNodesStats getMaxBddNodesStats() {
+        return maxbddnodesstats;
+    }
+    
+    /**
+     * Stores statistics about the maximum memory usage.
+     * 
+     * @author mgoorden
+     */
+    public static class MaxMemoryStats {
+        protected boolean enabled = false;
+        protected long maxUsedMemory;
         
-        // 'max memory usages'.
-        // Measuring max memory usages fluctuates over time, tool implementation,
-        // used hardware, etc. Therefore, if one wants to collect this information,
-        // he/she should uncomment lines below and in JFactory.java.
-        //public long getMaxUsedMemory() {
-        //	return maxUsedMemory;
-        //}
-        // End of 'max memory usages' comment.
+        protected MaxMemoryStats() { }
+        
+        public void enableMeasurements() {
+            enabled = true;
+        }
+        
+        public void newMeasurement(long newMemory) {
+            maxUsedMemory = Math.max(newMemory, maxUsedMemory);
+        }
+        
+        public long getMaxUsedMemory() {
+            return maxUsedMemory;
+        }
     }
     
     /**
@@ -1390,10 +1413,13 @@ public abstract class BDDFactory {
 
     /**
      * <p>Return the current maximum memory statistics for this BDD factory.</p>
+     * 
+     * <p>Note that measuring max memory usages fluctuates over time, tool 
+     * implementation, used hardware, etc.</p>
      *
      * @return  maximum memory statistics
      */
-    public MaxMemoryStats getMemoryStats() {
+    public MaxMemoryStats getMaxMemoryStats() {
         return maxmemorystats;
     }
     

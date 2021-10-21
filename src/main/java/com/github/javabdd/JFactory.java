@@ -3523,17 +3523,14 @@ public class JFactory extends BDDFactoryIntImpl {
         // -1 indicates that it has not yet been calculated.
         int usedBddNodes = -1;
         
-        if (maxmemorystats.enabled) {
+        if (maxbddnodesstats.enabled) {
             if (usedBddNodes == -1) usedBddNodes = bdd_used_nodes_count();
-            maxmemorystats.newMeasurement(usedBddNodes);
-            
-            // 'max memory usages'.
-            // Measuring max memory usages fluctuates over time, tool implementation,
-            // used hardware, etc. Therefore, if one wants to collect this information,
-            // he/she should uncomment lines below and in BDDFactory.java.
-            //long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-            //maxmemorystats.newMeasurement(bdd_count(), memory);
-            // End of 'max memory usages' comment.
+            maxbddnodesstats.newMeasurement(usedBddNodes);
+        }
+        
+        if (maxmemorystats.enabled) {
+            long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+            maxmemorystats.newMeasurement(memory);
         }
         
         if (continuousstats.enabled) {
@@ -5069,20 +5066,28 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     public void done() { 
-        if (maxmemorystats.enabled) {
-            maxmemorystats.newMeasurement(bdd_used_nodes_count());
-            
-            // 'max memory usages'.
-            // Measuring max memory usages fluctuates over time, tool implementation,
-            // used hardware, etc. Therefore, if one wants to collect this information,
-            // he/she should uncomment lines below and in BDDFactory.java.
-            //long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-            //maxmemorystats.newMeasurement(bdd_count(), memory);
-            // End of 'max memory usages' comment.
-            
-            bdd_gbc(); // To make sure new test is accurate.
-            System.gc(); // To make sure new test is accurate.
+        // The number of currently used BDD nodes, between 0 and bddnodesize.
+        // -1 indicates that it has not yet been calculated.
+        int usedBddNodes = -1;
+        
+        if (maxbddnodesstats.enabled) {
+            if (usedBddNodes == -1) usedBddNodes = bdd_used_nodes_count();
+            maxbddnodesstats.newMeasurement(usedBddNodes);
         }
+        
+        if (maxmemorystats.enabled) {
+            long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+            maxmemorystats.newMeasurement(memory);
+        }
+            
+        if (continuousstats.enabled) {
+            if (usedBddNodes == -1) usedBddNodes = bdd_used_nodes_count();
+            continuousstats.contUsedBddNodes.add(usedBddNodes);
+            continuousstats.contUsedOperations.add(cachestats.opMiss);
+        }
+
+        bdd_gbc(); // To make sure new test is accurate.
+        System.gc(); // To make sure new test is accurate.
         
         super.done(); 
         bdd_done(); 
