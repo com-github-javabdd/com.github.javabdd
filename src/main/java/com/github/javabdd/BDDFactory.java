@@ -1241,6 +1241,7 @@ public abstract class BDDFactory {
      * @version $Id: BDDFactory.java 480 2010-11-16 01:29:49Z robimalik $
      */
     public static class CacheStats {
+        protected boolean enabled = false;
         public long uniqueAccess;
         public long uniqueChain;
         public long uniqueHit;
@@ -1264,7 +1265,7 @@ public abstract class BDDFactory {
         }
         
         public void enableMeasurements() {
-        	CACHESTATS = true;
+        	enabled = true;
         }
         
         /* (non-Javadoc)
@@ -1324,16 +1325,11 @@ public abstract class BDDFactory {
             return sb.toString();
         }
     }
-    
-    /**
-     * Whether to measure cache statistics.
-     */
-    public static boolean CACHESTATS;
 
     /**
      * Singleton object for cache statistics.
      */
-    protected CacheStats cachestats = new CacheStats();
+    protected static CacheStats cachestats = new CacheStats();
     
     /**
      * <p>Return the current cache statistics for this BDD factory.</p>

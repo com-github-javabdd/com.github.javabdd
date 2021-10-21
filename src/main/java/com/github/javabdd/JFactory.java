@@ -54,7 +54,7 @@ public class JFactory extends BDDFactoryIntImpl {
     public static BDDFactory init(int nodenum, int cachesize) {
         BDDFactory f = new JFactory();
         f.initialize(nodenum, cachesize);
-        if (CACHESTATS) addShutdownHook(f);
+        if (cachestats.enabled) addShutdownHook(f);
         return f;
     }
 
@@ -974,7 +974,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (ISCONST(r))
@@ -983,11 +983,11 @@ public class JFactory extends BDDFactoryIntImpl {
         entry = BddCache_lookupI(applycache, NOTHASH(r));
 
         if (entry.a == r && entry.c == bddop_not) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         PUSHREF(not_rec(LOW(r)));
@@ -1036,7 +1036,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (ISONE(f))
@@ -1052,11 +1052,11 @@ public class JFactory extends BDDFactoryIntImpl {
 
         entry = BddCache_lookupI(itecache, ITEHASH(f, g, h));
         if (entry.a == f && entry.b == g && entry.c == h) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         if (LEVEL(f) == LEVEL(g)) {
@@ -1117,7 +1117,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (ISONE(f))
@@ -1137,11 +1137,11 @@ public class JFactory extends BDDFactoryIntImpl {
 
         entry = BddCache_lookupI(itecache, ITEHASH(f, g, h));
         if (entry.a == f && entry.b == g && entry.c == h) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         if (LEVEL(f) == LEVEL(g)) {
@@ -1233,7 +1233,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (ISCONST(r) || LEVEL(r) > replacelast)
@@ -1241,11 +1241,11 @@ public class JFactory extends BDDFactoryIntImpl {
 
         entry = BddCache_lookupI(replacecache, REPLACEHASH(r));
         if (entry.a == r && entry.c == replaceid) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         PUSHREF(replace_rec(LOW(r)));
@@ -1449,7 +1449,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (VERIFY_ASSERTIONS) _assert(!ZDD);
@@ -1488,11 +1488,11 @@ public class JFactory extends BDDFactoryIntImpl {
             entry = BddCache_lookupI(applycache, APPLYHASH(l, r, applyop));
 
             if (entry.a == l && entry.b == r && entry.c == applyop) {
-                if (CACHESTATS)
+                if (cachestats.enabled)
                     cachestats.opHit++;
                 return entry.res;
             }
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opMiss++;
 
             if (LEVEL(l) == LEVEL(r)) {
@@ -1524,7 +1524,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (l == r)
@@ -1539,11 +1539,11 @@ public class JFactory extends BDDFactoryIntImpl {
         entry = BddCache_lookupI(applycache, APPLYHASH(l, r, bddop_and));
 
         if (entry.a == l && entry.b == r && entry.c == bddop_and) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         if (LEVEL(l) == LEVEL(r)) {
@@ -1574,7 +1574,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (l == r)
@@ -1590,11 +1590,11 @@ public class JFactory extends BDDFactoryIntImpl {
         entry = BddCache_lookupI(applycache, APPLYHASH(l, r, bddop_and));
 
         if (entry.a == l && entry.b == r && entry.c == bddop_and) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         PUSHREF(zand_rec(LOW(l), LOW(r)));
@@ -1615,7 +1615,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (l == r)
@@ -1647,11 +1647,11 @@ public class JFactory extends BDDFactoryIntImpl {
         
         entry = BddCache_lookupI(appexcache, APPEXHASH(l, r, bddop_and));
         if (entry.a == l && entry.b == r && entry.c == appexid) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
         
         if (LEVEL_l == LEVEL_r) {
@@ -1694,7 +1694,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (l == r)
@@ -1708,11 +1708,11 @@ public class JFactory extends BDDFactoryIntImpl {
         entry = BddCache_lookupI(applycache, APPLYHASH(l, r, bddop_or));
 
         if (entry.a == l && entry.b == r && entry.c == bddop_or) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         if (LEVEL(l) == LEVEL(r)) {
@@ -1743,7 +1743,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (l == r)
@@ -1757,11 +1757,11 @@ public class JFactory extends BDDFactoryIntImpl {
         entry = BddCache_lookupI(applycache, APPLYHASH(l, r, bddop_or));
 
         if (entry.a == l && entry.b == r && entry.c == bddop_or) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         if (LEVEL(l) == LEVEL(r)) {
@@ -1792,7 +1792,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (ISZERO(l) /*|| ISONE(r)*/ || l == r)
@@ -1805,11 +1805,11 @@ public class JFactory extends BDDFactoryIntImpl {
         entry = BddCache_lookupI(applycache, APPLYHASH(l, r, bddop_diff));
 
         if (entry.a == l && entry.b == r && entry.c == bddop_diff) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         if (LEVEL(l) == LEVEL(r)) {
@@ -1835,7 +1835,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (VERIFY_ASSERTIONS) _assert(!ZDD);
@@ -1858,11 +1858,11 @@ public class JFactory extends BDDFactoryIntImpl {
         } else {
             entry = BddCache_lookupI(appexcache, APPEXHASH(l, r, bddop_and));
             if (entry.a == l && entry.b == r && entry.c == appexid) {
-                if (CACHESTATS)
+                if (cachestats.enabled)
                     cachestats.opHit++;
                 return entry.res;
             }
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opMiss++;
 
             if (LEVEL_l == LEVEL_r) {
@@ -2016,7 +2016,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (VERIFY_ASSERTIONS) _assert(appexop != bddop_and);
@@ -2064,11 +2064,11 @@ public class JFactory extends BDDFactoryIntImpl {
         } else {
             entry = BddCache_lookupI(appexcache, APPEXHASH(l, r, appexop));
             if (entry.a == l && entry.b == r && entry.c == appexid) {
-                if (CACHESTATS)
+                if (cachestats.enabled)
                     cachestats.opHit++;
                 return entry.res;
             }
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opMiss++;
 
             int lev;
@@ -2111,7 +2111,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         int LEVEL_l, LEVEL_r, LEVEL_var;
@@ -2138,11 +2138,11 @@ public class JFactory extends BDDFactoryIntImpl {
         } else {
             entry = BddCache_lookupI(appexcache, APPEXHASH(l, r, appexop));
             if (entry.a == l && entry.b == r && entry.c == appexid) {
-                if (CACHESTATS)
+                if (cachestats.enabled)
                     cachestats.opHit++;
                 return entry.res;
             }
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opMiss++;
 
             int lev;
@@ -2202,7 +2202,7 @@ public class JFactory extends BDDFactoryIntImpl {
         int res;
         int LEVEL_r, LEVEL_q;
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         LEVEL_r = LEVEL(r);
@@ -2217,11 +2217,11 @@ public class JFactory extends BDDFactoryIntImpl {
         
         entry = BddCache_lookupI(quantcache, QUANTHASH(r));
         if (entry.a == r && entry.c == quantid) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         if (LEVEL_r == LEVEL_q) {
@@ -2247,7 +2247,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (r < 2 || LEVEL(r) > quantlast)
@@ -2255,11 +2255,11 @@ public class JFactory extends BDDFactoryIntImpl {
 
         entry = BddCache_lookupI(quantcache, QUANTHASH(r));
         if (entry.a == r && entry.c == quantid) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         PUSHREF(quant_rec(LOW(r)));
@@ -2289,7 +2289,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
 
@@ -2317,11 +2317,11 @@ public class JFactory extends BDDFactoryIntImpl {
         
         entry = BddCache_lookupI(quantcache, QUANTHASH(r));
         if (entry.a == r && entry.c == quantid) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         int nlev = LEVEL(r) + 1;
@@ -2387,7 +2387,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (ISONE(c))
@@ -2401,11 +2401,11 @@ public class JFactory extends BDDFactoryIntImpl {
 
         entry = BddCache_lookupI(misccache, CONSTRAINHASH(f, c));
         if (entry.a == f && entry.b == c && entry.c == miscid) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         if (LEVEL(f) == LEVEL(c)) {
@@ -2487,7 +2487,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (LEVEL(f) > composelevel)
@@ -2495,11 +2495,11 @@ public class JFactory extends BDDFactoryIntImpl {
 
         entry = BddCache_lookupI(replacecache, COMPOSEHASH(f, g));
         if (entry.a == f && entry.b == g && entry.c == replaceid) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         if (LEVEL(f) < composelevel) {
@@ -2569,7 +2569,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (LEVEL(f) > replacelast)
@@ -2577,11 +2577,11 @@ public class JFactory extends BDDFactoryIntImpl {
 
         entry = BddCache_lookupI(replacecache, VECCOMPOSEHASH(f));
         if (entry.a == f && entry.c == replaceid) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         PUSHREF(veccompose_rec(LOW(f)));
@@ -2754,7 +2754,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
 
         if (ISCONST(r) || LEVEL(r) > quantlast)
@@ -2762,11 +2762,11 @@ public class JFactory extends BDDFactoryIntImpl {
 
         entry = BddCache_lookupI(misccache, RESTRHASH(r, miscid));
         if (entry.a == r && entry.c == miscid) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         if (INSVARSET(LEVEL(r))) {
@@ -2825,7 +2825,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataI entry;
         int res;
 
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opAccess++;
         
         if (ISONE(d) || ISCONST(f))
@@ -2838,11 +2838,11 @@ public class JFactory extends BDDFactoryIntImpl {
         entry = BddCache_lookupI(applycache, APPLYHASH(f, d, bddop_simplify));
 
         if (entry.a == f && entry.b == d && entry.c == bddop_simplify) {
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.opHit++;
             return entry.res;
         }
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.opMiss++;
 
         if (LEVEL(f) == LEVEL(d)) {
@@ -3602,7 +3602,7 @@ public class JFactory extends BDDFactoryIntImpl {
     int bdd_makenode(int level, int low, int high) {
         if (VERIFY_ASSERTIONS) _assert(!ZDD);
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.uniqueAccess++;
 
         // check whether children are equal
@@ -3615,7 +3615,7 @@ public class JFactory extends BDDFactoryIntImpl {
     int zdd_makenode(int level, int low, int high) {
         if (VERIFY_ASSERTIONS) _assert(ZDD);
         
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.uniqueAccess++;
         
         // check whether high child is zero
@@ -3636,18 +3636,18 @@ public class JFactory extends BDDFactoryIntImpl {
 
         while (res != 0) {
             if (LEVEL(res) == level && LOW(res) == low && HIGH(res) == high) {
-                if (CACHESTATS)
+                if (cachestats.enabled)
                     cachestats.uniqueHit++;
                 return res;
             }
 
             res = NEXT(res);
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.uniqueChain++;
         }
 
         /* No existing node => build one */
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.uniqueMiss++;
 
         /* Any free nodes to use ? */
@@ -3800,7 +3800,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
         bdderrorcond = 0;
 
-        if (CACHESTATS) {
+        if (cachestats.enabled) {
             //cachestats = new CacheStats();
         }
 
@@ -5796,7 +5796,7 @@ public class JFactory extends BDDFactoryIntImpl {
         int hash;
         int res;
 
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.uniqueAccess++;
 
         /* Note: We know that low,high has a refcou greater than zero, so
@@ -5822,19 +5822,19 @@ public class JFactory extends BDDFactoryIntImpl {
 
         while (res != 0) {
             if (LOW(res) == low && HIGH(res) == high) {
-                if (CACHESTATS)
+                if (cachestats.enabled)
                     cachestats.uniqueHit++;
                 INCREF(res);
                 return res;
             }
             res = NEXT(res);
 
-            if (CACHESTATS)
+            if (cachestats.enabled)
                 cachestats.uniqueChain++;
         }
 
         /* No existing node -> build one */
-        if (CACHESTATS)
+        if (cachestats.enabled)
             cachestats.uniqueMiss++;
 
         /* Any free nodes to use ? */
