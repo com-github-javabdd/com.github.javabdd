@@ -1355,27 +1355,31 @@ public abstract class BDDFactory {
         	enabled = true;
         }
         
+        public void disableMeasurements() {
+            enabled = false;
+        }
+        
         public void newMeasurement(int newUsedBddNodes) {
             maxUsedBddNodes = Math.max(newUsedBddNodes, maxUsedBddNodes);
         }
         
-        public int getMaxNodes() {
+        public int getMaxUsedNodes() {
         	return maxUsedBddNodes;
         }
     }
     
     /**
-     * Singleton object for maximum BDD nodes statistics.
+     * Singleton object for maximum used BDD nodes statistics.
      */
-    protected MaxUsedBddNodesStats maxbddnodesstats = new MaxUsedBddNodesStats();
+    protected MaxUsedBddNodesStats maxusedbddnodesstats = new MaxUsedBddNodesStats();
 
     /**
-     * <p>Return the current maximum BDD nodes statistics for this BDD factory.</p>
+     * <p>Return the current maximum used BDD nodes statistics for this BDD factory.</p>
      *
-     * @return  maximum memory statistics
+     * @return  maximum used BDD statistics
      */
-    public MaxUsedBddNodesStats getMaxBddNodesStats() {
-        return maxbddnodesstats;
+    public MaxUsedBddNodesStats getMaxUsedBddNodesStats() {
+        return maxusedbddnodesstats;
     }
     
     /**
@@ -1383,14 +1387,18 @@ public abstract class BDDFactory {
      * 
      * @author mgoorden
      */
-    public static class MaxMemoryStats {
+    public static class MaxUsedMemoryStats {
         protected boolean enabled = false;
         protected long maxUsedMemory;
         
-        protected MaxMemoryStats() { }
+        protected MaxUsedMemoryStats() { }
         
         public void enableMeasurements() {
             enabled = true;
+        }
+        
+        public void disableMeasurements() {
+            enabled = false;
         }
         
         public void newMeasurement(long newMemory) {
@@ -1403,31 +1411,32 @@ public abstract class BDDFactory {
     }
     
     /**
-     * Singleton object for maximum memory statistics.
+     * Singleton object for maximum used memory statistics.
      */
-    protected MaxMemoryStats maxmemorystats = new MaxMemoryStats();
+    protected MaxUsedMemoryStats maxusedmemorystats = new MaxUsedMemoryStats();
 
     /**
-     * <p>Return the current maximum memory statistics for this BDD factory.</p>
+     * <p>Return the current maximum used memory statistics for this BDD factory.</p>
      * 
-     * <p>Note that measuring max memory usages fluctuates over time, tool 
+     * <p>Note that measuring max used memory usages fluctuates over time, tool 
      * implementation, used hardware, etc.</p>
      *
-     * @return  maximum memory statistics
+     * @return  maximum used memory statistics
      */
-    public MaxMemoryStats getMaxMemoryStats() {
-        return maxmemorystats;
+    public MaxUsedMemoryStats getMaxUsedMemoryStats() {
+        return maxusedmemorystats;
     }
     
     /**
-     * Stores continuously statistics about the memory usage and BDD operations.
+     * Stores continuously statistics about the BDD nodes usage and BDD operations,
+     * where BDD operations is a proxy for time.
      * 
      * @author mgoorden
      */
     public static class ContinuousStats {
         protected boolean enabled = false;
         protected List<Integer> contUsedBddNodes = new ArrayList<Integer>();
-        protected List<Long> contUsedOperations = new ArrayList<Long>();
+        protected List<Long> contOperations = new ArrayList<Long>();
         
         protected ContinuousStats() { }
 
@@ -1435,18 +1444,22 @@ public abstract class BDDFactory {
             enabled = true;
         }
         
+        public void disableMeasurements() {
+            enabled = false;
+        }
+        
         public List<Integer> getNodesStats() {
-            if (contUsedBddNodes.size() != contUsedOperations.size()) {
+            if (contUsedBddNodes.size() != contOperations.size()) {
                 throw new AssertionError("Incorrect data collection.");
             }
             return contUsedBddNodes;
         }
         
         public List<Long> getOperationsStats() {
-            if (contUsedBddNodes.size() != contUsedOperations.size()) {
+            if (contUsedBddNodes.size() != contOperations.size()) {
                 throw new AssertionError("Incorrect data collection.");
             }
-            return contUsedOperations;
+            return contOperations;
         }
     }
     

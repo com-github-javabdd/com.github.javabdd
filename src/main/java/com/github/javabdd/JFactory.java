@@ -3522,25 +3522,7 @@ public class JFactory extends BDDFactoryIntImpl {
     }
  
     int bdd_delref(int root) {
-        // The number of currently used BDD nodes, between 0 and bddnodesize.
-        // -1 indicates that it has not yet been calculated.
-        int usedBddNodes = -1;
-        
-        if (maxbddnodesstats.enabled) {
-            if (usedBddNodes == -1) usedBddNodes = bdd_used_nodes_count();
-            maxbddnodesstats.newMeasurement(usedBddNodes);
-        }
-        
-        if (maxmemorystats.enabled) {
-            long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-            maxmemorystats.newMeasurement(memory);
-        }
-        
-        if (continuousstats.enabled) {
-            if (usedBddNodes == -1) usedBddNodes = bdd_used_nodes_count();
-            continuousstats.contUsedBddNodes.add(usedBddNodes);
-            continuousstats.contUsedOperations.add(cachestats.opMiss);
-        }
+        bdd_add_per_stats();
         
         if (root == INVALID_BDD)
             bdd_error(BDD_BREAK); /* distinctive */
@@ -5069,31 +5051,35 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     public void done() { 
-        // The number of currently used BDD nodes, between 0 and bddnodesize.
-        // -1 indicates that it has not yet been calculated.
-        int usedBddNodes = -1;
-        
-        if (maxbddnodesstats.enabled) {
-            if (usedBddNodes == -1) usedBddNodes = bdd_used_nodes_count();
-            maxbddnodesstats.newMeasurement(usedBddNodes);
-        }
-        
-        if (maxmemorystats.enabled) {
-            long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-            maxmemorystats.newMeasurement(memory);
-            System.gc(); // To make sure subsequent memory measurements are accurate.
-        }
-            
-        if (continuousstats.enabled) {
-            if (usedBddNodes == -1) usedBddNodes = bdd_used_nodes_count();
-            continuousstats.contUsedBddNodes.add(usedBddNodes);
-            continuousstats.contUsedOperations.add(cachestats.opMiss);
-        }
+        bdd_add_per_stats();
         
         super.done(); 
         bdd_done(); 
     }
     
+    void bdd_add_per_stats() {
+        // The number of currently used BDD nodes, between 0 and bddnodesize.
+        // -1 indicates that it has not yet been calculated.
+        int usedBddNodes = -1;
+        
+        if (maxusedbddnodesstats.enabled) {
+            if (usedBddNodes == -1) usedBddNodes = bdd_used_nodes_count();
+            maxusedbddnodesstats.newMeasurement(usedBddNodes);
+        }
+        
+        if (maxusedmemorystats.enabled) {
+            long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+            maxusedmemorystats.newMeasurement(memory);
+        }
+        
+        if (continuousstats.enabled) {
+            if (usedBddNodes == -1) usedBddNodes = bdd_used_nodes_count();
+            continuousstats.contUsedBddNodes.add(usedBddNodes);
+            // cachestats.opMiss is the number of BDD operations performed until now that could not
+            // be taken from the cache. Thus it approximates time. 
+            continuousstats.contOperations.add(cachestats.opMiss);
+        }
+    }
     
     void bdd_done() {
         /*sanitycheck(); FIXME */
