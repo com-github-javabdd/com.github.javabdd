@@ -5067,11 +5067,6 @@ public class JFactory extends BDDFactoryIntImpl {
             maxusedbddnodesstats.newMeasurement(usedBddNodes);
         }
         
-        if (maxusedmemorystats.enabled) {
-            long memory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-            maxusedmemorystats.newMeasurement(memory);
-        }
-        
         if (continuousstats.enabled) {
             if (usedBddNodes == -1) usedBddNodes = bdd_used_nodes_count();
             continuousstats.contUsedBddNodes.add(usedBddNodes);

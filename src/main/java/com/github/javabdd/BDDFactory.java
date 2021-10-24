@@ -1383,51 +1383,6 @@ public abstract class BDDFactory {
     }
     
     /**
-     * Stores statistics about the maximum memory usage.
-     * 
-     * @author mgoorden
-     */
-    public static class MaxUsedMemoryStats {
-        protected boolean enabled = false;
-        protected long maxUsedMemory;
-        
-        protected MaxUsedMemoryStats() { }
-        
-        public void enableMeasurements() {
-            enabled = true;
-        }
-        
-        public void disableMeasurements() {
-            enabled = false;
-        }
-        
-        public void newMeasurement(long newMemory) {
-            maxUsedMemory = Math.max(newMemory, maxUsedMemory);
-        }
-        
-        public long getMaxUsedMemory() {
-            return maxUsedMemory;
-        }
-    }
-    
-    /**
-     * Singleton object for maximum used memory statistics.
-     */
-    protected MaxUsedMemoryStats maxusedmemorystats = new MaxUsedMemoryStats();
-
-    /**
-     * <p>Return the current maximum used memory statistics for this BDD factory.</p>
-     * 
-     * <p>Note that measuring max used memory usages fluctuates over time, tool 
-     * implementation, used hardware, etc.</p>
-     *
-     * @return  maximum used memory statistics
-     */
-    public MaxUsedMemoryStats getMaxUsedMemoryStats() {
-        return maxusedmemorystats;
-    }
-    
-    /**
      * Stores continuously statistics about the BDD nodes usage and BDD operations,
      * where BDD operations is a proxy for time.
      * 
