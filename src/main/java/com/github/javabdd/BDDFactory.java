@@ -1329,7 +1329,7 @@ public abstract class BDDFactory {
     /**
      * Singleton object for cache statistics.
      */
-    protected static CacheStats cachestats = new CacheStats();
+    protected CacheStats cachestats = new CacheStats();
     
     /**
      * <p>Return the current cache statistics for this BDD factory.</p>

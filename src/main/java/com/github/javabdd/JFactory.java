@@ -54,16 +54,7 @@ public class JFactory extends BDDFactoryIntImpl {
     public static BDDFactory init(int nodenum, int cachesize) {
         BDDFactory f = new JFactory();
         f.initialize(nodenum, cachesize);
-        if (cachestats.enabled) addShutdownHook(f);
         return f;
-    }
-
-    static void addShutdownHook(final BDDFactory f) {
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                System.out.println(f.getCacheStats().toString());
-            }
-        });
     }
     
     boolean ZDD = false;
