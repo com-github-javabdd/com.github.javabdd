@@ -3513,7 +3513,7 @@ public class JFactory extends BDDFactoryIntImpl {
     }
  
     int bdd_delref(int root) {
-        bdd_add_per_stats();
+        bdd_add_perf_stats();
         
         if (root == INVALID_BDD)
             bdd_error(BDD_BREAK); /* distinctive */
@@ -5042,13 +5042,13 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     public void done() { 
-        bdd_add_per_stats();
+        bdd_add_perf_stats();
         
         super.done(); 
         bdd_done(); 
     }
     
-    void bdd_add_per_stats() {
+    void bdd_add_perf_stats() {
         // The number of currently used BDD nodes, between 0 and bddnodesize.
         // -1 indicates that it has not yet been calculated.
         int usedBddNodes = -1;

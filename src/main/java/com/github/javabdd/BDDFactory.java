@@ -1268,6 +1268,21 @@ public abstract class BDDFactory {
         	enabled = true;
         }
         
+        public void disableMeasurements() {
+            enabled = false;
+        }
+        
+        public void resetMeasurements() {
+            uniqueAccess = 0;
+            uniqueChain = 0;
+            uniqueHit = 0;
+            uniqueMiss = 0;
+            opAccess = 0;
+            opHit = 0;
+            opMiss = 0;
+            swapCount = 0;
+        }
+        
         /* (non-Javadoc)
          * @see java.lang.Object#toString()
          */
@@ -1359,11 +1374,15 @@ public abstract class BDDFactory {
             enabled = false;
         }
         
+        public void resetMeasurements() {
+            maxUsedBddNodes = 0;
+        }
+        
         public void newMeasurement(int newUsedBddNodes) {
             maxUsedBddNodes = Math.max(newUsedBddNodes, maxUsedBddNodes);
         }
         
-        public int getMaxUsedNodes() {
+        public int getMaxUsedBddNodes() {
         	return maxUsedBddNodes;
         }
     }
@@ -1376,7 +1395,7 @@ public abstract class BDDFactory {
     /**
      * <p>Return the current maximum used BDD nodes statistics for this BDD factory.</p>
      *
-     * @return  maximum used BDD statistics
+     * @return  maximum used BDD nodes statistics
      */
     public MaxUsedBddNodesStats getMaxUsedBddNodesStats() {
         return maxusedbddnodesstats;
@@ -1401,6 +1420,11 @@ public abstract class BDDFactory {
         
         public void disableMeasurements() {
             enabled = false;
+        }
+        
+        public void resetMeasurements() {
+            contUsedBddNodes = new ArrayList<Integer>();
+            contOperations = new ArrayList<Long>();
         }
         
         public List<Integer> getNodesStats() {
@@ -1428,7 +1452,7 @@ public abstract class BDDFactory {
      *
      * @return  continuous statistics
      */
-    public ContinuousStats getContinousStats() {
+    public ContinuousStats getContinuousStats() {
         return continuousstats;
     }
     
