@@ -3,6 +3,7 @@
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
 package com.github.javabdd;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
@@ -1235,16 +1236,20 @@ public abstract class BDDFactory {
      * Stores statistics about the operator cache.
      * 
      * @author jwhaley
+     * @author sthuijsman
+     * @author mgoorden
      * @version $Id: BDDFactory.java 480 2010-11-16 01:29:49Z robimalik $
      */
     public static class CacheStats {
-        public int uniqueAccess;
-        public int uniqueChain;
-        public int uniqueHit;
-        public int uniqueMiss;
-        public int opHit;
-        public int opMiss;
-        public int swapCount;
+        protected boolean enabled = false;
+        public long uniqueAccess;
+        public long uniqueChain;
+        public long uniqueHit;
+        public long uniqueMiss;
+        public long opAccess;
+        public long opHit;
+        public long opMiss;
+        public long swapCount;
         
         protected CacheStats() { }
         
@@ -1253,9 +1258,29 @@ public abstract class BDDFactory {
             this.uniqueChain = that.uniqueChain;
             this.uniqueHit = that.uniqueHit;
             this.uniqueMiss = that.uniqueMiss;
+            this.opAccess = that.opAccess;
             this.opHit = that.opHit;
             this.opMiss = that.opMiss;
             this.swapCount = that.swapCount;
+        }
+        
+        public void enableMeasurements() {
+        	enabled = true;
+        }
+        
+        public void disableMeasurements() {
+            enabled = false;
+        }
+        
+        public void resetMeasurements() {
+            uniqueAccess = 0;
+            uniqueChain = 0;
+            uniqueHit = 0;
+            uniqueMiss = 0;
+            opAccess = 0;
+            opHit = 0;
+            opMiss = 0;
+            swapCount = 0;
         }
         
         /* (non-Javadoc)
@@ -1294,6 +1319,9 @@ public abstract class BDDFactory {
             else
                 sb.append((float)0);
             sb.append(newLine);
+            sb.append("Operator Access:  ");
+            sb.append(opAccess);
+            sb.append(newLine);
             sb.append("Operator Hits:  ");
             sb.append(opHit);
             sb.append(newLine);
@@ -1325,6 +1353,107 @@ public abstract class BDDFactory {
      */
     public CacheStats getCacheStats() {
         return cachestats;
+    }
+    
+    /**
+     * Stores statistics about the maximum BDD nodes usage.
+     * 
+     * @author mgoorden
+     */
+    public static class MaxUsedBddNodesStats {
+        protected boolean enabled = false;
+        protected int maxUsedBddNodes;
+        
+        protected MaxUsedBddNodesStats() { }
+        
+        public void enableMeasurements() {
+        	enabled = true;
+        }
+        
+        public void disableMeasurements() {
+            enabled = false;
+        }
+        
+        public void resetMeasurements() {
+            maxUsedBddNodes = 0;
+        }
+        
+        public void newMeasurement(int newUsedBddNodes) {
+            maxUsedBddNodes = Math.max(newUsedBddNodes, maxUsedBddNodes);
+        }
+        
+        public int getMaxUsedBddNodes() {
+        	return maxUsedBddNodes;
+        }
+    }
+    
+    /**
+     * Singleton object for maximum used BDD nodes statistics.
+     */
+    protected MaxUsedBddNodesStats maxusedbddnodesstats = new MaxUsedBddNodesStats();
+
+    /**
+     * <p>Return the current maximum used BDD nodes statistics for this BDD factory.</p>
+     *
+     * @return  maximum used BDD nodes statistics
+     */
+    public MaxUsedBddNodesStats getMaxUsedBddNodesStats() {
+        return maxusedbddnodesstats;
+    }
+    
+    /**
+     * Stores continuously statistics about the BDD nodes usage and BDD operations,
+     * where BDD operations is a proxy for time.
+     * 
+     * @author mgoorden
+     */
+    public static class ContinuousStats {
+        protected boolean enabled = false;
+        protected List<Integer> contUsedBddNodes = new ArrayList<Integer>();
+        protected List<Long> contOperations = new ArrayList<Long>();
+        
+        protected ContinuousStats() { }
+
+        public void enableMeasurements() {
+            enabled = true;
+        }
+        
+        public void disableMeasurements() {
+            enabled = false;
+        }
+        
+        public void resetMeasurements() {
+            contUsedBddNodes = new ArrayList<Integer>();
+            contOperations = new ArrayList<Long>();
+        }
+        
+        public List<Integer> getNodesStats() {
+            if (contUsedBddNodes.size() != contOperations.size()) {
+                throw new AssertionError("Incorrect data collection.");
+            }
+            return contUsedBddNodes;
+        }
+        
+        public List<Long> getOperationsStats() {
+            if (contUsedBddNodes.size() != contOperations.size()) {
+                throw new AssertionError("Incorrect data collection.");
+            }
+            return contOperations;
+        }
+    }
+    
+    /**
+     * Singleton object for continuous statistics.
+     */
+    protected ContinuousStats continuousstats = new ContinuousStats();
+    
+    /**
+     * <p>Return the current continuous statistics for this BDD factory.</p>
+     *
+     * @return  continuous statistics
+     */
+    public ContinuousStats getContinuousStats() {
+        return continuousstats;
     }
     
     // TODO: bdd_sizeprobe_hook
