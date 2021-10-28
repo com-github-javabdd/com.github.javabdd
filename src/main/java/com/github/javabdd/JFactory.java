@@ -4312,7 +4312,7 @@ public class JFactory extends BDDFactoryIntImpl {
         }
 
         INCREF(root);
-        if (false) {
+        if (verbose > 1) {
             System.out.println("INCREF(" + root + ") = " + GETREF(root));
         }
         return root;
@@ -4369,7 +4369,7 @@ public class JFactory extends BDDFactoryIntImpl {
         }
 
         DECREF(root);
-        if (false) {
+        if (verbose > 1) {
             System.out.println("DECREF(" + root + ") = " + GETREF(root));
         }
         return root;
@@ -6209,7 +6209,10 @@ public class JFactory extends BDDFactoryIntImpl {
         bdd_operator_varresize();
 
         if (ZDD) {
-            System.out.println("Changed number of ZDD variables to " + num + ", all existing ZDDs are now invalid.");
+            if (verbose != 0) {
+                System.out
+                        .println("Changed number of ZDD variables to " + num + ", all existing ZDDs are now invalid.");
+            }
             // Need to rebuild varsets for existing domains.
             for (int n = 0; n < fdvarnum; n++) {
                 domain[n].var.free();

@@ -35,6 +35,9 @@ import java.util.StringTokenizer;
  * @see com.github.javabdd.BDD
  */
 public abstract class BDDFactory {
+    private static final boolean DEBUG = false;
+    private static final boolean ASSERT_FILL_IN_VAR_INDICES = false;
+
     public static final String getProperty(String key, String def) {
         try {
             return System.getProperty(key, def);
@@ -176,7 +179,7 @@ public abstract class BDDFactory {
      */
     protected BDDFactory() {
         String s = this.getClass().toString();
-        if (false) {
+        if (DEBUG) {
             s = s.substring(s.lastIndexOf('.') + 1);
             System.out.println("Using BDD package: " + s);
         }
@@ -2075,11 +2078,13 @@ public abstract class BDDFactory {
                 if (bitNumber < d.varNum()) {
                     int di = d.getIndex();
                     int local = localOrders[di][bitNumber];
-                    if (local >= d.vars().length) {
-                        System.out.println("bug!");
-                    }
-                    if (bitIndex >= varorder.length) {
-                        System.out.println("bug2!");
+                    if (ASSERT_FILL_IN_VAR_INDICES) {
+                        if (local >= d.vars().length) {
+                            throw new AssertionError("bug!");
+                        }
+                        if (bitIndex >= varorder.length) {
+                            throw new AssertionError("bug2!");
+                        }
                     }
                     varorder[bitIndex++] = d.vars()[local];
                 }
@@ -2320,8 +2325,7 @@ public abstract class BDDFactory {
     }
 
     protected void bdd_default_reohandler(boolean prestate, ReorderStats s) {
-        int verbose = 1;
-        if (verbose > 0) {
+        if (DEBUG) {
             if (prestate) {
                 System.out.println("Start reordering");
             } else {
@@ -2339,8 +2343,7 @@ public abstract class BDDFactory {
     }
 
     protected static void bdd_default_reshandler(int oldsize, int newsize) {
-        int verbose = 1;
-        if (verbose > 0) {
+        if (DEBUG) {
             System.out.println("Resizing node table from " + oldsize + " to " + newsize);
         }
     }
