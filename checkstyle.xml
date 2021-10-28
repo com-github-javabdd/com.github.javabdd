@@ -6,7 +6,7 @@
 -->
 <!--
     Checkstyle-Configuration: JavaBDD Checkstyle
-    Description:
+    Description: 
 JavaBDD Checkstyle.
 -->
 <module name="Checker">
@@ -46,6 +46,7 @@ JavaBDD Checkstyle.
       <message key="name.invalidPattern" value="Member name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="MethodName">
+      <property name="severity" value="ignore"/>
       <message key="name.invalidPattern" value="Method name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="PackageName">
