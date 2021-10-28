@@ -5756,10 +5756,7 @@ public class JFactory extends BDDFactoryIntImpl {
         return dis;
     }
 
-    static int siftTestCmp(Object aa, Object bb) {
-        sizePair a = (sizePair)aa;
-        sizePair b = (sizePair)bb;
-
+    static int siftTestCmp(sizePair a, sizePair b) {
         if (a.val < b.val) {
             return -1;
         }
@@ -5802,9 +5799,9 @@ public class JFactory extends BDDFactoryIntImpl {
         }
 
         /* Sort according to the number of nodes at each level */
-        Arrays.sort(p, 0, num, new Comparator() {
+        Arrays.sort(p, 0, num, new Comparator<sizePair>() {
             @Override
-            public int compare(Object o1, Object o2) {
+            public int compare(sizePair o1, sizePair o2) {
                 return siftTestCmp(o1, o2);
             }
         });

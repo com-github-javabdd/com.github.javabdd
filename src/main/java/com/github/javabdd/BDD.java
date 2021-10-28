@@ -1677,10 +1677,6 @@ public abstract class BDD {
             done = true;
             return sb;
         }
-
-        void append(BigInteger low) {
-            append(low, low);
-        }
     }
 
     private static void fdd_printset_helper(OutputBuffer sb, BigInteger value, int i, int[] set, int[] var,

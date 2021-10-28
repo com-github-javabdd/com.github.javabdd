@@ -330,8 +330,10 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         @Override
         protected void finalize() throws Throwable {
             super.finalize();
-            if (FINALIZER_CHECK_BDD_NOT_FREED && v != invalid_bdd_impl()) {
-                System.out.println("BDD not freed! " + System.identityHashCode(this));
+            if (FINALIZER_CHECK_BDD_NOT_FREED) {
+                if (v != invalid_bdd_impl()) {
+                    System.out.println("BDD not freed! " + System.identityHashCode(this));
+                }
             }
             deferredFree(v);
         }
@@ -506,8 +508,10 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         @Override
         protected void finalize() throws Throwable {
             super.finalize();
-            if (FINALIZER_CHECK_BDD_NOT_FREED && v != invalid_bdd_impl()) {
-                System.out.println("BDD not freed! " + System.identityHashCode(this));
+            if (FINALIZER_CHECK_BDD_NOT_FREED) {
+                if (v != invalid_bdd_impl()) {
+                    System.out.println("BDD not freed! " + System.identityHashCode(this));
+                }
             }
             deferredFree(v);
         }
