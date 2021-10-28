@@ -120,7 +120,9 @@ public abstract class BDDDomain {
     /**
      * Returns the size of the domain for this finite domain block.
      *
+     * <p>
      * Compare to fdd_domainsize.
+     * </p>
      */
     public BigInteger size() {
         return this.realsize;
@@ -187,7 +189,9 @@ public abstract class BDDDomain {
     /**
      * Builds a BDD which is true for all the possible assignments to the variable blocks that makes the blocks equal.
      *
+     * <p>
      * Compare to fdd_equals/fdd_equ.
+     * </p>
      *
      * @param that
      * @return BDD
@@ -217,7 +221,9 @@ public abstract class BDDDomain {
     /**
      * Returns the variable set that contains the variables used to define this finite domain block.
      *
+     * <p>
      * Compare to fdd_ithset.
+     * </p>
      *
      * @return BDDVarSet
      */
@@ -228,7 +234,9 @@ public abstract class BDDDomain {
     /**
      * Returns the BDD that defines the given value for this finite domain block.
      *
+     * <p>
      * Compare to fdd_ithvar.
+     * </p>
      *
      * @return BDD
      */
@@ -295,7 +303,9 @@ public abstract class BDDDomain {
     /**
      * Returns the number of BDD variables used for this finite domain block.
      *
+     * <p>
      * Compare to fdd_varnum.
+     * </p>
      *
      * @return int
      */
@@ -306,7 +316,9 @@ public abstract class BDDDomain {
     /**
      * Returns an integer array containing the indices of the BDD variables used to define this finite domain.
      *
+     * <p>
      * Compare to fdd_vars.
+     * </p>
      *
      * @return int[]
      */
