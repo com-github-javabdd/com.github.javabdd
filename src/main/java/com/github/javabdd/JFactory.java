@@ -934,13 +934,13 @@ public class JFactory extends BDDFactoryIntImpl {
         return bddnodes[node * __node_size + offset__refcou_and_level] & (LEV_MASK | MARK_MASK);
     }
 
-    private final void SETLEVEL(int node, int val) {
-        if (VERIFY_ASSERTIONS) {
-            _assert(val == (val & LEV_MASK));
-        }
-        bddnodes[node * __node_size + offset__refcou_and_level] &= ~LEV_MASK;
-        bddnodes[node * __node_size + offset__refcou_and_level] |= val;
-    }
+    // private final void SETLEVEL(int node, int val) {
+    // if (VERIFY_ASSERTIONS) {
+    // _assert(val == (val & LEV_MASK));
+    // }
+    // bddnodes[node * __node_size + offset__refcou_and_level] &= ~LEV_MASK;
+    // bddnodes[node * __node_size + offset__refcou_and_level] |= val;
+    // }
 
     private final void SETLEVELANDMARK(int node, int val) {
         if (VERIFY_ASSERTIONS) {
