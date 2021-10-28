@@ -42,6 +42,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
     public static final String REVISION = "$Revision: 480 $";
 
+    @Override
     public String getVersion() {
         return "JFactory " + REVISION.substring(11, REVISION.length() - 2);
     }
@@ -79,6 +80,7 @@ public class JFactory extends BDDFactoryIntImpl {
          *
          * @see com.github.javabdd.BDDPairing#set(int, int)
          */
+        @Override
         public void set(int oldvar, int newvar) {
             bdd_setpair(this, oldvar, newvar);
         }
@@ -88,6 +90,7 @@ public class JFactory extends BDDFactoryIntImpl {
          *
          * @see com.github.javabdd.BDDPairing#set(int, com.github.javabdd.BDD)
          */
+        @Override
         public void set(int oldvar, BDD newvar) {
             bdd_setbddpair(this, oldvar, unwrap(newvar));
         }
@@ -97,10 +100,12 @@ public class JFactory extends BDDFactoryIntImpl {
          *
          * @see com.github.javabdd.BDDPairing#reset()
          */
+        @Override
         public void reset() {
             bdd_resetpair(this);
         }
 
+        @Override
         public String toString() {
             StringBuffer sb = new StringBuffer();
             sb.append('{');
@@ -132,6 +137,7 @@ public class JFactory extends BDDFactoryIntImpl {
      *
      * @see com.github.javabdd.BDDFactory#makePair()
      */
+    @Override
     public BDDPairing makePair() {
         bddPair p = new bddPair();
         p.result = new int[bddvarnum];
@@ -151,54 +157,67 @@ public class JFactory extends BDDFactoryIntImpl {
 
     // Redirection functions.
 
+    @Override
     protected void addref_impl(int v) {
         bdd_addref(v);
     }
 
+    @Override
     protected void delref_impl(int v) {
         bdd_delref(v);
     }
 
+    @Override
     protected int zero_impl() {
         return BDDZERO;
     }
 
+    @Override
     protected int one_impl() {
         return BDDONE;
     }
 
+    @Override
     protected int universe_impl() {
         return univ;
     }
 
+    @Override
     protected int invalid_bdd_impl() {
         return INVALID_BDD;
     }
 
+    @Override
     protected int var_impl(int v) {
         return bdd_var(v);
     }
 
+    @Override
     protected int level_impl(int v) {
         return LEVEL(v);
     }
 
+    @Override
     protected int low_impl(int v) {
         return bdd_low(v);
     }
 
+    @Override
     protected int high_impl(int v) {
         return bdd_high(v);
     }
 
+    @Override
     protected int ithVar_impl(int var) {
         return bdd_ithvar(var);
     }
 
+    @Override
     protected int nithVar_impl(int var) {
         return bdd_nithvar(var);
     }
 
+    @Override
     protected int makenode_impl(int lev, int lo, int hi) {
         if (ZDD)
             return zdd_makenode(lev, lo, hi);
@@ -206,257 +225,320 @@ public class JFactory extends BDDFactoryIntImpl {
             return bdd_makenode(lev, lo, hi);
     }
 
+    @Override
     protected int ite_impl(int v1, int v2, int v3) {
         return bdd_ite(v1, v2, v3);
     }
 
+    @Override
     protected int apply_impl(int v1, int v2, BDDOp opr) {
         return bdd_apply(v1, v2, opr.id);
     }
 
+    @Override
     protected int not_impl(int v1) {
         return bdd_not(v1);
     }
 
+    @Override
     protected int applyAll_impl(int v1, int v2, BDDOp opr, int v3) {
         return bdd_appall(v1, v2, opr.id, v3);
     }
 
+    @Override
     protected int applyEx_impl(int v1, int v2, BDDOp opr, int v3) {
         return bdd_appex(v1, v2, opr.id, v3);
     }
 
+    @Override
     protected int applyUni_impl(int v1, int v2, BDDOp opr, int v3) {
         return bdd_appuni(v1, v2, opr.id, v3);
     }
 
+    @Override
     protected int compose_impl(int v1, int v2, int var) {
         return bdd_compose(v1, v2, var);
     }
 
+    @Override
     protected int constrain_impl(int v1, int v2) {
         return bdd_constrain(v1, v2);
     }
 
+    @Override
     protected int restrict_impl(int v1, int v2) {
         return bdd_restrict(v1, v2);
     }
 
+    @Override
     protected int simplify_impl(int v1, int v2) {
         return bdd_simplify(v1, v2);
     }
 
+    @Override
     protected int support_impl(int v) {
         return bdd_support(v);
     }
 
+    @Override
     protected int exist_impl(int v1, int v2) {
         return bdd_exist(v1, v2);
     }
 
+    @Override
     protected int forAll_impl(int v1, int v2) {
         return bdd_forall(v1, v2);
     }
 
+    @Override
     protected int unique_impl(int v1, int v2) {
         return bdd_unique(v1, v2);
     }
 
+    @Override
     protected int fullSatOne_impl(int v) {
         return bdd_fullsatone(v);
     }
 
+    @Override
     protected int replace_impl(int v, BDDPairing p) {
         return bdd_replace(v, (bddPair)p);
     }
 
+    @Override
     protected int veccompose_impl(int v, BDDPairing p) {
         return bdd_veccompose(v, (bddPair)p);
     }
 
+    @Override
     protected int nodeCount_impl(int v) {
         return bdd_nodecount(v);
     }
 
+    @Override
     protected double pathCount_impl(int v) {
         return bdd_pathcount(v);
     }
 
+    @Override
     protected double satCount_impl(int v) {
         return bdd_satcount(v);
     }
 
+    @Override
     protected int satOne_impl(int v) {
         return bdd_satone(v);
     }
 
+    @Override
     protected int satOne_impl2(int v1, int v2, boolean pol) {
         return bdd_satoneset(v1, v2, pol);
     }
 
+    @Override
     protected int nodeCount_impl2(int[] v) {
         return bdd_anodecount(v);
     }
 
+    @Override
     protected int[] varProfile_impl(int v) {
         return bdd_varprofile(v);
     }
 
+    @Override
     protected void printTable_impl(int v) {
         bdd_fprinttable(System.out, v);
     }
 
     // More redirection functions.
 
+    @Override
     protected void initialize(int initnodesize, int cs) {
         bdd_init(initnodesize, cs);
     }
 
+    @Override
     public void addVarBlock(int first, int last, boolean fixed) {
         bdd_intaddvarblock(first, last, fixed);
     }
 
+    @Override
     public void varBlockAll() {
         bdd_varblockall();
     }
 
+    @Override
     public void clearVarBlocks() {
         bdd_clrvarblocks();
     }
 
+    @Override
     public void printOrder() {
         bdd_fprintorder(System.out);
     }
 
+    @Override
     public int getNodeTableSize() {
         return bdd_getallocnum();
     }
 
+    @Override
     public int setNodeTableSize(int size) {
         return bdd_setallocnum(size);
     }
 
+    @Override
     public int setCacheSize(int v) {
         return bdd_setcachesize(v);
     }
 
+    @Override
     public boolean isZDD() {
         return ZDD;
     }
 
+    @Override
     public boolean isInitialized() {
         return bddrunning;
     }
 
+    @Override
     public void setError(int code) {
         bdderrorcond = code;
     }
 
+    @Override
     public void clearError() {
         bdderrorcond = 0;
     }
 
+    @Override
     public int setMaxNodeNum(int size) {
         return bdd_setmaxnodenum(size);
     }
 
+    @Override
     public double setMinFreeNodes(double x) {
         return bdd_setminfreenodes((int)(x * 100.)) / 100.;
     }
 
+    @Override
     public int setMaxIncrease(int x) {
         return bdd_setmaxincrease(x);
     }
 
+    @Override
     public double setIncreaseFactor(double x) {
         return bdd_setincreasefactor(x);
     }
 
+    @Override
     public int getNodeNum() {
         return bdd_getnodenum();
     }
 
+    @Override
     public int getCacheSize() {
         return cachesize;
     }
 
+    @Override
     public int reorderGain() {
         return bdd_reorder_gain();
     }
 
+    @Override
     public void printStat() {
         bdd_fprintstat(System.out);
     }
 
+    @Override
     public double setCacheRatio(double x) {
         return bdd_setcacheratio((int)x);
     }
 
+    @Override
     public int varNum() {
         return bdd_varnum();
     }
 
+    @Override
     public int setVarNum(int num) {
         return bdd_setvarnum(num);
     }
 
+    @Override
     public void printAll() {
         bdd_fprintall(System.out);
     }
 
+    @Override
     public BDD load(BufferedReader in, int[] translate) throws IOException {
         return makeBDD(bdd_load(in, translate));
     }
 
+    @Override
     public void save(BufferedWriter out, BDD b) throws IOException {
         bdd_save(out, unwrap(b));
     }
 
+    @Override
     public void setVarOrder(int[] neworder) {
         bdd_setvarorder(neworder);
     }
 
+    @Override
     public int level2Var(int level) {
         return bddlevel2var[level];
     }
 
+    @Override
     public int var2Level(int var) {
         return bddvar2level[var];
     }
 
+    @Override
     public int getReorderTimes() {
         return bddreordertimes;
     }
 
+    @Override
     public void disableReorder() {
         bdd_disable_reorder();
     }
 
+    @Override
     public void enableReorder() {
         bdd_enable_reorder();
     }
 
+    @Override
     public int reorderVerbose(int v) {
         return bdd_reorder_verbose(v);
     }
 
+    @Override
     public void reorder(ReorderMethod m) {
         if (varNum() > 1)
             bdd_reorder(m.id);
     }
 
+    @Override
     public void autoReorder(ReorderMethod method) {
         bdd_autoreorder(method.id);
     }
 
+    @Override
     public void autoReorder(ReorderMethod method, int max) {
         bdd_autoreorder_times(method.id, max);
     }
 
+    @Override
     public void swapVar(int v1, int v2) {
         bdd_swapvar(v1, v2);
     }
 
+    @Override
     public ReorderMethod getReorderMethod() {
         switch (bddreordermethod) {
             case BDD_REORDER_NONE:
@@ -901,6 +983,7 @@ public class JFactory extends BDDFactoryIntImpl {
     private static class BddCacheDataI extends BddCacheData {
         int res;
 
+        @Override
         BddCacheData copy() {
             BddCacheDataI that = new BddCacheDataI();
             that.a = this.a;
@@ -914,6 +997,7 @@ public class JFactory extends BDDFactoryIntImpl {
     private static class BddCacheDataD extends BddCacheData {
         double dres;
 
+        @Override
         BddCacheData copy() {
             BddCacheDataD that = new BddCacheDataD();
             that.a = this.a;

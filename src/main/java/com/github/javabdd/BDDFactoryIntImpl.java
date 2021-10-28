@@ -102,22 +102,27 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             addref_impl(v);
         }
 
+        @Override
         public BDD apply(BDD that, BDDOp opr) {
             return makeBDD(apply_impl(v, unwrap(that), opr));
         }
 
+        @Override
         public BDD applyAll(BDD that, BDDOp opr, BDDVarSet var) {
             return makeBDD(applyAll_impl(v, unwrap(that), opr, unwrap(var)));
         }
 
+        @Override
         public BDD applyEx(BDD that, BDDOp opr, BDDVarSet var) {
             return makeBDD(applyEx_impl(v, unwrap(that), opr, unwrap(var)));
         }
 
+        @Override
         public BDD applyUni(BDD that, BDDOp opr, BDDVarSet var) {
             return makeBDD(applyUni_impl(v, unwrap(that), opr, unwrap(var)));
         }
 
+        @Override
         public BDD applyWith(BDD that, BDDOp opr) {
             /* bdd */int v2 = unwrap(that);
             /* bdd */int v3 = apply_impl(v, v2, opr);
@@ -129,91 +134,113 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             return this;
         }
 
+        @Override
         public BDD compose(BDD g, int var) {
             return makeBDD(compose_impl(v, unwrap(g), var));
         }
 
+        @Override
         public BDD constrain(BDD that) {
             return makeBDD(constrain_impl(v, unwrap(that)));
         }
 
+        @Override
         public boolean equals(BDD that) {
             return v == unwrap(that);
         }
 
+        @Override
         public BDD exist(BDDVarSet var) {
             return makeBDD(exist_impl(v, unwrap(var)));
         }
 
+        @Override
         public BDD forAll(BDDVarSet var) {
             return makeBDD(forAll_impl(v, unwrap(var)));
         }
 
+        @Override
         public void free() {
             delref_impl(v);
             v = invalid_bdd_impl();
         }
 
+        @Override
         public BDD fullSatOne() {
             return makeBDD(fullSatOne_impl(v));
         }
 
+        @Override
         public BDDFactory getFactory() {
             return BDDFactoryIntImpl.this;
         }
 
+        @Override
         public int hashCode() {
             return v;
         }
 
+        @Override
         public BDD high() {
             return makeBDD(high_impl(v));
         }
 
+        @Override
         public BDD id() {
             return makeBDD(v);
         }
 
+        @Override
         public boolean isOne() {
             return v == one_impl();
         }
 
+        @Override
         public boolean isUniverse() {
             return v == universe_impl();
         }
 
+        @Override
         public boolean isZero() {
             return v == zero_impl();
         }
 
+        @Override
         public BDD ite(BDD thenBDD, BDD elseBDD) {
             return makeBDD(ite_impl(v, unwrap(thenBDD), unwrap(elseBDD)));
         }
 
+        @Override
         public BDD low() {
             return makeBDD(low_impl(v));
         }
 
+        @Override
         public int level() {
             return level_impl(v);
         }
 
+        @Override
         public int nodeCount() {
             return nodeCount_impl(v);
         }
 
+        @Override
         public BDD not() {
             return makeBDD(not_impl(v));
         }
 
+        @Override
         public double pathCount() {
             return pathCount_impl(v);
         }
 
+        @Override
         public BDD replace(BDDPairing pair) {
             return makeBDD(replace_impl(v, pair));
         }
 
+        @Override
         public BDD replaceWith(BDDPairing pair) {
             /* bdd */int v3 = replace_impl(v, pair);
             addref_impl(v3);
@@ -222,10 +249,12 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             return this;
         }
 
+        @Override
         public BDD restrict(BDD var) {
             return makeBDD(restrict_impl(v, unwrap(var)));
         }
 
+        @Override
         public BDD restrictWith(BDD that) {
             /* bdd */int v2 = unwrap(that);
             /* bdd */int v3 = restrict_impl(v, v2);
@@ -237,42 +266,52 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             return this;
         }
 
+        @Override
         public double satCount() {
             return satCount_impl(v);
         }
 
+        @Override
         public BDD satOne() {
             return makeBDD(satOne_impl(v));
         }
 
+        @Override
         public BDD satOne(BDDVarSet var, boolean pol) {
             return makeBDD(satOne_impl2(v, unwrap(var), pol));
         }
 
+        @Override
         public BDD simplify(BDD d) {
             return makeBDD(simplify_impl(v, unwrap(d)));
         }
 
+        @Override
         public BDDVarSet support() {
             return makeBDDVarSet(support_impl(v));
         }
 
+        @Override
         public BDD unique(BDDVarSet var) {
             return makeBDD(unique_impl(v, unwrap(var)));
         }
 
+        @Override
         public int var() {
             return var_impl(v);
         }
 
+        @Override
         public int[] varProfile() {
             return varProfile_impl(v);
         }
 
+        @Override
         public BDD veccompose(BDDPairing pair) {
             return makeBDD(veccompose_impl(v, pair));
         }
 
+        @Override
         public BDDVarSet toVarSet() {
             return makeBDDVarSet(v);
         }
@@ -283,6 +322,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             super(v);
         }
 
+        @Override
         protected void finalize() throws Throwable {
             super.finalize();
             if (false && v != invalid_bdd_impl()) {
@@ -320,23 +360,28 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             addref_impl(v);
         }
 
+        @Override
         public boolean equals(BDDVarSet that) {
             return v == unwrap(that);
         }
 
+        @Override
         public void free() {
             delref_impl(v);
             v = invalid_bdd_impl();
         }
 
+        @Override
         public BDDFactory getFactory() {
             return BDDFactoryIntImpl.this;
         }
 
+        @Override
         public int hashCode() {
             return v;
         }
 
+        @Override
         public BDDVarSet id() {
             return makeBDDVarSet(v);
         }
@@ -345,10 +390,12 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             return apply_impl(v1, v2, or);
         }
 
+        @Override
         public BDDVarSet intersect(BDDVarSet b) {
             return makeBDDVarSet(do_intersect(v, unwrap(b)));
         }
 
+        @Override
         public BDDVarSet intersectWith(BDDVarSet b) {
             /* bdd */int v2 = unwrap(b);
             /* bdd */int v3 = do_intersect(v, v2);
@@ -360,10 +407,12 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             return this;
         }
 
+        @Override
         public boolean isEmpty() {
             return v == one_impl();
         }
 
+        @Override
         public int size() {
             int result = 0;
             for (/* bdd */int p = v; p != one_impl(); p = high_impl(p)) {
@@ -374,6 +423,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             return result;
         }
 
+        @Override
         public int[] toArray() {
             int[] result = new int[size()];
             int k = -1;
@@ -383,10 +433,12 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             return result;
         }
 
+        @Override
         public BDD toBDD() {
             return makeBDD(v);
         }
 
+        @Override
         public int[] toLevelArray() {
             int[] result = new int[size()];
             int k = -1;
@@ -404,14 +456,17 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             return apply_impl(v1, v2, and);
         }
 
+        @Override
         public BDDVarSet union(BDDVarSet b) {
             return makeBDDVarSet(do_union(v, unwrap(b)));
         }
 
+        @Override
         public BDDVarSet union(int var) {
             return makeBDDVarSet(do_unionvar(v, var));
         }
 
+        @Override
         public BDDVarSet unionWith(BDDVarSet b) {
             /* bdd */int v2 = unwrap(b);
             /* bdd */int v3 = do_union(v, v2);
@@ -423,6 +478,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             return this;
         }
 
+        @Override
         public BDDVarSet unionWith(int var) {
             /* bdd */int v3 = do_unionvar(v, var);
             addref_impl(v3);
@@ -437,6 +493,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             super(v);
         }
 
+        @Override
         protected void finalize() throws Throwable {
             super.finalize();
             if (false && v != invalid_bdd_impl()) {
@@ -451,6 +508,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             super(v);
         }
 
+        @Override
         protected int do_intersect(int v1, int v2) {
             if (v1 == one_impl())
                 return v2;
@@ -482,6 +540,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             }
         }
 
+        @Override
         protected int do_union(int v1, int v2) {
             if (v1 == v2)
                 return v1;
@@ -506,6 +565,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             return result;
         }
 
+        @Override
         protected int do_unionvar(int v, int var) {
             return do_unionlevel(v, var2Level(var));
         }
@@ -533,6 +593,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             super(v);
         }
 
+        @Override
         protected void finalize() throws Throwable {
             super.finalize();
             if (USE_FINALIZER) {
@@ -567,43 +628,53 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             super(bitnum);
         }
 
+        @Override
         public BDDFactory getFactory() {
             return BDDFactoryIntImpl.this;
         }
     }
 
+    @Override
     public BDD ithVar(/* bdd */int var) {
         return makeBDD(ithVar_impl(var));
     }
 
+    @Override
     public BDD nithVar(/* bdd */int var) {
         return makeBDD(nithVar_impl(var));
     }
 
+    @Override
     public int nodeCount(Collection/* <BDD> */ r) {
         return nodeCount_impl2(unwrap(r));
     }
 
+    @Override
     public BDD one() {
         return makeBDD(one_impl());
     }
 
+    @Override
     public BDD universe() {
         return makeBDD(universe_impl());
     }
 
+    @Override
     public BDDVarSet emptySet() {
         return makeBDDVarSet(one_impl());
     }
 
+    @Override
     public void printTable(BDD b) {
         printTable_impl(unwrap(b));
     }
 
+    @Override
     public BDD zero() {
         return makeBDD(zero_impl());
     }
 
+    @Override
     public void done() {
         if (USE_FINALIZER) {
             System.gc();
@@ -612,6 +683,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         }
     }
 
+    @Override
     protected void finalize() throws Throwable {
         super.finalize();
         this.done();

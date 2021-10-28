@@ -779,6 +779,7 @@ public abstract class BDD {
          *
          * @see java.util.Iterator#hasNext()
          */
+        @Override
         public boolean hasNext() {
             return allsatProfile != null;
         }
@@ -803,6 +804,7 @@ public abstract class BDD {
          *
          * @see java.util.Iterator#next()
          */
+        @Override
         public Object next() {
             return nextSat();
         }
@@ -812,6 +814,7 @@ public abstract class BDD {
          *
          * @see java.util.Iterator#remove()
          */
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -1006,6 +1009,7 @@ public abstract class BDD {
          *
          * @see java.util.Iterator#hasNext()
          */
+        @Override
         public boolean hasNext() {
             return a != null;
         }
@@ -1015,6 +1019,7 @@ public abstract class BDD {
          *
          * @see java.util.Iterator#next()
          */
+        @Override
         public Object next() {
             return nextBDD();
         }
@@ -1153,6 +1158,7 @@ public abstract class BDD {
          *
          * @see java.util.Iterator#remove()
          */
+        @Override
         public void remove() {
             if (lastReturned == null)
                 throw new IllegalStateException();
@@ -1481,6 +1487,7 @@ public abstract class BDD {
      *
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof BDD))
             return false;
@@ -1492,6 +1499,7 @@ public abstract class BDD {
      *
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public abstract int hashCode();
 
     /*
@@ -1499,6 +1507,7 @@ public abstract class BDD {
      *
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         BDDFactory f = this.getFactory();
         int[] set = new int[f.varNum()];

@@ -451,6 +451,7 @@ public class TryVarOrder {
             varOrderToTry = v;
         }
 
+        @Override
         public void run() {
             // System.out.println("\nTrying ordering "+varOrderToTry);
             try {
