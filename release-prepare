@@ -4,4 +4,3 @@ mvn clean
 rm -f pom.xml.releaseBackup
 rm -f release.properties
 mvn release:prepare
-
