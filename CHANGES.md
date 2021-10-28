@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 * Cache statistics are now measured using `longs` rather than `ints` to reduce integer overflow issues.
 * Added `opAccess` statistic to cache statistics.
 * Added functionality to reset statistics.
+* Removed `MicroFactory`, `UberMicroFactory`, `TypedBDDFactory` and `TestBDDFactory`.
 
 ## [1.0.1] - 2020-03-17
 * Updated SCM URL for proper Maven Central metadata.
