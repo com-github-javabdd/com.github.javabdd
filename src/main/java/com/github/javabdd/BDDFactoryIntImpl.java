@@ -148,7 +148,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         }
 
         @Override
-        public boolean equals(BDD that) {
+        public boolean equalsBDD(BDD that) {
             return v == unwrap(that);
         }
 
@@ -369,7 +369,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         }
 
         @Override
-        public boolean equals(BDDVarSet that) {
+        public boolean equalsBDDVarSet(BDDVarSet that) {
             return v == unwrap(that);
         }
 

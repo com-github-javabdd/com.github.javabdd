@@ -190,7 +190,7 @@ public abstract class BDDVarSet {
      * @param that other set
      * @return true if the sets are equal
      */
-    public abstract boolean equals(BDDVarSet that);
+    public abstract boolean equalsBDDVarSet(BDDVarSet that);
 
     /*
      * (non-Javadoc)
@@ -200,7 +200,7 @@ public abstract class BDDVarSet {
     @Override
     public final boolean equals(Object o) {
         if (o instanceof BDDVarSet) {
-            return equals((BDDVarSet)o);
+            return equalsBDDVarSet((BDDVarSet)o);
         }
         return false;
     }
@@ -436,14 +436,14 @@ public abstract class BDDVarSet {
          * @see com.github.javabdd.BDDVarSet#equals(com.github.javabdd.BDDVarSet)
          */
         @Override
-        public boolean equals(BDDVarSet s) {
+        public boolean equalsBDDVarSet(BDDVarSet s) {
             if (s instanceof DefaultImpl) {
-                return equals((DefaultImpl)s);
+                return equalsDefaultImpl((DefaultImpl)s);
             }
             return false;
         }
 
-        public boolean equals(DefaultImpl s) {
+        public boolean equalsDefaultImpl(DefaultImpl s) {
             return b.equals(s.b);
         }
     }

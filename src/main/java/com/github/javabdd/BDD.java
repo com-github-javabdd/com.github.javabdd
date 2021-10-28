@@ -1501,7 +1501,7 @@ public abstract class BDD {
      * @param that the BDD to compare with
      * @return true iff the two BDDs are equal
      */
-    public abstract boolean equals(BDD that);
+    public abstract boolean equalsBDD(BDD that);
 
     /*
      * (non-Javadoc)
@@ -1513,7 +1513,7 @@ public abstract class BDD {
         if (!(o instanceof BDD)) {
             return false;
         }
-        return this.equals((BDD)o);
+        return this.equalsBDD((BDD)o);
     }
 
     /*
