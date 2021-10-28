@@ -3868,7 +3868,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
         miscid = CACHEID_SATCOU;
         if (!ZDD)
-            size = Math.pow(2.0, (double)LEVEL(r));
+            size = Math.pow(2.0, LEVEL(r));
 
         return size * satcount_rec(r);
     }
@@ -3902,12 +3902,12 @@ public class JFactory extends BDDFactoryIntImpl {
         size = 0;
         s = 1;
         if (!ZDD)
-            s *= Math.pow(2.0, (float)(LEVEL(LOW(root)) - LEVEL(root) - 1));
+            s *= Math.pow(2.0, LEVEL(LOW(root)) - LEVEL(root) - 1);
         size += s * satcount_rec(LOW(root));
 
         s = 1;
         if (!ZDD)
-            s *= Math.pow(2.0, (float)(LEVEL(HIGH(root)) - LEVEL(root) - 1));
+            s *= Math.pow(2.0, LEVEL(HIGH(root)) - LEVEL(root) - 1);
         size += s * satcount_rec(HIGH(root));
 
         entry.a = root;
@@ -7134,7 +7134,7 @@ public class JFactory extends BDDFactoryIntImpl {
     static final int CHECKTIMES = 20;
 
     static final int u64_mulmod(int a, int b, int c) {
-        return (int)(((long)a * (long)b) % (long)c);
+        return (int)(((long)a * (long)b) % c);
     }
 
     /*************************************************************************

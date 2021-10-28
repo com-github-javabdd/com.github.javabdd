@@ -1424,7 +1424,7 @@ public abstract class BDDFactory {
             sb.append(" nodes, gain = ");
             sb.append(gain());
             sb.append("% (");
-            sb.append((float)time / 1000f);
+            sb.append(time / 1000f);
             sb.append(" sec)");
             return sb.toString();
         }
@@ -1541,7 +1541,7 @@ public abstract class BDDFactory {
             sb.append(newLine);
             sb.append("=> Hit rate =   ");
             if (uniqueHit + uniqueMiss > 0)
-                sb.append(((float)uniqueHit) / ((float)uniqueHit + uniqueMiss));
+                sb.append((uniqueHit) / ((float)uniqueHit + uniqueMiss));
             else
                 sb.append((float)0);
             sb.append(newLine);
@@ -1556,7 +1556,7 @@ public abstract class BDDFactory {
             sb.append(newLine);
             sb.append("=> Hit rate =   ");
             if (opHit + opMiss > 0)
-                sb.append(((float)opHit) / ((float)opHit + opMiss));
+                sb.append((opHit) / ((float)opHit + opMiss));
             else
                 sb.append((float)0);
             sb.append(newLine);
