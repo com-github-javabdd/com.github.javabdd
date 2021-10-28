@@ -21,7 +21,7 @@ import java.util.Iterator;
  * Every bit set has a current size, which is the number of bits of space currently in use by the bit set. Note that the
  * size is related to the implementation of a bit set, so it may change with implementation. The length of a bit set
  * related to the logical length of a bit set and is defined independently of implementation.
- * 
+ *
  * @author John Whaley
  * @version $Id: BitString.java 2279 2005-05-28 10:24:54Z joewhaley $
  */
@@ -47,7 +47,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Creates an empty string with the specified size.
-     * 
+     *
      * @param nbits the size of the string
      */
     public BitString(int nbits) {
@@ -68,7 +68,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Returns the first index greater than <code>where</code> in the bit string which is set, or -1 if there is no such
      * index.
-     * 
+     *
      * @param where the starting point for the search. May be negative.
      */
     public int firstSet(int where) {
@@ -87,7 +87,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Utility function to return the number of 1 bits in the given integer value.
-     * 
+     *
      * @param b value to check
      * @return byte number of one bits
      */
@@ -105,7 +105,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Utility function to return the number of 1 bits in the given long value.
-     * 
+     *
      * @param b value to check
      * @return byte number of one bits
      */
@@ -125,7 +125,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Utility function to return the index of the first (lowest-order) one bit in the given integer. Returns zero if
      * the given number is zero.
-     * 
+     *
      * @param b value to check
      * @return byte index of first one bit, or zero if the number is zero
      */
@@ -137,7 +137,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Utility function to return the index of the last one bit in the given integer. Returns zero if the given number
      * is zero.
-     * 
+     *
      * @param v value to check
      * @return byte index of first one bit, or zero if the number is zero
      */
@@ -167,7 +167,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Returns the last index less than <code>where</code> in the bit string which is set, or -1 if there is no such
      * index.
-     * 
+     *
      * @param where the starting point for the search.
      */
     public int lastSet(int where) {
@@ -208,7 +208,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Sets all bits up to and including the given bit.
-     * 
+     *
      * @param bit the bit to be set up to (zero-based)
      */
     public void setUpTo(int bit) {
@@ -238,7 +238,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Sets a bit.
-     * 
+     *
      * @param bit the bit to be set (zero-based)
      */
     public void set(int bit) {
@@ -257,7 +257,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Clears all bits up to and including the given bit.
-     * 
+     *
      * @param bit the bit to be set up to (zero-based)
      */
     public void clearUpTo(int bit) {
@@ -271,7 +271,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Clears a bit.
-     * 
+     *
      * @param bit the bit to be cleared (zero-based)
      */
     public void clear(int bit) {
@@ -280,7 +280,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Gets a bit.
-     * 
+     *
      * @param bit the bit to be gotten (zero-based)
      */
     public boolean get(int bit) {
@@ -291,7 +291,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Logically ANDs this bit set with the specified set of bits. Returns <code>true</code> if <code>this</code> was
      * modified in response to the operation.
-     * 
+     *
      * @param set the bit set to be ANDed with
      */
     public boolean and(BitString set) {
@@ -311,7 +311,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Logically ORs this bit set with the specified set of bits. Returns <code>true</code> if <code>this</code> was
      * modified in response to the operation.
-     * 
+     *
      * @param set the bit set to be ORed with
      */
     public boolean or(BitString set) {
@@ -331,7 +331,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Logically ORs this bit set with the specified set of bits. Returns <code>true</code> if <code>this</code> was
      * modified in response to the operation.
-     * 
+     *
      * @param set the bit set to be ORed with
      */
     public boolean or_upTo(BitString set, int bit) {
@@ -354,7 +354,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Logically XORs this bit set with the specified set of bits. Returns <code>true</code> if <code>this</code> was
      * modified in response to the operation.
-     * 
+     *
      * @param set the bit set to be XORed with
      */
     public boolean xor(BitString set) {
@@ -371,7 +371,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Logically subtracts this bit set with the specified set of bits. Returns <code>true</code> if <code>this</code>
      * was modified in response to the operation.
-     * 
+     *
      * @param set the bit set to subtract
      */
     public boolean minus(BitString set) {
@@ -387,7 +387,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Check if the intersection of the two sets is empty
-     * 
+     *
      * @param other the set to check intersection with
      */
     public boolean intersectionEmpty(BitString other) {
@@ -401,7 +401,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Check if this set contains all bits of the given set.
-     * 
+     *
      * @param other the set to check containment with
      */
     public boolean contains(BitString other) {
@@ -420,7 +420,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Performs a left-shift operation.
-     * 
+     *
      * @param amt number of bits to shift, can be negative
      */
     public void shl(int amt) {
@@ -458,7 +458,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Performs a right-shift operation.
-     * 
+     *
      * @param amt number of bits to shift
      */
     public void shr(int amt) {
@@ -487,7 +487,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Copies the values of the bits in the specified set into this set.
-     * 
+     *
      * @param set the bit set to copy the bits from
      */
     public void copyBits(BitString set) {
@@ -524,7 +524,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Compares this object against the specified object.
-     * 
+     *
      * @param obj the object to compare with
      * @return true if the contents of the bitsets are the same; false otherwise.
      */
@@ -555,7 +555,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Returns whether this <code>BitString</code> is all zeroes.
-     * 
+     *
      * @return true if it is all zeroes.
      */
     public boolean isZero() {
@@ -569,7 +569,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Returns the number of ones in this <code>BitString</code>.
-     * 
+     *
      * @return number of bits set.
      */
     public int numberOfOnes() {
@@ -583,7 +583,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Returns the number of ones in this <code>BitString</code> up to a given index.
-     * 
+     *
      * @return number of bits set.
      */
     public int numberOfOnes(int where) {

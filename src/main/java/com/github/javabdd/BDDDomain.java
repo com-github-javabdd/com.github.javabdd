@@ -15,11 +15,11 @@ import com.github.javabdd.BDD.BDDIterator;
  * BDDDomains are called "finite domain blocks" in Section 2.9 of the buddy documentation. A BDDDomain is a block of BDD
  * variables that can represent integer values as opposed to only true and false.
  * </p>
- * 
+ *
  * <p>
  * Use <tt>BDDFactory.extDomain()</tt> to create one or more domains with a specified list of sizes.
  * </p>
- * 
+ *
  * @author John Whaley
  * @version $Id: BDDDomain.java 468 2006-11-29 08:07:13Z joewhaley $
  * @see com.github.javabdd.BDDFactory#extDomain(int[])
@@ -43,7 +43,7 @@ public abstract class BDDDomain {
 
     /**
      * Default constructor.
-     * 
+     *
      * @param index index of this domain
      * @param range size of this domain
      */
@@ -93,7 +93,7 @@ public abstract class BDDDomain {
      * Returns what corresponds to a disjunction of all possible values of this domain. This is more efficient than
      * doing ithVar(0) OR ithVar(1) ... explicitly for all values in the domain.
      * </p>
-     * 
+     *
      * <p>
      * Compare to fdd_domain.
      * </p>
@@ -117,7 +117,7 @@ public abstract class BDDDomain {
 
     /**
      * Returns the size of the domain for this finite domain block.
-     * 
+     *
      * Compare to fdd_domainsize.
      */
     public BigInteger size() {
@@ -182,9 +182,9 @@ public abstract class BDDDomain {
 
     /**
      * Builds a BDD which is true for all the possible assignments to the variable blocks that makes the blocks equal.
-     * 
+     *
      * Compare to fdd_equals/fdd_equ.
-     * 
+     *
      * @param that
      * @return BDD
      */
@@ -212,9 +212,9 @@ public abstract class BDDDomain {
 
     /**
      * Returns the variable set that contains the variables used to define this finite domain block.
-     * 
+     *
      * Compare to fdd_ithset.
-     * 
+     *
      * @return BDDVarSet
      */
     public BDDVarSet set() {
@@ -223,9 +223,9 @@ public abstract class BDDDomain {
 
     /**
      * Returns the BDD that defines the given value for this finite domain block.
-     * 
+     *
      * Compare to fdd_ithvar.
-     * 
+     *
      * @return BDD
      */
     public BDD ithVar(long val) {
@@ -253,7 +253,7 @@ public abstract class BDDDomain {
 
     /**
      * Returns the BDD that defines the given range of values, inclusive, for this finite domain block.
-     * 
+     *
      * @return BDD
      */
     public BDD varRange(long lo, long hi) {
@@ -289,9 +289,9 @@ public abstract class BDDDomain {
 
     /**
      * Returns the number of BDD variables used for this finite domain block.
-     * 
+     *
      * Compare to fdd_varnum.
-     * 
+     *
      * @return int
      */
     public int varNum() {
@@ -300,9 +300,9 @@ public abstract class BDDDomain {
 
     /**
      * Returns an integer array containing the indices of the BDD variables used to define this finite domain.
-     * 
+     *
      * Compare to fdd_vars.
-     * 
+     *
      * @return int[]
      */
     public int[] vars() {
@@ -333,7 +333,7 @@ public abstract class BDDDomain {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     public String toString() {

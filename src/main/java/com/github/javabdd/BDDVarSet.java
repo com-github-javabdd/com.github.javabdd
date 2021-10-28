@@ -11,7 +11,7 @@ package com.github.javabdd;
  * Some BDD methods, namely <tt>exist()</tt>, <tt>forall()</tt>, <tt>unique()</tt>, <tt>relprod()</tt>,
  * <tt>applyAll()</tt>, <tt>applyEx()</tt>, <tt>applyUni()</tt>, and <tt>satCount()</tt> take a BDDVarSet argument.
  * </p>
- * 
+ *
  * @author jwhaley
  * @version $Id$
  */
@@ -20,7 +20,7 @@ public abstract class BDDVarSet {
      * <p>
      * Returns the factory that created this BDDVarSet.
      * </p>
-     * 
+     *
      * @return factory that created this BDDVarSet
      */
     public abstract BDDFactory getFactory();
@@ -58,11 +58,11 @@ public abstract class BDDVarSet {
      * Scans this BDD and copies the stored variables into an array of BDDDomains. The domains returned are guaranteed
      * to be in ascending order.
      * </p>
-     * 
+     *
      * <p>
      * Compare to fdd_scanset.
      * </p>
-     * 
+     *
      * @return int[]
      */
     public BDDDomain[] getDomains() {
@@ -114,7 +114,7 @@ public abstract class BDDVarSet {
      * Returns a new BDDVarSet that is the union of the current BDDVarSet and the given BDDVarSet. This constructs a new
      * set; neither the current nor the given BDDVarSet is modified.
      * </p>
-     * 
+     *
      * @param b BDDVarSet to union with
      * @return a new BDDVarSet that is the union of the two sets
      */
@@ -125,7 +125,7 @@ public abstract class BDDVarSet {
      * Returns a new BDDVarSet that is the union of the current BDDVarSet and the given variable. This constructs a new
      * set; the current BDDVarSet is not modified.
      * </p>
-     * 
+     *
      * @param var variable to add to set
      * @return a new BDDVarSet that includes the given variable
      */
@@ -136,7 +136,7 @@ public abstract class BDDVarSet {
      * Modifies this BDDVarSet to include all of the vars in the given set. This modifies the current set in place and
      * consumes the given set.
      * </p>
-     * 
+     *
      * @param b BDDVarSet to union in
      * @return this
      */
@@ -146,7 +146,7 @@ public abstract class BDDVarSet {
      * <p>
      * Modifies this BDDVarSet to include the given variable. This modifies the current set in place.
      * </p>
-     * 
+     *
      * @param var variable to add to set
      * @return this
      */
@@ -157,7 +157,7 @@ public abstract class BDDVarSet {
      * Returns a new BDDVarSet that is the union of the current BDDVarSet and the given BDDVarSet. This constructs a new
      * set; neither the current nor the given BDDVarSet is modified.
      * </p>
-     * 
+     *
      * @param b BDDVarSet to union with
      * @return a new BDDVarSet that is the union of the two sets
      */
@@ -168,7 +168,7 @@ public abstract class BDDVarSet {
      * Modifies this BDDVarSet to include all of the vars in the given set. This modifies the current set in place and
      * consumes the given set.
      * </p>
-     * 
+     *
      * @param b BDDVarSet to union in
      * @return this
      */
@@ -176,14 +176,14 @@ public abstract class BDDVarSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     public abstract int hashCode();
 
     /**
      * Returns true if the sets are equal.
-     * 
+     *
      * @param that other set
      * @return true if the sets are equal
      */
@@ -191,7 +191,7 @@ public abstract class BDDVarSet {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public final boolean equals(Object o) {
@@ -202,7 +202,7 @@ public abstract class BDDVarSet {
 
     /**
      * Default implementation of BDDVarSet based on BDDs.
-     * 
+     *
      * @author jwhaley
      * @version $Id$
      */
@@ -215,7 +215,7 @@ public abstract class BDDVarSet {
         /**
          * Construct a BDDVarSet backed by the given BDD. Ownership of the given BDD is transferred to this BDDVarSet,
          * so you should not touch it after construction!
-         * 
+         *
          * @param b BDD to use in constructing BDDVarSet
          */
         public DefaultImpl(BDD b) {
@@ -224,7 +224,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#free()
          */
         public void free() {
@@ -236,7 +236,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#getFactory()
          */
         public BDDFactory getFactory() {
@@ -245,7 +245,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#id()
          */
         public BDDVarSet id() {
@@ -254,7 +254,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#intersect(com.github.javabdd.BDDVarSet)
          */
         public BDDVarSet intersect(BDDVarSet s) {
@@ -264,7 +264,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#intersectWith(com.github.javabdd.BDDVarSet)
          */
         public BDDVarSet intersectWith(BDDVarSet s) {
@@ -276,7 +276,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#isEmpty()
          */
         public boolean isEmpty() {
@@ -285,7 +285,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#size()
          */
         public int size() {
@@ -305,7 +305,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#toArray()
          */
         public int[] toArray() {
@@ -326,7 +326,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#toBDD()
          */
         public BDD toBDD() {
@@ -335,7 +335,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#toLevelArray()
          */
         public int[] toLevelArray() {
@@ -356,7 +356,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#union(com.github.javabdd.BDDVarSet)
          */
         public BDDVarSet union(BDDVarSet s) {
@@ -366,7 +366,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#union(int)
          */
         public BDDVarSet union(int var) {
@@ -378,7 +378,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#unionWith(com.github.javabdd.BDDVarSet)
          */
         public BDDVarSet unionWith(BDDVarSet s) {
@@ -390,7 +390,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#unionWith(int)
          */
         public BDDVarSet unionWith(int var) {
@@ -400,7 +400,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#hashCode()
          */
         public int hashCode() {
@@ -409,7 +409,7 @@ public abstract class BDDVarSet {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDVarSet#equals(com.github.javabdd.BDDVarSet)
          */
         public boolean equals(BDDVarSet s) {

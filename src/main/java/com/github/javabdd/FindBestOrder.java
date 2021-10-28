@@ -15,7 +15,7 @@ import java.util.StringTokenizer;
 
 /**
  * FindBestOrder
- * 
+ *
  * @author jwhaley
  * @version $Id: FindBestOrder.java 452 2006-07-16 21:50:02Z joewhaley $
  */

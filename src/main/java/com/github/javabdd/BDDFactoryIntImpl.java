@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 /**
  * A shared superclass for BDD factories that refer to BDDs as ints.
- * 
+ *
  * @author jwhaley
  * @version $Id$
  */

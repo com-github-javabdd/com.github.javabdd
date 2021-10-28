@@ -17,7 +17,7 @@ import java.util.StringTokenizer;
 
 /**
  * TryVarOrder
- * 
+ *
  * @author jwhaley
  * @version $Id: TryVarOrder.java 452 2006-07-16 21:50:02Z joewhaley $
  */
@@ -32,7 +32,7 @@ public class TryVarOrder {
 
     /**
      * Initialize the named BDD factory under a new class loader.
-     * 
+     *
      * @param s BDD factory to initialize
      */
     void initBDDFactory(String s) {
@@ -104,7 +104,7 @@ public class TryVarOrder {
 
     /**
      * Make a domain in the BDD factory.
-     * 
+     *
      * @param c BDD factory class
      * @param name name of domain
      * @param bits bits in domain
@@ -311,7 +311,7 @@ public class TryVarOrder {
 
     /**
      * Initialize for a new trial. Takes the given input BDDs and saves them out to temporary files.
-     * 
+     *
      * @param b1 first input to applyEx
      * @param b2 second input to applyEx
      * @param dom third input to applyEx
@@ -365,7 +365,7 @@ public class TryVarOrder {
 
     /**
      * Write the BDD configuration to a file.
-     * 
+     *
      * @param bdd BDD factory
      * @param fileName filename
      * @throws IOException
@@ -386,7 +386,7 @@ public class TryVarOrder {
 
     /**
      * Try out a variable order.
-     * 
+     *
      * @param reverse whether to reverse the bits
      * @param varOrder variable order to try
      * @return time spent, or Long.MAX_VALUE if it didn't terminate

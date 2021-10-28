@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
  * This is a 100% Java implementation of the BDD factory. It is based on the C source code for BuDDy. As such, the
  * implementation is very ugly, but it works. Like BuDDy, it uses a reference counting scheme for garbage collection.
  * </p>
- * 
+ *
  * @author John Whaley
  * @version $Id: JFactory.java 480 2010-11-16 01:29:49Z robimalik $
  */
@@ -51,7 +51,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.github.javabdd.BDDFactory#init(int, int)
      */
     public static BDDFactory init(int nodenum, int cachesize) {
@@ -76,7 +76,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDPairing#set(int, int)
          */
         public void set(int oldvar, int newvar) {
@@ -85,7 +85,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDPairing#set(int, com.github.javabdd.BDD)
          */
         public void set(int oldvar, BDD newvar) {
@@ -94,7 +94,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.github.javabdd.BDDPairing#reset()
          */
         public void reset() {
@@ -129,7 +129,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.github.javabdd.BDDFactory#makePair()
      */
     public BDDPairing makePair() {
@@ -549,7 +549,7 @@ public class JFactory extends BDDFactoryIntImpl {
     /**
      * Use this function to translate BDD's from a JavaFactory into its clone. This will only work immediately after
      * cloneFactory() is called, and before any other BDD operations are performed.
-     * 
+     *
      * @param that BDD in old factory
      * @return a BDD in the new factory
      */
@@ -659,7 +659,7 @@ public class JFactory extends BDDFactoryIntImpl {
      * <p>
      * Set the variable order to be the given list of domains.
      * </p>
-     * 
+     *
      * @param domains domain order
      */
     public void setVarOrder(List domains) {

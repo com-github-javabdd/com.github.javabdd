@@ -6,7 +6,7 @@ package com.github.javabdd;
 
 /**
  * An exception caused by an invalid BDD operation.
- * 
+ *
  * @author John Whaley
  * @version $Id: BDDException.java 383 2005-04-29 06:43:31Z joewhaley $
  */
