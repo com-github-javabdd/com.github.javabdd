@@ -13,6 +13,12 @@ All notable changes to this project will be documented in this file.
 * Added functionality to reset statistics.
 * Removed `MicroFactory`, `UberMicroFactory`, `TypedBDDFactory` and `TestBDDFactory`.
 * Upgrade to Java 11. Java 11 is now required to use this library.
+* Cleaned up source formatting, warnings, etc.
+* Enabled Checkstyle static code checks.
+* Fixed operation cache hashing.
+* Various other small code improvements.
+* Most stdout printing now disabled by default.
+* Removed `BDDFactory.getVersion`.
 
 ## [1.0.1] - 2020-03-17
 * Updated SCM URL for proper Maven Central metadata.
