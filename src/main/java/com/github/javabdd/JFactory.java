@@ -2496,7 +2496,7 @@ public class JFactory extends BDDFactoryIntImpl {
             return bddfalse;
         }
 
-        if (var < 2) {/* Empty set */
+        if (var < 2) { /* Empty set */
             return bdd_apply(l, r, opr);
         }
 
@@ -3306,7 +3306,7 @@ public class JFactory extends BDDFactoryIntImpl {
         CHECKa(r, bddfalse);
         CHECKa(var, bddfalse);
 
-        if (var < 2) {/* Empty set */
+        if (var < 2) { /* Empty set */
             return r;
         }
 
@@ -3358,7 +3358,7 @@ public class JFactory extends BDDFactoryIntImpl {
         CHECKa(r, bddfalse);
         CHECKa(var, bddfalse);
 
-        if (var < 2) {/* Empty set */
+        if (var < 2) { /* Empty set */
             return r;
         }
 
@@ -3406,7 +3406,7 @@ public class JFactory extends BDDFactoryIntImpl {
         CHECKa(r, bddfalse);
         CHECKa(var, bddfalse);
 
-        if (var < 2) {/* Empty set */
+        if (var < 2) { /* Empty set */
             return r;
         }
 
@@ -3451,7 +3451,7 @@ public class JFactory extends BDDFactoryIntImpl {
         CHECKa(r, bddfalse);
         CHECKa(var, bddfalse);
 
-        if (var < 2) {/* Empty set */
+        if (var < 2) { /* Empty set */
             return r;
         }
 
@@ -3766,7 +3766,7 @@ public class JFactory extends BDDFactoryIntImpl {
             return bddfalse;
         }
 
-        if (var < 2) {/* Empty set */
+        if (var < 2) { /* Empty set */
             return bdd_apply(l, r, opr);
         }
 
@@ -3825,7 +3825,7 @@ public class JFactory extends BDDFactoryIntImpl {
             return bddfalse;
         }
 
-        if (var < 2) {/* Empty set */
+        if (var < 2) { /* Empty set */
             return bdd_apply(l, r, opr);
         }
 
@@ -4299,7 +4299,8 @@ public class JFactory extends BDDFactoryIntImpl {
     int bdd_addref(int root) {
         if (root == INVALID_BDD) {
             bdd_error(BDD_BREAK);
-            /* distinctive */}
+            /* distinctive */
+        }
         if (root < 2 || !bddrunning) {
             return root;
         }
@@ -4349,7 +4350,8 @@ public class JFactory extends BDDFactoryIntImpl {
 
         if (root == INVALID_BDD) {
             bdd_error(BDD_BREAK);
-            /* distinctive */}
+            /* distinctive */
+        }
         if (root < 2 || !bddrunning) {
             return root;
         }
@@ -4363,7 +4365,8 @@ public class JFactory extends BDDFactoryIntImpl {
         /* if the following line is present, fails there much earlier */
         if (!HASREF(root)) {
             bdd_error(BDD_BREAK);
-            /* distinctive */}
+            /* distinctive */
+        }
 
         DECREF(root);
         if (false) {
