@@ -354,6 +354,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
      * modified in response to the operation.
      *
      * @param set the bit set to be ORed with
+     * @param bit set of bits
      * @return modified
      */
     public boolean or_upTo(BitString set, int bit) {
@@ -625,6 +626,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Returns the number of ones in this <code>BitString</code> up to a given index.
      *
+     * @param where given index
      * @return number of bits set.
      */
     public int numberOfOnes(int where) {
@@ -700,6 +702,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Returns an iterator that iterates through the bits in backward order, starting at the given index.
      *
+     * @param i given index
      * @return an iterator
      */
     public BackwardBitStringIterator backwardsIterator(int i) {
