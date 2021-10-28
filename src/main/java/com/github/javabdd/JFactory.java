@@ -38,6 +38,10 @@ public class JFactory extends BDDFactoryIntImpl {
 
     static final boolean VERIFY_ASSERTIONS = false;
 
+    static final boolean DO_BDD_VALIDATE = false;
+
+    static final boolean PRE_INIT_OP_CACHES = false;
+
     static final boolean SWAPCOUNT = false;
 
     public static final String REVISION = "$Revision: 480 $";
@@ -1946,7 +1950,7 @@ public class JFactory extends BDDFactoryIntImpl {
         }
 
         checkresize();
-        if (false) {
+        if (DO_BDD_VALIDATE) {
             bdd_validate(res);
         }
         return res;
@@ -3345,7 +3349,7 @@ public class JFactory extends BDDFactoryIntImpl {
         }
 
         checkresize();
-        if (false) {
+        if (DO_BDD_VALIDATE) {
             bdd_validate(res);
         }
         return res;
@@ -4754,7 +4758,7 @@ public class JFactory extends BDDFactoryIntImpl {
     boolean satPolarity;
 
     void bdd_operator_init(int cachesize) {
-        if (false) {
+        if (PRE_INIT_OP_CACHES) {
             applycache = BddCacheI_init(cachesize);
             itecache = BddCacheI_init(cachesize);
             quantcache = BddCacheI_init(cachesize);

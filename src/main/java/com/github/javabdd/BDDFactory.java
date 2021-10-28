@@ -2360,7 +2360,7 @@ public abstract class BDDFactory {
                 throw new BDDException("Base object for callback method is the wrong type");
             }
         }
-        if (false) {
+        if (DEBUG) {
             Class[] params = m.getParameterTypes();
             if (params.length != 1 || params[0] != int.class) {
                 throw new BDDException("Wrong signature for callback");
