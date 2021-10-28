@@ -3,6 +3,10 @@
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
 package com.github.javabdd;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,10 +16,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.PrintStream;
 
 /**
  * <p>This is a 100% Java implementation of the BDD factory.  It is based on

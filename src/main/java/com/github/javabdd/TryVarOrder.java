@@ -3,7 +3,6 @@
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
 package com.github.javabdd;
 
-import java.util.StringTokenizer;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,6 +12,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.util.StringTokenizer;
 
 /**
  * TryVarOrder

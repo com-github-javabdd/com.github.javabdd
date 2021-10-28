@@ -3,13 +3,13 @@
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
 package com.github.javabdd;
 
+import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import java.io.PrintStream;
-import java.math.BigInteger;
 
 /**
  * <p>Binary Decision Diagrams (BDDs) are used for efficient computation of many

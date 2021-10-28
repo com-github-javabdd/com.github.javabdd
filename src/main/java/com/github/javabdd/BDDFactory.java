@@ -3,15 +3,6 @@
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
 package com.github.javabdd;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -22,6 +13,15 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigInteger;
 import java.security.AccessControlException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.BitSet;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
  * <p>Interface for the creation and manipulation of BDDs.</p>
