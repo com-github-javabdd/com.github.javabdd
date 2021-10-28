@@ -2097,6 +2097,7 @@ public abstract class BDDFactory {
      */
     protected BDDBitVector createBitVector(int a) {
         return new BDDBitVector(a) {
+            @Override
             public BDDFactory getFactory() {
                 return BDDFactory.this;
             }
@@ -2314,7 +2315,7 @@ public abstract class BDDFactory {
         if (reorder_callbacks == null) {
             bdd_default_reohandler(b, s);
         } else {
-            doCallbacks(reorder_callbacks, new Boolean(b), s);
+            doCallbacks(reorder_callbacks, b, s);
         }
     }
 

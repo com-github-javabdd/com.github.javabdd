@@ -691,9 +691,6 @@ public final class BitString implements Cloneable, java.io.Serializable {
          */
         public abstract int nextIndex();
 
-        /**
-         * @see java.util.Iterator#next()
-         */
         @Override
         public final Object next() {
             return nextIndex();
@@ -717,9 +714,6 @@ public final class BitString implements Cloneable, java.io.Serializable {
             t = bits[0];
         }
 
-        /**
-         * @see java.util.Iterator#hasNext()
-         */
         @Override
         public boolean hasNext() {
             while (t == 0) {
@@ -732,9 +726,6 @@ public final class BitString implements Cloneable, java.io.Serializable {
             return true;
         }
 
-        /**
-         * @see java.util.Iterator#hasNext()
-         */
         @Override
         public int nextIndex() {
             while (t == 0) {
@@ -766,9 +757,6 @@ public final class BitString implements Cloneable, java.io.Serializable {
             t = ~bits[0];
         }
 
-        /**
-         * @see java.util.Iterator#hasNext()
-         */
         @Override
         public boolean hasNext() {
             while (t == 0) {
@@ -781,9 +769,6 @@ public final class BitString implements Cloneable, java.io.Serializable {
             return true;
         }
 
-        /**
-         * @see java.util.Iterator#hasNext()
-         */
         @Override
         public int nextIndex() {
             while (t == 0) {
@@ -819,9 +804,6 @@ public final class BitString implements Cloneable, java.io.Serializable {
             k = j << BITS_PER_UNIT;
         }
 
-        /**
-         * @see java.util.Iterator#hasNext()
-         */
         @Override
         public boolean hasNext() {
             while (t == 0) {
@@ -834,9 +816,6 @@ public final class BitString implements Cloneable, java.io.Serializable {
             return true;
         }
 
-        /**
-         * @see java.util.Iterator#hasNext()
-         */
         @Override
         public int nextIndex() {
             while (t == 0) {

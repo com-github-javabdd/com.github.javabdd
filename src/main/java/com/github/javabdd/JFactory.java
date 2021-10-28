@@ -5102,8 +5102,8 @@ public class JFactory extends BDDFactoryIntImpl {
 
     int pairsid; /* Pair identifier */
 
-    /*************************************************************************
-    *************************************************************************/
+    //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
 
     void bdd_pairs_init() {
         pairsid = 0;
@@ -5803,6 +5803,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
         /* Sort according to the number of nodes at each level */
         Arrays.sort(p, 0, num, new Comparator() {
+            @Override
             public int compare(Object o1, Object o2) {
                 return siftTestCmp(o1, o2);
             }
@@ -6003,6 +6004,7 @@ public class JFactory extends BDDFactoryIntImpl {
         return (100 * (usednum_before - usednum_after)) / usednum_before;
     }
 
+    @Override
     public void done() {
         bdd_add_perf_stats();
 
