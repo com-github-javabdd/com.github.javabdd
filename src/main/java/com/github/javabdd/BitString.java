@@ -10,17 +10,23 @@ import java.util.Iterator;
  * <code>BitString</code> implements a vector of bits much like <code>java.util.BitSet</code>, except that this
  * implementation actually works. Also, <code>BitString</code> has some groovy features which <code>BitSet</code>
  * doesn't; mostly related to efficient iteration over <code>true</code> and <code>false</code> components.
+ *
  * <p>
  * Each component of the <code>BitString</code> has a boolean value. The bits of a <code>BitString</code> are indexed by
  * non-negative integers (that means they are zero-based, of course). Individual indexed bits can be examined, set, or
  * cleared. One <code>BitString</code> may be used to modify the contents of another <code>BitString</code> through
  * logical AND, logical inclusive OR, and logical exclusive OR operations.
+ * </p>
+ *
  * <p>
  * By default, all bits in the set initially have the value <code>false</code>.
+ * </p>
+ *
  * <p>
  * Every bit set has a current size, which is the number of bits of space currently in use by the bit set. Note that the
  * size is related to the implementation of a bit set, so it may change with implementation. The length of a bit set
  * related to the logical length of a bit set and is defined independently of implementation.
+ * </p>
  *
  * @author John Whaley
  * @version $Id: BitString.java 2279 2005-05-28 10:24:54Z joewhaley $

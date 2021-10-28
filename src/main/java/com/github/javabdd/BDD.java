@@ -1185,7 +1185,7 @@ public abstract class BDD {
         /**
          * <p>
          * Returns true if the BDD variables in the given BDD domain are all dont-care's.
-         * <p>
+         * </p>
          *
          * @param d domain to check
          * @return if the variables are all dont-cares

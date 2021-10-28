@@ -344,9 +344,11 @@ public abstract class BDDDomain {
     /**
      * Convert a BDD that to a list of indices of this domain. This method assumes that the BDD passed is a disjunction
      * of ithVar(i_1) to ithVar(i_k). It returns an array of length 'k' with elements [i_1,...,i_k].
+     *
      * <p>
      * Be careful when using this method for BDDs with a large number of entries, as it allocates a BigInteger[] array
      * of dimension k.
+     * </p>
      *
      * @param bdd bdd that is the disjunction of domain indices
      * @see #getVarIndices(BDD,int)
