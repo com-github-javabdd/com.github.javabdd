@@ -193,7 +193,6 @@ public abstract class BDDDomain {
      * Compare to fdd_equals/fdd_equ.
      * </p>
      *
-     * @param that
      * @return BDD
      */
     public BDD buildEquals(BDDDomain that) {

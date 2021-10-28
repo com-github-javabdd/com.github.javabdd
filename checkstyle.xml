@@ -201,8 +201,14 @@ JavaBDD Checkstyle.
     <module name="ModifiedControlVariable">
       <property name="skipEnhancedForLoopVariable" value="true"/>
     </module>
-    <module name="NoClone"/>
-    <module name="NoFinalizer"/>
+    <module name="NoClone">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
+    <module name="NoFinalizer">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
     <module name="PackageDeclaration">
       <message key="missing.package.declaration" value="Avoid the default package."/>
     </module>

@@ -111,7 +111,7 @@ public class TryVarOrder {
      * @param c BDD factory class
      * @param name name of domain
      * @param bits bits in domain
-     * @throws Exception
+     * @throws Exception In case of an error.
      */
     static void makeDomain(Class c, String name, int bits) throws Exception {
         Method m = c.getMethod("extDomain", new Class[] {long[].class});
@@ -319,7 +319,7 @@ public class TryVarOrder {
      * @param b2 second input to applyEx
      * @param dom third input to applyEx
      * @param op operation to be passed to applyEx
-     * @throws IOException
+     * @throws IOException In case of an I/O error.
      */
     public void init(BDD b1, BDD b2, BDD dom, BDDFactory.BDDOp op) throws IOException {
         this.op = op;
@@ -371,7 +371,7 @@ public class TryVarOrder {
      *
      * @param bdd BDD factory
      * @param fileName filename
-     * @throws IOException
+     * @throws IOException In case of an I/O error.
      */
     public void writeBDDConfig(BDDFactory bdd, String fileName) throws IOException {
         BufferedWriter dos = null;
