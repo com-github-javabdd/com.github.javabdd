@@ -71,14 +71,6 @@ public abstract class BDDFactory {
     try {
      if (bddpackage.equals("j") || bddpackage.equals("java")) {
 	return JFactory.init(nodenum, cachesize);
-      } else if (bddpackage.equals("u")) {
-	return UberMicroFactory.init(nodenum, cachesize);
-      } else if (bddpackage.equals("micro")) {
-	return MicroFactory.init(nodenum, cachesize);
-      } else if (bddpackage.equals("test")) {
-	return TestBDDFactory.init(nodenum, cachesize);
-      } else if (bddpackage.equals("typed")) {
-	return TypedBDDFactory.init(nodenum, cachesize);
       } else if (bddpackage.equals("zdd")) {
 	BDDFactory bdd = JFactory.init(nodenum, cachesize);
 	((JFactory)bdd).ZDD = true;
