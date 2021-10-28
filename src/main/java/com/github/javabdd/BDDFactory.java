@@ -1,6 +1,7 @@
 // BDDFactory.java, created Jan 29, 2003 9:50:57 PM by jwhaley
 // Copyright (C) 2003 John Whaley
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
+
 package com.github.javabdd;
 
 import java.io.BufferedReader;
@@ -24,7 +25,9 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
- * <p>Interface for the creation and manipulation of BDDs.</p>
+ * <p>
+ * Interface for the creation and manipulation of BDDs.
+ * </p>
  * 
  * @see com.github.javabdd.BDD
  * 
@@ -32,7 +35,6 @@ import java.util.StringTokenizer;
  * @version $Id: BDDFactory.java 480 2010-11-16 01:29:49Z robimalik $
  */
 public abstract class BDDFactory {
-
     public static final String getProperty(String key, String def) {
         try {
             return System.getProperty(key, def);
@@ -40,10 +42,12 @@ public abstract class BDDFactory {
             return def;
         }
     }
-    
+
     /**
-     * <p>Initializes a BDD factory with the given initial node table size
-     * and operation cache size.  Uses the "java" factory.</p>
+     * <p>
+     * Initializes a BDD factory with the given initial node table size and operation cache size. Uses the "java"
+     * factory.
+     * </p>
      * 
      * @param nodenum initial node table size
      * @param cachesize operation cache size
@@ -55,185 +59,219 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>Initializes a BDD factory of the given type with the given initial
-     * node table size and operation cache size.  The type is a string that
-     * can be "j", "java", "test", "typed", or
-     * a name of a class that has an init() method that returns a BDDFactory.
-     * If it fails, it falls back to the "java" factory.</p>
+     * <p>
+     * Initializes a BDD factory of the given type with the given initial node table size and operation cache size. The
+     * type is a string that can be "j", "java", "test", "typed", or a name of a class that has an init() method that
+     * returns a BDDFactory. If it fails, it falls back to the "java" factory.
+     * </p>
      * 
      * @param bddpackage BDD package string identifier
      * @param nodenum initial node table size
      * @param cachesize operation cache size
      * @return BDD factory object
      */
-  public static BDDFactory init(String bddpackage, int nodenum, int cachesize)
-  {
-    try {
-     if (bddpackage.equals("j") || bddpackage.equals("java")) {
-	return JFactory.init(nodenum, cachesize);
-      } else if (bddpackage.equals("zdd")) {
-	BDDFactory bdd = JFactory.init(nodenum, cachesize);
-	((JFactory)bdd).ZDD = true;
-	return bdd;
-      } else {
-	System.err.println("Unknown BDD package: " + bddpackage);
-      }
-    } catch (LinkageError e) {
-      System.err.println("Could not load BDD package "+ bddpackage +
-			 ": " + e.getLocalizedMessage());
+    public static BDDFactory init(String bddpackage, int nodenum, int cachesize) {
+        try {
+            if (bddpackage.equals("j") || bddpackage.equals("java")) {
+                return JFactory.init(nodenum, cachesize);
+            } else if (bddpackage.equals("zdd")) {
+                BDDFactory bdd = JFactory.init(nodenum, cachesize);
+                ((JFactory)bdd).ZDD = true;
+                return bdd;
+            } else {
+                System.err.println("Unknown BDD package: " + bddpackage);
+            }
+        } catch (LinkageError e) {
+            System.err.println("Could not load BDD package " + bddpackage + ": " + e.getLocalizedMessage());
+        }
+        try {
+            Class c = Class.forName(bddpackage);
+            Method m = c.getMethod("init", new Class[] {int.class, int.class});
+            return (BDDFactory)m.invoke(null, new Object[] {new Integer(nodenum), new Integer(cachesize)});
+        } catch (ClassNotFoundException e) {
+        } catch (NoSuchMethodException e) {
+        } catch (IllegalAccessException e) {
+        } catch (InvocationTargetException e) {
+        }
+        // falling back to default java implementation.
+        return JFactory.init(nodenum, cachesize);
     }
-    try {
-      Class c = Class.forName(bddpackage);
-      Method m = c.getMethod("init", new Class[] { int.class, int.class });
-      return (BDDFactory) m.invoke(null, new Object[]
-	{ new Integer(nodenum), new Integer(cachesize) });
-    }
-    catch (ClassNotFoundException e) {}
-    catch (NoSuchMethodException e) {}
-    catch (IllegalAccessException e) {}
-    catch (InvocationTargetException e) {}
-    // falling back to default java implementation.
-    return JFactory.init(nodenum, cachesize);
-  }
 
     /**
      * Logical 'and'.
      */
-    public static final BDDOp and   = new BDDOp(0, "and");
-    
+    public static final BDDOp and = new BDDOp(0, "and");
+
     /**
      * Logical 'xor'.
      */
-    public static final BDDOp xor   = new BDDOp(1, "xor");
-    
+    public static final BDDOp xor = new BDDOp(1, "xor");
+
     /**
      * Logical 'or'.
      */
-    public static final BDDOp or    = new BDDOp(2, "or");
-    
+    public static final BDDOp or = new BDDOp(2, "or");
+
     /**
      * Logical 'nand'.
      */
-    public static final BDDOp nand  = new BDDOp(3, "nand");
-    
+    public static final BDDOp nand = new BDDOp(3, "nand");
+
     /**
      * Logical 'nor'.
      */
-    public static final BDDOp nor   = new BDDOp(4, "nor");
-    
+    public static final BDDOp nor = new BDDOp(4, "nor");
+
     /**
      * Logical 'implication'.
      */
-    public static final BDDOp imp   = new BDDOp(5, "imp");
-    
+    public static final BDDOp imp = new BDDOp(5, "imp");
+
     /**
      * Logical 'bi-implication'.
      */
     public static final BDDOp biimp = new BDDOp(6, "biimp");
-    
+
     /**
      * Set difference.
      */
-    public static final BDDOp diff  = new BDDOp(7, "diff");
-    
+    public static final BDDOp diff = new BDDOp(7, "diff");
+
     /**
      * Less than.
      */
-    public static final BDDOp less  = new BDDOp(8, "less");
-    
+    public static final BDDOp less = new BDDOp(8, "less");
+
     /**
      * Inverse implication.
      */
     public static final BDDOp invimp = new BDDOp(9, "invimp");
 
     /**
-     * <p>Enumeration class for binary operations on BDDs.  Use the static
-     * fields in BDDFactory to access the different binary operations.</p>
+     * <p>
+     * Enumeration class for binary operations on BDDs. Use the static fields in BDDFactory to access the different
+     * binary operations.
+     * </p>
      */
     public static class BDDOp {
-        final int id; final String name;
+        final int id;
+
+        final String name;
+
         private BDDOp(int id, String name) {
             this.id = id;
             this.name = name;
         }
+
         public String toString() {
             return name;
         }
     }
-    
+
     /**
-     * <p>Construct a new BDDFactory.</p>
+     * <p>
+     * Construct a new BDDFactory.
+     * </p>
      */
     protected BDDFactory() {
         String s = this.getClass().toString();
         if (false) {
-            s = s.substring(s.lastIndexOf('.')+1);
-            System.out.println("Using BDD package: "+s);
+            s = s.substring(s.lastIndexOf('.') + 1);
+            System.out.println("Using BDD package: " + s);
         }
     }
-    
+
     /**
-     * <p>Returns true if this is a ZDD factory, false otherwise.</p>
+     * <p>
+     * Returns true if this is a ZDD factory, false otherwise.
+     * </p>
      */
-    public boolean isZDD() { return false; }
-    
+    public boolean isZDD() {
+        return false;
+    }
+
     /**
-     * <p>Get the constant false BDD.</p>
+     * <p>
+     * Get the constant false BDD.
+     * </p>
      * 
-     * <p>Compare to bdd_false.</p>
+     * <p>
+     * Compare to bdd_false.
+     * </p>
      */
     public abstract BDD zero();
-    
+
     /**
-     * <p>Get the constant true BDD.</p>
+     * <p>
+     * Get the constant true BDD.
+     * </p>
      * 
-     * <p>Compare to bdd_true.</p>
+     * <p>
+     * Compare to bdd_true.
+     * </p>
      */
     public abstract BDD one();
-    
+
     /**
-     * <p>Get the constant universe BDD.
-     * (The universe BDD differs from the one BDD in ZDD mode.)</p>
+     * <p>
+     * Get the constant universe BDD. (The universe BDD differs from the one BDD in ZDD mode.)
+     * </p>
      * 
-     * <p>Compare to bdd_true.</p>
+     * <p>
+     * Compare to bdd_true.
+     * </p>
      */
-    public BDD universe() { return one(); }
-    
+    public BDD universe() {
+        return one();
+    }
+
     /**
-     * <p>Get an empty BDDVarSet.</p>
+     * <p>
+     * Get an empty BDDVarSet.
+     * </p>
      * 
-     * <p>Compare to bdd_true.</p>
+     * <p>
+     * Compare to bdd_true.
+     * </p>
      */
     public BDDVarSet emptySet() {
         return new BDDVarSet.DefaultImpl(one());
     }
-    
+
     /**
-     * <p>Build a cube from an array of variables.</p>
+     * <p>
+     * Build a cube from an array of variables.
+     * </p>
      * 
-     * <p>Compare to bdd_buildcube.</p>
+     * <p>
+     * Compare to bdd_buildcube.
+     * </p>
      */
-    public BDD buildCube(int value, List/*<BDD>*/ variables) {
+    public BDD buildCube(int value, List/* <BDD> */ variables) {
         BDD result = universe();
         Iterator i = variables.iterator();
-        //int z = 0;
+        // int z = 0;
         while (i.hasNext()) {
-            BDD var = (BDD) i.next();
+            BDD var = (BDD)i.next();
             if ((value & 0x1) != 0)
                 var = var.id();
             else
                 var = var.not();
             result.andWith(var);
-            //++z;
+            // ++z;
             value >>= 1;
         }
         return result;
     }
-    
+
     /**
-     * <p>Build a cube from an array of variables.</p>
+     * <p>
+     * Build a cube from an array of variables.
+     * </p>
      * 
-     * <p>Compare to bdd_ibuildcube.</p>
+     * <p>
+     * Compare to bdd_ibuildcube.
+     * </p>
      */
     public BDD buildCube(int value, int[] variables) {
         BDD result = universe();
@@ -247,30 +285,32 @@ public abstract class BDDFactory {
         }
         return result;
     }
-    
+
     /**
-     * <p>Builds a BDD variable set from an integer array.  The integer array
-     * <tt>varset</tt> holds the variable numbers.  The BDD variable set is
-     * represented by a conjunction of all the variables in their positive
-     * form.</p>
+     * <p>
+     * Builds a BDD variable set from an integer array. The integer array <tt>varset</tt> holds the variable numbers.
+     * The BDD variable set is represented by a conjunction of all the variables in their positive form.
+     * </p>
      * 
-     * <p>Compare to bdd_makeset.</p>
+     * <p>
+     * Compare to bdd_makeset.
+     * </p>
      */
     public BDDVarSet makeSet(int[] varset) {
         BDDVarSet res = emptySet();
         int varnum = varset.length;
-        for (int v = varnum-1; v >= 0; --v) {
+        for (int v = varnum - 1; v >= 0; --v) {
             res.unionWith(varset[v]);
         }
         return res;
     }
-    
-    
-    
+
     /**** STARTUP / SHUTDOWN ****/
-    
+
     /**
-     * <p>Compare to bdd_init.</p>
+     * <p>
+     * Compare to bdd_init.
+     * </p>
      * 
      * @param nodenum the initial number of BDD nodes
      * @param cachesize the size of caches used by the BDD operators
@@ -278,18 +318,23 @@ public abstract class BDDFactory {
     protected abstract void initialize(int nodenum, int cachesize);
 
     /**
-     * <p>Returns true if this BDD factory is initialized, false otherwise.</p>
+     * <p>
+     * Returns true if this BDD factory is initialized, false otherwise.
+     * </p>
      * 
-     * <p>Compare to bdd_isrunning.</p>
+     * <p>
+     * Compare to bdd_isrunning.
+     * </p>
      * 
-     * @return  true if this BDD factory is initialized
+     * @return true if this BDD factory is initialized
      */
     public abstract boolean isInitialized();
 
     /**
-     * <p>Reset the BDD factory to its initial state.  Everything
-     * is reallocated from scratch.  This is like calling done()
-     * followed by initialize().</p>
+     * <p>
+     * Reset the BDD factory to its initial state. Everything is reallocated from scratch. This is like calling done()
+     * followed by initialize().
+     * </p>
      */
     public void reset() {
         int nodes = getNodeTableSize();
@@ -300,186 +345,234 @@ public abstract class BDDFactory {
         done();
         initialize(nodes, cache);
     }
-    
+
     /**
-     * <p>This function frees all memory used by the BDD
-     * package and resets the package to its uninitialized state.
-     * The BDD package is no longer usable after this call.</p>
+     * <p>
+     * This function frees all memory used by the BDD package and resets the package to its uninitialized state. The BDD
+     * package is no longer usable after this call.
+     * </p>
      * 
-     * <p>Compare to bdd_done.</p>
+     * <p>
+     * Compare to bdd_done.
+     * </p>
      */
     public abstract void done();
-    
+
     /**
-     * <p>Sets the error condition.  This will cause the BDD package to throw an
-     * exception at the next garbage collection.</p>
+     * <p>
+     * Sets the error condition. This will cause the BDD package to throw an exception at the next garbage collection.
+     * </p>
      * 
-     * @param code  the error code to set
+     * @param code the error code to set
      */
     public abstract void setError(int code);
-    
+
     /**
-     * <p>Clears any outstanding error condition.</p>
+     * <p>
+     * Clears any outstanding error condition.
+     * </p>
      */
     public abstract void clearError();
-    
-    
-    
+
     /**** CACHE/TABLE PARAMETERS ****/
-    
+
     /**
-     * <p>Set the maximum available number of BDD nodes.</p>
+     * <p>
+     * Set the maximum available number of BDD nodes.
+     * </p>
      * 
-     * <p>Compare to bdd_setmaxnodenum.</p>
+     * <p>
+     * Compare to bdd_setmaxnodenum.
+     * </p>
      * 
-     * @param size  maximum number of nodes
+     * @param size maximum number of nodes
      * @return old value
      */
     public abstract int setMaxNodeNum(int size);
 
     /**
-     * <p>Set minimum percentage of nodes to be reclaimed after a garbage
-     * collection.  If this percentage is not reclaimed, the node table
-     * will be grown.  The range of x is 0..1.  The default is .20.</p>
+     * <p>
+     * Set minimum percentage of nodes to be reclaimed after a garbage collection. If this percentage is not reclaimed,
+     * the node table will be grown. The range of x is 0..1. The default is .20.
+     * </p>
      * 
-     * <p>Compare to bdd_setminfreenodes.</p>
+     * <p>
+     * Compare to bdd_setminfreenodes.
+     * </p>
      * 
-     * @param x  number from 0 to 1
+     * @param x number from 0 to 1
      * @return old value
      */
     public abstract double setMinFreeNodes(double x);
-    
+
     /**
-     * <p>Set maximum number of nodes by which to increase node table after
-     * a garbage collection.</p>
+     * <p>
+     * Set maximum number of nodes by which to increase node table after a garbage collection.
+     * </p>
      * 
-     * <p>Compare to bdd_setmaxincrease.</p>
+     * <p>
+     * Compare to bdd_setmaxincrease.
+     * </p>
      * 
-     * @param x  maximum number of nodes by which to increase node table
+     * @param x maximum number of nodes by which to increase node table
      * @return old value
      */
     public abstract int setMaxIncrease(int x);
-    
+
     /**
-     * <p>Set factor by which to increase node table after a garbage
-     * collection.  The amount of growth is still limited by
-     * <tt>setMaxIncrease()</tt>.</p>
+     * <p>
+     * Set factor by which to increase node table after a garbage collection. The amount of growth is still limited by
+     * <tt>setMaxIncrease()</tt>.
+     * </p>
      * 
-     * @param x  factor by which to increase node table after GC
+     * @param x factor by which to increase node table after GC
      * @return old value
      */
     public abstract double setIncreaseFactor(double x);
-    
+
     /**
-     * <p>Sets the cache ratio for the operator caches.  When the node table
-     * grows, operator caches will also grow to maintain the ratio.</p>
+     * <p>
+     * Sets the cache ratio for the operator caches. When the node table grows, operator caches will also grow to
+     * maintain the ratio.
+     * </p>
      * 
-     * <p>Compare to bdd_setcacheratio.</p>
+     * <p>
+     * Compare to bdd_setcacheratio.
+     * </p>
      * 
-     * @param x  cache ratio
+     * @param x cache ratio
      */
     public abstract double setCacheRatio(double x);
-    
+
     /**
-     * <p>Sets the node table size.</p>
+     * <p>
+     * Sets the node table size.
+     * </p>
      * 
-     * @param n  new size of table
+     * @param n new size of table
      * @return old size of table
      */
     public abstract int setNodeTableSize(int n);
-    
+
     /**
-     * <p>Sets cache size.</p>
+     * <p>
+     * Sets cache size.
+     * </p>
      * 
      * @return old cache size
      */
     public abstract int setCacheSize(int n);
-    
-    
-    
+
     /**** VARIABLE NUMBERS ****/
-    
+
     /**
-     * <p>Returns the number of defined variables.</p>
+     * <p>
+     * Returns the number of defined variables.
+     * </p>
      * 
-     * <p>Compare to bdd_varnum.</p>
+     * <p>
+     * Compare to bdd_varnum.
+     * </p>
      */
     public abstract int varNum();
-    
+
     /**
-     * <p>Set the number of used BDD variables.  It can be called more than one
-     * time, but only to increase the number of variables.</p>
+     * <p>
+     * Set the number of used BDD variables. It can be called more than one time, but only to increase the number of
+     * variables.
+     * </p>
      * 
-     * <p>Compare to bdd_setvarnum.</p>
+     * <p>
+     * Compare to bdd_setvarnum.
+     * </p>
      * 
-     * @param num  new number of BDD variables
+     * @param num new number of BDD variables
      * @return old number of BDD variables
      */
     public abstract int setVarNum(int num);
-    
+
     /**
-     * <p>Add extra BDD variables.  Extends the current number of allocated BDD
-     * variables with num extra variables.</p>
+     * <p>
+     * Add extra BDD variables. Extends the current number of allocated BDD variables with num extra variables.
+     * </p>
      * 
-     * <p>Compare to bdd_extvarnum.</p>
+     * <p>
+     * Compare to bdd_extvarnum.
+     * </p>
      * 
-     * @param num  number of BDD variables to add
+     * @param num number of BDD variables to add
      * @return old number of BDD variables
      */
     public int extVarNum(int num) {
         int start = varNum();
         if (num < 0 || num > 0x3FFFFFFF)
-           throw new BDDException();
-        setVarNum(start+num);
+            throw new BDDException();
+        setVarNum(start + num);
         return start;
     }
-    
+
     /**
-     * <p>Returns a BDD representing the I'th variable.  (One node with the
-     * children true and false.)  The requested variable must be in the
-     * (zero-indexed) range defined by <tt>setVarNum</tt>.</p>
+     * <p>
+     * Returns a BDD representing the I'th variable. (One node with the children true and false.) The requested variable
+     * must be in the (zero-indexed) range defined by <tt>setVarNum</tt>.
+     * </p>
      * 
-     * <p>Compare to bdd_ithvar.</p>
+     * <p>
+     * Compare to bdd_ithvar.
+     * </p>
      * 
-     * @param var  the variable number
+     * @param var the variable number
      * @return the I'th variable on success, otherwise the constant false BDD
      */
     public abstract BDD ithVar(int var);
-    
+
     /**
-     * <p>Returns a BDD representing the negation of the I'th variable.  (One node
-     * with the children false and true.)  The requested variable must be in the
-     * (zero-indexed) range defined by <tt>setVarNum</tt>.</p>
+     * <p>
+     * Returns a BDD representing the negation of the I'th variable. (One node with the children false and true.) The
+     * requested variable must be in the (zero-indexed) range defined by <tt>setVarNum</tt>.
+     * </p>
      * 
-     * <p>Compare to bdd_nithvar.</p>
+     * <p>
+     * Compare to bdd_nithvar.
+     * </p>
      * 
-     * @param var  the variable number
+     * @param var the variable number
      * @return the negated I'th variable on success, otherwise the constant false BDD
      */
     public abstract BDD nithVar(int var);
-    
-    
-    
+
     /**** INPUT / OUTPUT ****/
-    
+
     /**
-     * <p>Prints all used entries in the node table.</p>
+     * <p>
+     * Prints all used entries in the node table.
+     * </p>
      * 
-     * <p>Compare to bdd_printall.</p>
+     * <p>
+     * Compare to bdd_printall.
+     * </p>
      */
     public abstract void printAll();
-    
+
     /**
-     * <p>Prints the node table entries used by a BDD.</p>
+     * <p>
+     * Prints the node table entries used by a BDD.
+     * </p>
      * 
-     * <p>Compare to bdd_printtable.</p>
+     * <p>
+     * Compare to bdd_printtable.
+     * </p>
      */
     public abstract void printTable(BDD b);
-    
+
     /**
-     * <p>Loads a BDD from a file.</p>
+     * <p>
+     * Loads a BDD from a file.
+     * </p>
      * 
-     * <p>Compare to bdd_load.</p>
+     * <p>
+     * Compare to bdd_load.
+     * </p>
      */
     public BDD load(String filename) throws IOException {
         BufferedReader r = null;
@@ -488,37 +581,47 @@ public abstract class BDDFactory {
             BDD result = load(r);
             return result;
         } finally {
-            if (r != null) try { r.close(); } catch (IOException e) { }
+            if (r != null)
+                try {
+                    r.close();
+                } catch (IOException e) {
+                }
         }
     }
     // TODO: error code from bdd_load (?)
-    
+
     /**
-     * <p>Loads a BDD from the given input.</p>
+     * <p>
+     * Loads a BDD from the given input.
+     * </p>
      * 
-     * <p>Compare to bdd_load.</p>
+     * <p>
+     * Compare to bdd_load.
+     * </p>
      * 
-     * @param ifile  reader
+     * @param ifile reader
      * @return BDD
      */
     public BDD load(BufferedReader ifile) throws IOException {
         return load(ifile, null);
     }
-    
+
     /**
-     * <p>Loads a BDD from the given input, translating BDD variables according
-     * to the given map.</p>
+     * <p>
+     * Loads a BDD from the given input, translating BDD variables according to the given map.
+     * </p>
      * 
-     * <p>Compare to bdd_load.</p>
+     * <p>
+     * Compare to bdd_load.
+     * </p>
      * 
-     * @param ifile  reader
-     * @param translate  variable translation map
+     * @param ifile reader
+     * @param translate variable translation map
      * @return BDD
      */
     public BDD load(BufferedReader ifile, int[] translate) throws IOException {
-
         tokenizer = null;
-        
+
         int lh_nodenum = Integer.parseInt(readNext(ifile));
         int vnum = Integer.parseInt(readNext(ifile));
 
@@ -556,7 +659,7 @@ public abstract class BDDFactory {
             int highi = Integer.parseInt(readNext(ifile));
 
             BDD low, high;
-            
+
             low = loadhash_get(lh_table, lh_nodenum, lowi);
             high = loadhash_get(lh_table, lh_nodenum, highi);
 
@@ -566,8 +669,10 @@ public abstract class BDDFactory {
             BDD b = ithVar(var);
             root = b.ite(high, low);
             b.free();
-            if (low.isZero() || low.isOne()) low.free();
-            if (high.isZero() || high.isOne()) high.free();
+            if (low.isZero() || low.isOne())
+                low.free();
+            if (high.isZero() || high.isOne())
+                high.free();
 
             int hash = key % lh_nodenum;
             int pos = lh_freepos;
@@ -580,7 +685,7 @@ public abstract class BDDFactory {
             lh_table[pos].data = root;
         }
         BDD tmproot = root.id();
-        
+
         for (int n = 0; n < lh_nodenum; n++)
             lh_table[n].data.free();
 
@@ -589,17 +694,17 @@ public abstract class BDDFactory {
 
         return tmproot;
     }
-    
+
     /**
      * Used for tokenization during loading.
      */
     protected StringTokenizer tokenizer;
-    
+
     /**
      * Read the next token from the file.
      * 
-     * @param ifile  reader
-     * @return  next string token
+     * @param ifile reader
+     * @return next string token
      */
     protected String readNext(BufferedReader ifile) throws IOException {
         while (tokenizer == null || !tokenizer.hasMoreTokens()) {
@@ -610,25 +715,31 @@ public abstract class BDDFactory {
         }
         return tokenizer.nextToken();
     }
-    
+
     /**
      * LoadHash is used to hash during loading.
      */
     protected static class LoadHash {
         int key;
+
         BDD data;
+
         int first;
+
         int next;
     }
-    
+
     /**
      * Gets a BDD from the load hash table.
      */
     protected BDD loadhash_get(LoadHash[] lh_table, int lh_nodenum, int key) {
-        if (key < 0) return null;
-        if (key == 0) return zero();
-        if (key == 1) return universe();
-        
+        if (key < 0)
+            return null;
+        if (key == 0)
+            return zero();
+        if (key == 1)
+            return universe();
+
         int hash = lh_table[key % lh_nodenum].first;
 
         while (hash != -1 && lh_table[hash].key != key)
@@ -638,11 +749,15 @@ public abstract class BDDFactory {
             return null;
         return lh_table[hash].data;
     }
-    
+
     /**
-     * <p>Saves a BDD to a file.</p>
+     * <p>
+     * Saves a BDD to a file.
+     * </p>
      * 
-     * <p>Compare to bdd_save.</p>
+     * <p>
+     * Compare to bdd_save.
+     * </p>
      */
     public void save(String filename, BDD var) throws IOException {
         BufferedWriter is = null;
@@ -650,19 +765,27 @@ public abstract class BDDFactory {
             is = new BufferedWriter(new FileWriter(filename));
             save(is, var);
         } finally {
-            if (is != null) try { is.close(); } catch (IOException e) { }
+            if (is != null)
+                try {
+                    is.close();
+                } catch (IOException e) {
+                }
         }
     }
     // TODO: error code from bdd_save (?)
-    
+
     /**
-     * <p>Saves a BDD to an output writer.</p>
+     * <p>
+     * Saves a BDD to an output writer.
+     * </p>
      * 
-     * <p>Compare to bdd_save.</p>
+     * <p>
+     * Compare to bdd_save.
+     * </p>
      */
     public void save(BufferedWriter out, BDD r) throws IOException {
         if (r.isOne() || r.isZero()) {
-            out.write("0 0 " + (r.isOne()?1:0) + "\n");
+            out.write("0 0 " + (r.isOne() ? 1 : 0) + "\n");
             return;
         }
 
@@ -672,14 +795,14 @@ public abstract class BDDFactory {
             out.write(var2Level(x) + " ");
         out.write("\n");
 
-        //Map visited = new HashMap();
+        // Map visited = new HashMap();
         BitSet visited = new BitSet(getNodeTableSize());
         save_rec(out, visited, r.id());
-        
-        //for (Iterator it = visited.keySet().iterator(); it.hasNext(); ) {
-        //    BDD b = (BDD) it.next();
-        //    if (b != r) b.free();
-        //}
+
+        // for (Iterator it = visited.keySet().iterator(); it.hasNext(); ) {
+        // BDD b = (BDD) it.next();
+        // if (b != r) b.free();
+        // }
     }
 
     /**
@@ -694,17 +817,17 @@ public abstract class BDDFactory {
             root.free();
             return 1;
         }
-        Integer i = (Integer) visited.get(root);
+        Integer i = (Integer)visited.get(root);
         if (i != null) {
             root.free();
             return i.intValue();
         }
         int v = visited.size() + 2;
         visited.put(root, new Integer(v));
-        
+
         BDD l = root.low();
         int lo = save_rec_original(out, visited, l);
-        
+
         BDD h = root.high();
         int hi = save_rec_original(out, visited, h);
 
@@ -712,10 +835,9 @@ public abstract class BDDFactory {
         out.write(root.var() + " ");
         out.write(lo + " ");
         out.write(hi + "\n");
-        
+
         return v;
     }
-
 
     /**
      * Helper function for save().
@@ -736,7 +858,7 @@ public abstract class BDDFactory {
         }
         int v = i;
         visited.set(i);
-        
+
         BDD h = root.high();
 
         BDD l = root.low();
@@ -745,187 +867,222 @@ public abstract class BDDFactory {
         root.free();
 
         int lo = save_rec(out, visited, l);
-        
+
         int hi = save_rec(out, visited, h);
 
         out.write(i + " ");
         out.write(rootvar + " ");
         out.write(lo + " ");
         out.write(hi + "\n");
-        
+
         return v;
     }
-    
+
     // TODO: bdd_blockfile_hook
     // TODO: bdd_versionnum, bdd_versionstr
-    
-    
-    
-    
+
     /**** REORDERING ****/
-    
+
     /**
-     * <p>Convert from a BDD level to a BDD variable.</p>
+     * <p>
+     * Convert from a BDD level to a BDD variable.
+     * </p>
      * 
-     * <p>Compare to bdd_level2var.</p>
+     * <p>
+     * Compare to bdd_level2var.
+     * </p>
      */
     public abstract int level2Var(int level);
-    
+
     /**
-     * <p>Convert from a BDD variable to a BDD level.</p>
+     * <p>
+     * Convert from a BDD variable to a BDD level.
+     * </p>
      * 
-     * <p>Compare to bdd_var2level.</p>
+     * <p>
+     * Compare to bdd_var2level.
+     * </p>
      */
     public abstract int var2Level(int var);
-    
+
     /**
      * No reordering.
      */
-    public static final ReorderMethod REORDER_NONE    = new ReorderMethod(0, "NONE");
-    
+    public static final ReorderMethod REORDER_NONE = new ReorderMethod(0, "NONE");
+
     /**
      * Reordering using a sliding window of 2.
      */
-    public static final ReorderMethod REORDER_WIN2    = new ReorderMethod(1, "WIN2");
-    
+    public static final ReorderMethod REORDER_WIN2 = new ReorderMethod(1, "WIN2");
+
     /**
-     * Reordering using a sliding window of 2, iterating until no further
-     * progress.
+     * Reordering using a sliding window of 2, iterating until no further progress.
      */
     public static final ReorderMethod REORDER_WIN2ITE = new ReorderMethod(2, "WIN2ITE");
-    
+
     /**
      * Reordering using a sliding window of 3.
      */
-    public static final ReorderMethod REORDER_WIN3    = new ReorderMethod(5, "WIN3");
-    
+    public static final ReorderMethod REORDER_WIN3 = new ReorderMethod(5, "WIN3");
+
     /**
-     * Reordering using a sliding window of 3, iterating until no further
-     * progress.
+     * Reordering using a sliding window of 3, iterating until no further progress.
      */
     public static final ReorderMethod REORDER_WIN3ITE = new ReorderMethod(6, "WIN3ITE");
-    
+
     /**
-     * Reordering where each block is moved through all possible positions.  The
-     * best of these is then used as the new position.  Potentially a very slow
-     * but good method.
+     * Reordering where each block is moved through all possible positions. The best of these is then used as the new
+     * position. Potentially a very slow but good method.
      */
-    public static final ReorderMethod REORDER_SIFT    = new ReorderMethod(3, "SIFT");
-    
+    public static final ReorderMethod REORDER_SIFT = new ReorderMethod(3, "SIFT");
+
     /**
-     * Same as REORDER_SIFT, but the process is repeated until no further
-     * progress is done.  Can be extremely slow.
+     * Same as REORDER_SIFT, but the process is repeated until no further progress is done. Can be extremely slow.
      */
     public static final ReorderMethod REORDER_SIFTITE = new ReorderMethod(4, "SIFTITE");
-    
+
     /**
-     * Selects a random position for each variable.  Mostly used for debugging
-     * purposes.
+     * Selects a random position for each variable. Mostly used for debugging purposes.
      */
-    public static final ReorderMethod REORDER_RANDOM  = new ReorderMethod(7, "RANDOM");
-    
+    public static final ReorderMethod REORDER_RANDOM = new ReorderMethod(7, "RANDOM");
+
     /**
-     * Enumeration class for method reordering techniques.  Use the static fields
-     * in BDDFactory to access the different reordering techniques.
+     * Enumeration class for method reordering techniques. Use the static fields in BDDFactory to access the different
+     * reordering techniques.
      */
     public static class ReorderMethod {
-        final int id; final String name;
+        final int id;
+
+        final String name;
+
         private ReorderMethod(int id, String name) {
             this.id = id;
             this.name = name;
         }
-        /* (non-Javadoc)
+
+        /*
+         * (non-Javadoc)
+         * 
          * @see java.lang.Object#toString()
          */
         public String toString() {
             return name;
         }
     }
-    
+
     /**
-     * <p>Reorder the BDD with the given method.</p>
+     * <p>
+     * Reorder the BDD with the given method.
+     * </p>
      * 
-     * <p>Compare to bdd_reorder.</p>
+     * <p>
+     * Compare to bdd_reorder.
+     * </p>
      */
     public abstract void reorder(ReorderMethod m);
-    
+
     /**
-     * <p>Enables automatic reordering.  If method is REORDER_NONE then automatic
-     * reordering is disabled.</p>
+     * <p>
+     * Enables automatic reordering. If method is REORDER_NONE then automatic reordering is disabled.
+     * </p>
      * 
-     * <p>Compare to bdd_autoreorder.</p>
+     * <p>
+     * Compare to bdd_autoreorder.
+     * </p>
      */
     public abstract void autoReorder(ReorderMethod method);
-    
+
     /**
-     * <p>Enables automatic reordering with the given (maximum) number of
-     * reorderings. If method is REORDER_NONE then automatic reordering is
-     * disabled.</p>
+     * <p>
+     * Enables automatic reordering with the given (maximum) number of reorderings. If method is REORDER_NONE then
+     * automatic reordering is disabled.
+     * </p>
      * 
-     * <p>Compare to bdd_autoreorder_times.</p>
+     * <p>
+     * Compare to bdd_autoreorder_times.
+     * </p>
      */
     public abstract void autoReorder(ReorderMethod method, int max);
 
     /**
-     * <p>Returns the current reorder method as defined by autoReorder.</p>
+     * <p>
+     * Returns the current reorder method as defined by autoReorder.
+     * </p>
      * 
-     * <p>Compare to bdd_getreorder_method.</p>
+     * <p>
+     * Compare to bdd_getreorder_method.
+     * </p>
      * 
      * @return ReorderMethod
      */
     public abstract ReorderMethod getReorderMethod();
-    
+
     /**
-     * <p>Returns the number of allowed reorderings left.  This value can be
-     * defined by autoReorder.</p>
+     * <p>
+     * Returns the number of allowed reorderings left. This value can be defined by autoReorder.
+     * </p>
      * 
-     * <p>Compare to bdd_getreorder_times.</p>
+     * <p>
+     * Compare to bdd_getreorder_times.
+     * </p>
      */
     public abstract int getReorderTimes();
-    
+
     /**
-     * <p>Disable automatic reordering until enableReorder is called.  Reordering
-     * is enabled by default as soon as any variable blocks have been defined.</p>
+     * <p>
+     * Disable automatic reordering until enableReorder is called. Reordering is enabled by default as soon as any
+     * variable blocks have been defined.
+     * </p>
      * 
-     * <p>Compare to bdd_disable_reorder.</p>
+     * <p>
+     * Compare to bdd_disable_reorder.
+     * </p>
      */
     public abstract void disableReorder();
-    
+
     /**
-     * <p>Enable automatic reordering after a call to disableReorder.</p>
+     * <p>
+     * Enable automatic reordering after a call to disableReorder.
+     * </p>
      * 
-     * <p>Compare to bdd_enable_reorder.</p>
+     * <p>
+     * Compare to bdd_enable_reorder.
+     * </p>
      */
     public abstract void enableReorder();
 
     /**
-     * <p>Enables verbose information about reordering.  A value of zero means no
-     * information, one means some information and greater than one means lots
-     * of information.</p>
+     * <p>
+     * Enables verbose information about reordering. A value of zero means no information, one means some information
+     * and greater than one means lots of information.
+     * </p>
      * 
      * @param v the new verbose level
      * @return the old verbose level
      */
     public abstract int reorderVerbose(int v);
-    
+
     /**
-     * <p>This function sets the current variable order to be the one defined by
-     * neworder.  The variable parameter neworder is interpreted as a sequence
-     * of variable indices and the new variable order is exactly this sequence.
-     * The array must contain all the variables defined so far.  If, for
-     * instance the current number of variables is 3 and neworder contains
-     * [1; 0; 2] then the new variable order is v1 &lt; v0 &lt; v2.</p>
+     * <p>
+     * This function sets the current variable order to be the one defined by neworder. The variable parameter neworder
+     * is interpreted as a sequence of variable indices and the new variable order is exactly this sequence. The array
+     * must contain all the variables defined so far. If, for instance the current number of variables is 3 and neworder
+     * contains [1; 0; 2] then the new variable order is v1 &lt; v0 &lt; v2.
+     * </p>
      * 
-     * <p>Note that this operation must walk through the node table many times,
-     * and therefore it is much more efficient to call this when the node table
-     * is small.</p> 
+     * <p>
+     * Note that this operation must walk through the node table many times, and therefore it is much more efficient to
+     * call this when the node table is small.
+     * </p>
      * 
-     * @param neworder  new variable order
+     * @param neworder new variable order
      */
     public abstract void setVarOrder(int[] neworder);
 
     /**
-     * <p>Gets the current variable order.</p>
+     * <p>
+     * Gets the current variable order.
+     * </p>
      * 
      * @return variable order
      */
@@ -937,20 +1094,24 @@ public abstract class BDDFactory {
         }
         return result;
     }
-    
+
     /**
-     * <p>Make a new BDDPairing object.</p>
+     * <p>
+     * Make a new BDDPairing object.
+     * </p>
      * 
-     * <p>Compare to bdd_newpair.</p>
+     * <p>
+     * Compare to bdd_newpair.
+     * </p>
      */
     public abstract BDDPairing makePair();
 
     /**
      * Make a new pairing that maps from one variable to another.
      * 
-     * @param oldvar  old variable
-     * @param newvar  new variable
-     * @return  BDD pairing
+     * @param oldvar old variable
+     * @param newvar new variable
+     * @return BDD pairing
      */
     public BDDPairing makePair(int oldvar, int newvar) {
         BDDPairing p = makePair();
@@ -961,48 +1122,58 @@ public abstract class BDDFactory {
     /**
      * Make a new pairing that maps from one variable to another BDD.
      * 
-     * @param oldvar  old variable
-     * @param newvar  new BDD
-     * @return  BDD pairing
+     * @param oldvar old variable
+     * @param newvar new BDD
+     * @return BDD pairing
      */
     public BDDPairing makePair(int oldvar, BDD newvar) {
         BDDPairing p = makePair();
         p.set(oldvar, newvar);
         return p;
     }
-    
+
     /**
      * Make a new pairing that maps from one BDD domain to another.
      * 
-     * @param oldvar  old BDD domain
-     * @param newvar  new BDD domain
-     * @return  BDD pairing
+     * @param oldvar old BDD domain
+     * @param newvar new BDD domain
+     * @return BDD pairing
      */
     public BDDPairing makePair(BDDDomain oldvar, BDDDomain newvar) {
         BDDPairing p = makePair();
         p.set(oldvar, newvar);
         return p;
     }
-    
+
     /**
-     * <p>Swap two variables.</p>
+     * <p>
+     * Swap two variables.
+     * </p>
      * 
-     * <p>Compare to bdd_swapvar.</p>
+     * <p>
+     * Compare to bdd_swapvar.
+     * </p>
      */
     public abstract void swapVar(int v1, int v2);
-    
+
     /**** VARIABLE BLOCKS ****/
-    
+
     /**
-     * <p>Adds a new variable block for reordering.</p>
+     * <p>
+     * Adds a new variable block for reordering.
+     * </p>
      * 
-     * <p>Creates a new variable block with the variables in the variable set var.
-     * The variables in var must be contiguous.</p>
+     * <p>
+     * Creates a new variable block with the variables in the variable set var. The variables in var must be contiguous.
+     * </p>
      * 
-     * <p>The fixed parameter sets the block to be fixed (no reordering of its
-     * child blocks is allowed) or free.</p>
+     * <p>
+     * The fixed parameter sets the block to be fixed (no reordering of its child blocks is allowed) or free.
+     * </p>
      * 
-     * <p>Compare to bdd_addvarblock.</p>
+     * <p>
+     * Compare to bdd_addvarblock.
+     * </p>
      */
     public void addVarBlock(BDDVarSet var, boolean fixed) {
         int[] v = var.toArray();
@@ -1022,105 +1193,140 @@ public abstract class BDDFactory {
         addVarBlock(first, last, fixed);
     }
     // TODO: handle error code for addVarBlock.
-    
+
     /**
-     * <p>Adds a new variable block for reordering.</p>
+     * <p>
+     * Adds a new variable block for reordering.
+     * </p>
      * 
-     * <p>Creates a new variable block with the variables numbered first through
-     * last, inclusive.</p>
+     * <p>
+     * Creates a new variable block with the variables numbered first through last, inclusive.
+     * </p>
      * 
-     * <p>The fixed parameter sets the block to be fixed (no reordering of its
-     * child blocks is allowed) or free.</p>
+     * <p>
+     * The fixed parameter sets the block to be fixed (no reordering of its child blocks is allowed) or free.
+     * </p>
      * 
-     * <p>Compare to bdd_intaddvarblock.</p>
+     * <p>
+     * Compare to bdd_intaddvarblock.
+     * </p>
      */
     public abstract void addVarBlock(int first, int last, boolean fixed);
     // TODO: handle error code for addVarBlock.
     // TODO: fdd_intaddvarblock (?)
-    
+
     /**
-     * <p>Add a variable block for all variables.</p>
+     * <p>
+     * Add a variable block for all variables.
+     * </p>
      * 
-     * <p>Adds a variable block for all BDD variables declared so far.  Each block
-     * contains one variable only.  More variable blocks can be added later with
-     * the use of addVarBlock -- in this case the tree of variable blocks will
-     * have the blocks of single variables as the leafs.</p>
+     * <p>
+     * Adds a variable block for all BDD variables declared so far. Each block contains one variable only. More variable
+     * blocks can be added later with the use of addVarBlock -- in this case the tree of variable blocks will have the
+     * blocks of single variables as the leafs.
+     * </p>
      * 
-     * <p>Compare to bdd_varblockall.</p>
+     * <p>
+     * Compare to bdd_varblockall.
+     * </p>
      */
     public abstract void varBlockAll();
 
     /**
-     * <p>Clears all the variable blocks that have been defined by calls to
-     * addVarBlock.</p>
+     * <p>
+     * Clears all the variable blocks that have been defined by calls to addVarBlock.
+     * </p>
      * 
-     * <p>Compare to bdd_clrvarblocks.</p>
+     * <p>
+     * Compare to bdd_clrvarblocks.
+     * </p>
      */
     public abstract void clearVarBlocks();
 
     /**
-     * <p>Prints an indented list of the variable blocks.</p>
+     * <p>
+     * Prints an indented list of the variable blocks.
+     * </p>
      * 
-     * <p>Compare to bdd_printorder.</p>
+     * <p>
+     * Compare to bdd_printorder.
+     * </p>
      */
     public abstract void printOrder();
-    
-    
-    
+
     /**** BDD STATS ****/
-    
+
     /**
      * Get the BDD library version.
      * 
-     * @return  version string
+     * @return version string
      */
     public abstract String getVersion();
-    
-    /**
-     * <p>Counts the number of shared nodes in a collection of BDDs.  Counts all
-     * distinct nodes that are used in the BDDs -- if a node is used in more
-     * than one BDD then it only counts once.</p>
-     * 
-     * <p>Compare to bdd_anodecount.</p>
-     */
-    public abstract int nodeCount(Collection/*BDD*/ r);
 
     /**
-     * <p>Get the number of allocated nodes.  This includes both dead and active
-     * nodes.</p>
+     * <p>
+     * Counts the number of shared nodes in a collection of BDDs. Counts all distinct nodes that are used in the BDDs --
+     * if a node is used in more than one BDD then it only counts once.
+     * </p>
      * 
-     * <p>Compare to bdd_getallocnum.</p>
+     * <p>
+     * Compare to bdd_anodecount.
+     * </p>
+     */
+    public abstract int nodeCount(Collection/* BDD */ r);
+
+    /**
+     * <p>
+     * Get the number of allocated nodes. This includes both dead and active nodes.
+     * </p>
+     * 
+     * <p>
+     * Compare to bdd_getallocnum.
+     * </p>
      */
     public abstract int getNodeTableSize();
 
     /**
-     * <p>Get the number of active nodes in use.  Note that dead nodes that have
-     * not been reclaimed yet by a garbage collection are counted as active.</p>
+     * <p>
+     * Get the number of active nodes in use. Note that dead nodes that have not been reclaimed yet by a garbage
+     * collection are counted as active.
+     * </p>
      * 
-     * <p>Compare to bdd_getnodenum.</p>
+     * <p>
+     * Compare to bdd_getnodenum.
+     * </p>
      */
     public abstract int getNodeNum();
 
     /**
-     * <p>Get the current size of the cache, in entries.</p>
+     * <p>
+     * Get the current size of the cache, in entries.
+     * </p>
      * 
-     * @return  size of cache
+     * @return size of cache
      */
     public abstract int getCacheSize();
-    
+
     /**
-     * <p>Calculate the gain in size after a reordering.  The value returned is
-     * (100*(A-B))/A, where A is previous number of used nodes and B is current
-     * number of used nodes.</p>
+     * <p>
+     * Calculate the gain in size after a reordering. The value returned is (100*(A-B))/A, where A is previous number of
+     * used nodes and B is current number of used nodes.
+     * </p>
      * 
-     * <p>Compare to bdd_reorder_gain.</p>
+     * <p>
+     * Compare to bdd_reorder_gain.
+     * </p>
      */
     public abstract int reorderGain();
 
     /**
-     * <p>Print cache statistics.</p>
+     * <p>
+     * Print cache statistics.
+     * </p>
      * 
-     * <p>Compare to bdd_printstat.</p>
+     * <p>
+     * Compare to bdd_printstat.
+     * </p>
      */
     public abstract void printStat();
 
@@ -1132,14 +1338,21 @@ public abstract class BDDFactory {
      */
     public static class GCStats {
         public int nodes;
+
         public int freenodes;
+
         public long time;
+
         public long sumtime;
+
         public int num;
-        
-        protected GCStats() { }
-        
-        /* (non-Javadoc)
+
+        protected GCStats() {
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
          * @see java.lang.Object#toString()
          */
         public String toString() {
@@ -1151,30 +1364,32 @@ public abstract class BDDFactory {
             sb.append(" nodes / ");
             sb.append(freenodes);
             sb.append(" free");
-            
+
             sb.append(" / ");
-            sb.append((float) time / (float) 1000);
+            sb.append((float)time / (float)1000);
             sb.append("s / ");
-            sb.append((float) sumtime / (float) 1000);
+            sb.append((float)sumtime / (float)1000);
             sb.append("s total");
             return sb.toString();
         }
     }
-    
+
     /**
      * Singleton object for GC statistics.
      */
     protected GCStats gcstats = new GCStats();
-    
+
     /**
-     * <p>Return the current GC statistics for this BDD factory.</p>
+     * <p>
+     * Return the current GC statistics for this BDD factory.
+     * </p>
      * 
-     * @return  GC statistics
+     * @return GC statistics
      */
     public GCStats getGCStats() {
         return gcstats;
     }
-    
+
     /**
      * Stores statistics about reordering.
      * 
@@ -1182,19 +1397,20 @@ public abstract class BDDFactory {
      * @version $Id: BDDFactory.java 480 2010-11-16 01:29:49Z robimalik $
      */
     public static class ReorderStats {
-        
         public long time;
+
         public int usednum_before, usednum_after;
-        
-        protected ReorderStats() { }
-        
+
+        protected ReorderStats() {
+        }
+
         public int gain() {
             if (usednum_before == 0)
                 return 0;
 
             return (100 * (usednum_before - usednum_after)) / usednum_before;
         }
-        
+
         public String toString() {
             StringBuffer sb = new StringBuffer();
             sb.append("Went from ");
@@ -1204,26 +1420,28 @@ public abstract class BDDFactory {
             sb.append(" nodes, gain = ");
             sb.append(gain());
             sb.append("% (");
-            sb.append((float) time / 1000f);
+            sb.append((float)time / 1000f);
             sb.append(" sec)");
             return sb.toString();
         }
     }
-    
+
     /**
      * Singleton object for reorder statistics.
      */
     protected ReorderStats reorderstats = new ReorderStats();
-    
+
     /**
-     * <p>Return the current reordering statistics for this BDD factory.</p>
+     * <p>
+     * Return the current reordering statistics for this BDD factory.
+     * </p>
      * 
-     * @return  reorder statistics
+     * @return reorder statistics
      */
     public ReorderStats getReorderStats() {
         return reorderstats;
     }
-    
+
     /**
      * Stores statistics about the operator cache.
      * 
@@ -1234,17 +1452,26 @@ public abstract class BDDFactory {
      */
     public static class CacheStats {
         protected boolean enabled = false;
+
         public long uniqueAccess;
+
         public long uniqueChain;
+
         public long uniqueHit;
+
         public long uniqueMiss;
+
         public long opAccess;
+
         public long opHit;
+
         public long opMiss;
+
         public long swapCount;
-        
-        protected CacheStats() { }
-        
+
+        protected CacheStats() {
+        }
+
         void copyFrom(CacheStats that) {
             this.uniqueAccess = that.uniqueAccess;
             this.uniqueChain = that.uniqueChain;
@@ -1255,15 +1482,15 @@ public abstract class BDDFactory {
             this.opMiss = that.opMiss;
             this.swapCount = that.swapCount;
         }
-        
+
         public void enableMeasurements() {
-        	enabled = true;
+            enabled = true;
         }
-        
+
         public void disableMeasurements() {
             enabled = false;
         }
-        
+
         public void resetMeasurements() {
             uniqueAccess = 0;
             uniqueChain = 0;
@@ -1274,8 +1501,10 @@ public abstract class BDDFactory {
             opMiss = 0;
             swapCount = 0;
         }
-        
-        /* (non-Javadoc)
+
+        /*
+         * (non-Javadoc)
+         * 
          * @see java.lang.Object#toString()
          */
         public String toString() {
@@ -1295,7 +1524,7 @@ public abstract class BDDFactory {
             sb.append(newLine);
             sb.append("=> Ave. chain = ");
             if (uniqueAccess > 0)
-                sb.append(((float) uniqueChain) / ((float) uniqueAccess));
+                sb.append(((float)uniqueChain) / ((float)uniqueAccess));
             else
                 sb.append((float)0);
             sb.append(newLine);
@@ -1307,7 +1536,7 @@ public abstract class BDDFactory {
             sb.append(newLine);
             sb.append("=> Hit rate =   ");
             if (uniqueHit + uniqueMiss > 0)
-                sb.append(((float) uniqueHit) / ((float) uniqueHit + uniqueMiss));
+                sb.append(((float)uniqueHit) / ((float)uniqueHit + uniqueMiss));
             else
                 sb.append((float)0);
             sb.append(newLine);
@@ -1322,7 +1551,7 @@ public abstract class BDDFactory {
             sb.append(newLine);
             sb.append("=> Hit rate =   ");
             if (opHit + opMiss > 0)
-                sb.append(((float) opHit) / ((float) opHit + opMiss));
+                sb.append(((float)opHit) / ((float)opHit + opMiss));
             else
                 sb.append((float)0);
             sb.append(newLine);
@@ -1337,16 +1566,18 @@ public abstract class BDDFactory {
      * Singleton object for cache statistics.
      */
     protected CacheStats cachestats = new CacheStats();
-    
+
     /**
-     * <p>Return the current cache statistics for this BDD factory.</p>
+     * <p>
+     * Return the current cache statistics for this BDD factory.
+     * </p>
      * 
-     * @return  cache statistics
+     * @return cache statistics
      */
     public CacheStats getCacheStats() {
         return cachestats;
     }
-    
+
     /**
      * Stores statistics about the maximum BDD nodes usage.
      * 
@@ -1354,78 +1585,85 @@ public abstract class BDDFactory {
      */
     public static class MaxUsedBddNodesStats {
         protected boolean enabled = false;
+
         protected int maxUsedBddNodes;
-        
-        protected MaxUsedBddNodesStats() { }
-        
-        public void enableMeasurements() {
-        	enabled = true;
+
+        protected MaxUsedBddNodesStats() {
         }
-        
+
+        public void enableMeasurements() {
+            enabled = true;
+        }
+
         public void disableMeasurements() {
             enabled = false;
         }
-        
+
         public void resetMeasurements() {
             maxUsedBddNodes = 0;
         }
-        
+
         public void newMeasurement(int newUsedBddNodes) {
             maxUsedBddNodes = Math.max(newUsedBddNodes, maxUsedBddNodes);
         }
-        
+
         public int getMaxUsedBddNodes() {
-        	return maxUsedBddNodes;
+            return maxUsedBddNodes;
         }
     }
-    
+
     /**
      * Singleton object for maximum used BDD nodes statistics.
      */
     protected MaxUsedBddNodesStats maxusedbddnodesstats = new MaxUsedBddNodesStats();
 
     /**
-     * <p>Return the current maximum used BDD nodes statistics for this BDD factory.</p>
+     * <p>
+     * Return the current maximum used BDD nodes statistics for this BDD factory.
+     * </p>
      *
-     * @return  maximum used BDD nodes statistics
+     * @return maximum used BDD nodes statistics
      */
     public MaxUsedBddNodesStats getMaxUsedBddNodesStats() {
         return maxusedbddnodesstats;
     }
-    
+
     /**
-     * Stores continuously statistics about the BDD nodes usage and BDD operations,
-     * where BDD operations is a proxy for time.
+     * Stores continuously statistics about the BDD nodes usage and BDD operations, where BDD operations is a proxy for
+     * time.
      * 
      * @author mgoorden
      */
     public static class ContinuousStats {
         protected boolean enabled = false;
+
         protected List<Integer> contUsedBddNodes = new ArrayList<Integer>();
+
         protected List<Long> contOperations = new ArrayList<Long>();
-        
-        protected ContinuousStats() { }
+
+        protected ContinuousStats() {
+        }
 
         public void enableMeasurements() {
             enabled = true;
         }
-        
+
         public void disableMeasurements() {
             enabled = false;
         }
-        
+
         public void resetMeasurements() {
             contUsedBddNodes = new ArrayList<Integer>();
             contOperations = new ArrayList<Long>();
         }
-        
+
         public List<Integer> getNodesStats() {
             if (contUsedBddNodes.size() != contOperations.size()) {
                 throw new AssertionError("Incorrect data collection.");
             }
             return contUsedBddNodes;
         }
-        
+
         public List<Long> getOperationsStats() {
             if (contUsedBddNodes.size() != contOperations.size()) {
                 throw new AssertionError("Incorrect data collection.");
@@ -1433,67 +1671,74 @@ public abstract class BDDFactory {
             return contOperations;
         }
     }
-    
+
     /**
      * Singleton object for continuous statistics.
      */
     protected ContinuousStats continuousstats = new ContinuousStats();
-    
+
     /**
-     * <p>Return the current continuous statistics for this BDD factory.</p>
+     * <p>
+     * Return the current continuous statistics for this BDD factory.
+     * </p>
      *
-     * @return  continuous statistics
+     * @return continuous statistics
      */
     public ContinuousStats getContinuousStats() {
         return continuousstats;
     }
-    
+
     // TODO: bdd_sizeprobe_hook
     // TODO: bdd_reorder_probe
-    
-    
-    
+
     /**** FINITE DOMAINS ****/
-    
+
     protected BDDDomain[] domain;
+
     protected int fdvarnum;
+
     protected int firstbddvar;
-    
+
     /**
-     * <p>Implementors must implement this factory method to create BDDDomain
-     * objects of the correct type.</p>
+     * <p>
+     * Implementors must implement this factory method to create BDDDomain objects of the correct type.
+     * </p>
      */
     protected BDDDomain createDomain(int a, BigInteger b) {
         return new BDDDomain(a, b) {
-            public BDDFactory getFactory() { return BDDFactory.this; }
+            public BDDFactory getFactory() {
+                return BDDFactory.this;
+            }
         };
     }
-    
+
     /**
-     * <p>Creates a new finite domain block of the given size.  Allocates
-     * log 2 (|domainSize|) BDD variables for the domain.</p>
+     * <p>
+     * Creates a new finite domain block of the given size. Allocates log 2 (|domainSize|) BDD variables for the domain.
+     * </p>
      */
     public BDDDomain extDomain(long domainSize) {
         return extDomain(BigInteger.valueOf(domainSize));
     }
+
     public BDDDomain extDomain(BigInteger domainSize) {
-        return extDomain(new BigInteger[] { domainSize })[0];
+        return extDomain(new BigInteger[] {domainSize})[0];
     }
-    
+
     /**
-     * <p>Extends the set of finite domain blocks with domains of the given sizes.
-     * Each entry in domainSizes is the size of a new finite domain which later
-     * on can be used for finite state machine traversal and other operations on
-     * finite domains.  Each domain allocates log 2 (|domainSizes[i]|) BDD
-     * variables to be used later.  The ordering is interleaved for the domains
-     * defined in each call to extDomain. This means that assuming domain D0
-     * needs 2 BDD variables x1 and x2 , and another domain D1 needs 4 BDD
-     * variables y1, y2, y3 and y4, then the order then will be x1, y1, x2, y2,
-     * y3, y4.  The new domains are returned in order.  The BDD variables needed
-     * to encode the domain are created for the purpose and do not interfere
-     * with the BDD variables already in use.</p>
+     * <p>
+     * Extends the set of finite domain blocks with domains of the given sizes. Each entry in domainSizes is the size of
+     * a new finite domain which later on can be used for finite state machine traversal and other operations on finite
+     * domains. Each domain allocates log 2 (|domainSizes[i]|) BDD variables to be used later. The ordering is
+     * interleaved for the domains defined in each call to extDomain. This means that assuming domain D0 needs 2 BDD
+     * variables x1 and x2 , and another domain D1 needs 4 BDD variables y1, y2, y3 and y4, then the order then will be
+     * x1, y1, x2, y2, y3, y4. The new domains are returned in order. The BDD variables needed to encode the domain are
+     * created for the purpose and do not interfere with the BDD variables already in use.
+     * </p>
      * 
-     * <p>Compare to fdd_extdomain.</p>
+     * <p>
+     * Compare to fdd_extdomain.
+     * </p>
      */
     public BDDDomain[] extDomain(int[] dom) {
         BigInteger[] a = new BigInteger[dom.length];
@@ -1502,6 +1747,7 @@ public abstract class BDDFactory {
         }
         return extDomain(a);
     }
+
     public BDDDomain[] extDomain(long[] dom) {
         BigInteger[] a = new BigInteger[dom.length];
         for (int i = 0; i < a.length; ++i) {
@@ -1509,6 +1755,7 @@ public abstract class BDDFactory {
         }
         return extDomain(a);
     }
+
     public BDDDomain[] extDomain(BigInteger[] domainSizes) {
         int offset = fdvarnum;
         int binoffset;
@@ -1557,13 +1804,11 @@ public abstract class BDDFactory {
             // Need to rebuild varsets for existing domains.
             for (n = 0; n < fdvarnum; n++) {
                 domain[n].var.free();
-                domain[n].var =
-                    makeSet(domain[n].ivar);
+                domain[n].var = makeSet(domain[n].ivar);
             }
         }
         for (n = 0; n < num; n++) {
-            domain[n + fdvarnum].var =
-                makeSet(domain[n + fdvarnum].ivar);
+            domain[n + fdvarnum].var = makeSet(domain[n + fdvarnum].ivar);
         }
 
         fdvarnum += num;
@@ -1573,13 +1818,16 @@ public abstract class BDDFactory {
         System.arraycopy(domain, offset, r, 0, num);
         return r;
     }
-    
+
     /**
-     * <p>This function takes two finite domain blocks and merges them
-     * into a new one, such that the new one is encoded using both sets
-     * of BDD variables.</p>
+     * <p>
+     * This function takes two finite domain blocks and merges them into a new one, such that the new one is encoded
+     * using both sets of BDD variables.
+     * </p>
      * 
-     * <p>Compare to fdd_overlapdomain.</p>
+     * <p>
+     * Compare to fdd_overlapdomain.
+     * </p>
      */
     public BDDDomain overlapDomain(BDDDomain d1, BDDDomain d2) {
         BDDDomain d;
@@ -1603,17 +1851,20 @@ public abstract class BDDFactory {
             d.ivar[d1.varNum() + n] = d2.ivar[n];
 
         d.var = makeSet(d.ivar);
-        //bdd_addref(d.var);
+        // bdd_addref(d.var);
 
         fdvarnum++;
         return d;
     }
-    
+
     /**
-     * <p>Returns a BDD defining all the variable sets used to define the variable
-     * blocks in the given array.</p>
+     * <p>
+     * Returns a BDD defining all the variable sets used to define the variable blocks in the given array.
+     * </p>
      * 
-     * <p>Compare to fdd_makeset.</p>
+     * <p>
+     * Compare to fdd_makeset.
+     * </p>
      */
     public BDDVarSet makeSet(BDDDomain[] v) {
         BDDVarSet res = emptySet();
@@ -1625,70 +1876,77 @@ public abstract class BDDFactory {
 
         return res;
     }
-    
+
     /**
-     * <p>Clear all allocated finite domain blocks that were defined by extDomain()
-     * or overlapDomain().</p>
+     * <p>
+     * Clear all allocated finite domain blocks that were defined by extDomain() or overlapDomain().
+     * </p>
      * 
-     * <p>Compare to fdd_clearall.</p>
+     * <p>
+     * Compare to fdd_clearall.
+     * </p>
      */
     public void clearAllDomains() {
         domain = null;
         fdvarnum = 0;
         firstbddvar = 0;
     }
-    
+
     /**
-     * <p>Returns the number of finite domain blocks defined by calls to
-     * extDomain().</p>
+     * <p>
+     * Returns the number of finite domain blocks defined by calls to extDomain().
+     * </p>
      * 
-     * <p>Compare to fdd_domainnum.</p>
+     * <p>
+     * Compare to fdd_domainnum.
+     * </p>
      */
     public int numberOfDomains() {
         return fdvarnum;
     }
-    
+
     /**
-     * <p>Returns the ith finite domain block, as defined by calls to
-     * extDomain().</p>
+     * <p>
+     * Returns the ith finite domain block, as defined by calls to extDomain().
+     * </p>
      */
     public BDDDomain getDomain(int i) {
         if (i < 0 || i >= fdvarnum)
             throw new IndexOutOfBoundsException();
         return domain[i];
     }
-    
+
     // TODO: fdd_file_hook, fdd_strm_hook
-    
+
     /**
-     * <p>Creates a variable ordering from a string.  The resulting order
-     * can be passed into <tt>setVarOrder()</tt>.  Example: in the order
-     * "A_BxC_DxExF", the bits for A are first, followed by the bits for
-     * B and C interleaved, followed by the bits for D, E, and F
-     * interleaved.</p>
+     * <p>
+     * Creates a variable ordering from a string. The resulting order can be passed into <tt>setVarOrder()</tt>.
+     * Example: in the order "A_BxC_DxExF", the bits for A are first, followed by the bits for B and C interleaved,
+     * followed by the bits for D, E, and F interleaved.
+     * </p>
      * 
-     * <p>Obviously, domain names cannot contain the 'x' or '_'
-     * characters.</p>
+     * <p>
+     * Obviously, domain names cannot contain the 'x' or '_' characters.
+     * </p>
      * 
-     * @param reverseLocal  whether to reverse the bits of each domain
-     * @param ordering  string representation of ordering
-     * @return  int[] of ordering
+     * @param reverseLocal whether to reverse the bits of each domain
+     * @param ordering string representation of ordering
+     * @return int[] of ordering
      * @see com.github.javabdd.BDDFactory#setVarOrder(int[])
      */
     public int[] makeVarOrdering(boolean reverseLocal, String ordering) {
-        
         int varnum = varNum();
-        
+
         int nDomains = numberOfDomains();
         int[][] localOrders = new int[nDomains][];
-        for (int i=0; i<localOrders.length; ++i) {
+        for (int i = 0; i < localOrders.length; ++i) {
             localOrders[i] = new int[getDomain(i).varNum()];
         }
-        
-        for (int i=0; i<nDomains; ++i) {
+
+        for (int i = 0; i < nDomains; ++i) {
             BDDDomain d = getDomain(i);
             int nVars = d.varNum();
-            for (int j=0; j<nVars; ++j) {
+            for (int j = 0; j < nVars; ++j) {
                 if (reverseLocal) {
                     localOrders[i][j] = nVars - j - 1;
                 } else {
@@ -1696,26 +1954,27 @@ public abstract class BDDFactory {
                 }
             }
         }
-        
+
         BDDDomain[] doms = new BDDDomain[nDomains];
-        
+
         int[] varorder = new int[varnum];
-        
-        //System.out.println("Ordering: "+ordering);
+
+        // System.out.println("Ordering: "+ordering);
         StringTokenizer st = new StringTokenizer(ordering, "x_", true);
         int numberOfDomains = 0, bitIndex = 0;
         boolean[] done = new boolean[nDomains];
-        for (int i=0; ; ++i) {
+        for (int i = 0;; ++i) {
             String s = st.nextToken();
             BDDDomain d;
-            for (int j=0; ; ++j) {
+            for (int j = 0;; ++j) {
                 if (j == numberOfDomains())
-                    throw new BDDException("bad domain: "+s);
+                    throw new BDDException("bad domain: " + s);
                 d = getDomain(j);
-                if (s.equals(d.getName())) break;
+                if (s.equals(d.getName()))
+                    break;
             }
             if (done[d.getIndex()])
-                throw new BDDException("duplicate domain: "+s);
+                throw new BDDException("duplicate domain: " + s);
             done[d.getIndex()] = true;
             doms[i] = d;
             if (st.hasMoreTokens()) {
@@ -1725,55 +1984,55 @@ public abstract class BDDFactory {
                     continue;
                 }
             }
-            bitIndex = fillInVarIndices(doms, i-numberOfDomains, numberOfDomains+1,
-                                        localOrders, bitIndex, varorder);
+            bitIndex = fillInVarIndices(doms, i - numberOfDomains, numberOfDomains + 1, localOrders, bitIndex,
+                    varorder);
             if (!st.hasMoreTokens()) {
                 break;
             }
             if (s.equals("_"))
                 numberOfDomains = 0;
             else
-                throw new BDDException("bad token: "+s);
+                throw new BDDException("bad token: " + s);
         }
-        
-        for (int i=0; i<doms.length; ++i) {
+
+        for (int i = 0; i < doms.length; ++i) {
             if (!done[i]) {
-                throw new BDDException("missing domain #"+i+": "+getDomain(i));
+                throw new BDDException("missing domain #" + i + ": " + getDomain(i));
             }
         }
-        
+
         while (bitIndex < varorder.length) {
             varorder[bitIndex] = bitIndex;
             ++bitIndex;
         }
-            
+
         int[] test = new int[varorder.length];
         System.arraycopy(varorder, 0, test, 0, varorder.length);
         Arrays.sort(test);
-        for (int i=0; i<test.length; ++i) {
-            if (test[i] != i) 
-                throw new BDDException(test[i]+" != "+i);
+        for (int i = 0; i < test.length; ++i) {
+            if (test[i] != i)
+                throw new BDDException(test[i] + " != " + i);
         }
-        
+
         return varorder;
     }
-    
+
     /**
      * Helper function for makeVarOrder().
      */
-    static int fillInVarIndices(
-                         BDDDomain[] doms, int domainIndex, int numDomains,
-                         int[][] localOrders, int bitIndex, int[] varorder) {
+    static int fillInVarIndices(BDDDomain[] doms, int domainIndex, int numDomains, int[][] localOrders, int bitIndex,
+            int[] varorder)
+    {
         // calculate size of largest domain to interleave
         int maxBits = 0;
-        for (int i=0; i<numDomains; ++i) {
-            BDDDomain d = doms[domainIndex+i];
+        for (int i = 0; i < numDomains; ++i) {
+            BDDDomain d = doms[domainIndex + i];
             maxBits = Math.max(maxBits, d.varNum());
         }
         // interleave the domains
-        for (int bitNumber=0; bitNumber<maxBits; ++bitNumber) {
-            for (int i=0; i<numDomains; ++i) {
-                BDDDomain d = doms[domainIndex+i];
+        for (int bitNumber = 0; bitNumber < maxBits; ++bitNumber) {
+            for (int i = 0; i < numDomains; ++i) {
+                BDDDomain d = doms[domainIndex + i];
                 if (bitNumber < d.varNum()) {
                     int di = d.getIndex();
                     int local = localOrders[di][bitNumber];
@@ -1789,181 +2048,212 @@ public abstract class BDDFactory {
         }
         return bitIndex;
     }
-    
-    
-    
+
     /**** BIT VECTORS ****/
-    
+
     /**
-     * <p>Implementors must implement this factory method to create BDDBitVector
-     * objects of the correct type.</p>
+     * <p>
+     * Implementors must implement this factory method to create BDDBitVector objects of the correct type.
+     * </p>
      */
     protected BDDBitVector createBitVector(int a) {
         return new BDDBitVector(a) {
-            public BDDFactory getFactory() { return BDDFactory.this; }
+            public BDDFactory getFactory() {
+                return BDDFactory.this;
+            }
         };
     }
-    
+
     /**
-     * <p>Build a bit vector that is constant true or constant false.</p>
+     * <p>
+     * Build a bit vector that is constant true or constant false.
+     * </p>
      * 
-     * <p>Compare to bvec_true, bvec_false.</p>
+     * <p>
+     * Compare to bvec_true, bvec_false.
+     * </p>
      */
     public BDDBitVector buildVector(int bitnum, boolean b) {
         BDDBitVector v = createBitVector(bitnum);
         v.initialize(b);
         return v;
     }
-    
+
     /**
-     * <p>Build a bit vector that corresponds to a constant value.</p>
+     * <p>
+     * Build a bit vector that corresponds to a constant value.
+     * </p>
      * 
-     * <p>Compare to bvec_con.</p>
+     * <p>
+     * Compare to bvec_con.
+     * </p>
      */
     public BDDBitVector constantVector(int bitnum, long val) {
         BDDBitVector v = createBitVector(bitnum);
         v.initialize(val);
         return v;
     }
+
     public BDDBitVector constantVector(int bitnum, BigInteger val) {
         BDDBitVector v = createBitVector(bitnum);
         v.initialize(val);
         return v;
     }
-    
+
     /**
-     * <p>Build a bit vector using variables offset, offset+step,
-     * offset+2*step, ... , offset+(bitnum-1)*step.</p>
+     * <p>
+     * Build a bit vector using variables offset, offset+step, offset+2*step, ... , offset+(bitnum-1)*step.
+     * </p>
      * 
-     * <p>Compare to bvec_var.</p>
+     * <p>
+     * Compare to bvec_var.
+     * </p>
      */
     public BDDBitVector buildVector(int bitnum, int offset, int step) {
         BDDBitVector v = createBitVector(bitnum);
         v.initialize(offset, step);
         return v;
     }
-    
+
     /**
-     * <p>Build a bit vector using variables from the given BDD domain.</p>
+     * <p>
+     * Build a bit vector using variables from the given BDD domain.
+     * </p>
      * 
-     * <p>Compare to bvec_varfdd.</p>
+     * <p>
+     * Compare to bvec_varfdd.
+     * </p>
      */
     public BDDBitVector buildVector(BDDDomain d) {
         BDDBitVector v = createBitVector(d.varNum());
         v.initialize(d);
         return v;
     }
-    
+
     /**
-     * <p>Build a bit vector using the given variables.</p>
+     * <p>
+     * Build a bit vector using the given variables.
+     * </p>
      * 
-     * <p>compare to bvec_varvec.</p>
+     * <p>
+     * compare to bvec_varvec.
+     * </p>
      */
     public BDDBitVector buildVector(int[] var) {
         BDDBitVector v = createBitVector(var.length);
         v.initialize(var);
         return v;
     }
-    
-    
-    
+
     /**** CALLBACKS ****/
-    
+
     protected List gc_callbacks, reorder_callbacks, resize_callbacks;
-    
+
     /**
-     * <p>Register a callback that is called when garbage collection is about
-     * to occur.</p>
+     * <p>
+     * Register a callback that is called when garbage collection is about to occur.
+     * </p>
      * 
-     * @param o  base object
-     * @param m  method
+     * @param o base object
+     * @param m method
      */
     public void registerGCCallback(Object o, Method m) {
-        if (gc_callbacks == null) gc_callbacks = new LinkedList();
+        if (gc_callbacks == null)
+            gc_callbacks = new LinkedList();
         registerCallback(gc_callbacks, o, m);
     }
-    
+
     /**
-     * <p>Unregister a garbage collection callback that was previously
-     * registered.</p>
+     * <p>
+     * Unregister a garbage collection callback that was previously registered.
+     * </p>
      * 
-     * @param o  base object
-     * @param m  method
+     * @param o base object
+     * @param m method
      */
     public void unregisterGCCallback(Object o, Method m) {
-        if (gc_callbacks == null) throw new BDDException();
+        if (gc_callbacks == null)
+            throw new BDDException();
         if (!unregisterCallback(gc_callbacks, o, m))
             throw new BDDException();
     }
-    
+
     /**
-     * <p>Register a callback that is called when reordering is about
-     * to occur.</p>
+     * <p>
+     * Register a callback that is called when reordering is about to occur.
+     * </p>
      * 
-     * @param o  base object
-     * @param m  method
+     * @param o base object
+     * @param m method
      */
     public void registerReorderCallback(Object o, Method m) {
-        if (reorder_callbacks == null) reorder_callbacks = new LinkedList();
+        if (reorder_callbacks == null)
+            reorder_callbacks = new LinkedList();
         registerCallback(reorder_callbacks, o, m);
     }
-    
+
     /**
-     * <p>Unregister a reorder callback that was previously
-     * registered.</p>
+     * <p>
+     * Unregister a reorder callback that was previously registered.
+     * </p>
      * 
-     * @param o  base object
-     * @param m  method
+     * @param o base object
+     * @param m method
      */
     public void unregisterReorderCallback(Object o, Method m) {
-        if (reorder_callbacks == null) throw new BDDException();
+        if (reorder_callbacks == null)
+            throw new BDDException();
         if (!unregisterCallback(reorder_callbacks, o, m))
             throw new BDDException();
     }
-    
+
     /**
-     * <p>Register a callback that is called when node table resizing is about
-     * to occur.</p>
+     * <p>
+     * Register a callback that is called when node table resizing is about to occur.
+     * </p>
      * 
-     * @param o  base object
-     * @param m  method
+     * @param o base object
+     * @param m method
      */
     public void registerResizeCallback(Object o, Method m) {
-        if (resize_callbacks == null) resize_callbacks = new LinkedList();
+        if (resize_callbacks == null)
+            resize_callbacks = new LinkedList();
         registerCallback(resize_callbacks, o, m);
     }
-    
+
     /**
-     * <p>Unregister a reorder callback that was previously
-     * registered.</p>
+     * <p>
+     * Unregister a reorder callback that was previously registered.
+     * </p>
      * 
-     * @param o  base object
-     * @param m  method
+     * @param o base object
+     * @param m method
      */
     public void unregisterResizeCallback(Object o, Method m) {
-        if (resize_callbacks == null) throw new BDDException();
+        if (resize_callbacks == null)
+            throw new BDDException();
         if (!unregisterCallback(resize_callbacks, o, m))
             throw new BDDException();
     }
-    
+
     protected void gbc_handler(boolean pre, GCStats s) {
         if (gc_callbacks == null) {
             bdd_default_gbchandler(pre, s);
         } else {
-            doCallbacks(gc_callbacks, new Integer(pre?1:0), s);
+            doCallbacks(gc_callbacks, new Integer(pre ? 1 : 0), s);
         }
     }
-    
+
     protected static void bdd_default_gbchandler(boolean pre, GCStats s) {
         if (pre) {
             if (s.freenodes != 0)
-                System.err.println("Starting GC cycle  #"+(s.num+1)+
-                                   ": "+s.nodes+" nodes / "+s.freenodes+" free");
+                System.err.println(
+                        "Starting GC cycle  #" + (s.num + 1) + ": " + s.nodes + " nodes / " + s.freenodes + " free");
         } else {
             System.err.println(s.toString());
         }
     }
-    
+
     void reorder_handler(boolean b, ReorderStats s) {
         if (b) {
             s.usednum_before = getNodeNum();
@@ -1985,7 +2275,7 @@ public abstract class BDDFactory {
             if (prestate) {
                 System.out.println("Start reordering");
             } else {
-                System.out.println("End reordering. "+s);
+                System.out.println("End reordering. " + s);
             }
         }
     }
@@ -2001,10 +2291,10 @@ public abstract class BDDFactory {
     protected static void bdd_default_reshandler(int oldsize, int newsize) {
         int verbose = 1;
         if (verbose > 0) {
-            System.out.println("Resizing node table from "+oldsize+" to "+newsize);
+            System.out.println("Resizing node table from " + oldsize + " to " + newsize);
         }
     }
-    
+
     protected void registerCallback(List callbacks, Object o, Method m) {
         if (!Modifier.isPublic(m.getModifiers()) && !m.isAccessible()) {
             throw new BDDException("Callback method not accessible");
@@ -2023,13 +2313,13 @@ public abstract class BDDFactory {
                 throw new BDDException("Wrong signature for callback");
             }
         }
-        callbacks.add(new Object[] { o, m });
+        callbacks.add(new Object[] {o, m});
     }
-    
+
     protected boolean unregisterCallback(List callbacks, Object o, Method m) {
         if (callbacks != null) {
-            for (Iterator i = callbacks.iterator(); i.hasNext(); ) {
-                Object[] cb = (Object[]) i.next();
+            for (Iterator i = callbacks.iterator(); i.hasNext();) {
+                Object[] cb = (Object[])i.next();
                 if (o == cb[0] && m.equals(cb[1])) {
                     i.remove();
                     return true;
@@ -2038,26 +2328,26 @@ public abstract class BDDFactory {
         }
         return false;
     }
-    
+
     protected void doCallbacks(List callbacks, Object arg1, Object arg2) {
         if (callbacks != null) {
-            for (Iterator i = callbacks.iterator(); i.hasNext(); ) {
-                Object[] cb = (Object[]) i.next();
+            for (Iterator i = callbacks.iterator(); i.hasNext();) {
+                Object[] cb = (Object[])i.next();
                 Object o = cb[0];
-                Method m = (Method) cb[1];
+                Method m = (Method)cb[1];
                 try {
                     switch (m.getParameterTypes().length) {
-                    case 0:
-                        m.invoke(o, new Object[] { } );
-                        break;
-                    case 1:
-                        m.invoke(o, new Object[] { arg1 } );
-                        break;
-                    case 2:
-                        m.invoke(o, new Object[] { arg1, arg2 } );
-                        break;
-                    default:
-                        throw new BDDException("Wrong number of arguments for "+m);
+                        case 0:
+                            m.invoke(o, new Object[] {});
+                            break;
+                        case 1:
+                            m.invoke(o, new Object[] {arg1});
+                            break;
+                        case 2:
+                            m.invoke(o, new Object[] {arg1, arg2});
+                            break;
+                        default:
+                            throw new BDDException("Wrong number of arguments for " + m);
                     }
                 } catch (IllegalArgumentException e) {
                     e.printStackTrace();
@@ -2065,13 +2355,12 @@ public abstract class BDDFactory {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
                     if (e.getTargetException() instanceof RuntimeException)
-                        throw (RuntimeException) e.getTargetException();
+                        throw (RuntimeException)e.getTargetException();
                     if (e.getTargetException() instanceof Error)
-                        throw (Error) e.getTargetException();
+                        throw (Error)e.getTargetException();
                     e.printStackTrace();
                 }
             }
         }
     }
-    
 }

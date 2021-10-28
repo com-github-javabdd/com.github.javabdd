@@ -1,6 +1,7 @@
 // BDDDomain.java, created Jan 29, 2003 9:50:57 PM by jwhaley
 // Copyright (C) 2003 John Whaley
 // Licensed under the terms of the GNU LGPL; see COPYING for details.
+
 package com.github.javabdd;
 
 import java.math.BigInteger;
@@ -8,15 +9,16 @@ import java.math.BigInteger;
 import com.github.javabdd.BDD.BDDIterator;
 
 /**
- * Represents a domain of BDD variables.  This is useful for finite state
- * machines, among other things.
+ * Represents a domain of BDD variables. This is useful for finite state machines, among other things.
  *
- * <p>BDDDomains are called "finite domain blocks" in Section 2.9
- * of the buddy documentation.   A BDDDomain is a block of BDD variables 
- * that can represent integer values as opposed to only true and false.</p>
+ * <p>
+ * BDDDomains are called "finite domain blocks" in Section 2.9 of the buddy documentation. A BDDDomain is a block of BDD
+ * variables that can represent integer values as opposed to only true and false.
+ * </p>
  * 
- * <p>Use <tt>BDDFactory.extDomain()</tt> to create one or more domains with 
- * a specified list of sizes.</p>
+ * <p>
+ * Use <tt>BDDFactory.extDomain()</tt> to create one or more domains with a specified list of sizes.
+ * </p>
  * 
  * @author John Whaley
  * @version $Id: BDDDomain.java 468 2006-11-29 08:07:13Z joewhaley $
@@ -26,21 +28,24 @@ public abstract class BDDDomain {
 
     /* The name of this domain. */
     protected String name;
+
     /* The index of this domain. */
     protected int index;
 
     /* The specified domain (0...N-1) */
     protected BigInteger realsize;
+
     /* Variable indices for the variable set */
     protected int[] ivar;
-    /* The BDD variable set.  Actually constructed in extDomain(), etc. */
+
+    /* The BDD variable set. Actually constructed in extDomain(), etc. */
     protected BDDVarSet var;
 
     /**
      * Default constructor.
      * 
-     * @param index  index of this domain
-     * @param range  size of this domain
+     * @param index index of this domain
+     * @param range size of this domain
      */
     protected BDDDomain(int index, BigInteger range) {
         BigInteger calcsize = BigInteger.valueOf(2L);
@@ -51,8 +56,8 @@ public abstract class BDDDomain {
         this.realsize = range;
         int binsize = 1;
         while (calcsize.compareTo(range) < 0) {
-           binsize++;
-           calcsize = calcsize.shiftLeft(1);
+            binsize++;
+            calcsize = calcsize.shiftLeft(1);
         }
         this.ivar = new int[binsize];
     }
@@ -68,31 +73,34 @@ public abstract class BDDDomain {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * Gets the name of this domain.
      */
     public String getName() {
         return name;
     }
-    
+
     /**
      * Returns the index of this domain.
-     */ 
+     */
     public int getIndex() {
         return index;
     }
 
     /**
-     * <p>Returns what corresponds to a disjunction of all possible values of this
-     * domain. This is more efficient than doing ithVar(0) OR ithVar(1) ...
-     * explicitly for all values in the domain.</p>
+     * <p>
+     * Returns what corresponds to a disjunction of all possible values of this domain. This is more efficient than
+     * doing ithVar(0) OR ithVar(1) ... explicitly for all values in the domain.
+     * </p>
      * 
-     * <p>Compare to fdd_domain.</p>
-     */ 
+     * <p>
+     * Compare to fdd_domain.
+     * </p>
+     */
     public BDD domain() {
         BDDFactory factory = getFactory();
-        
+
         /* Encode V<=X-1. V is the variables in 'var' and X is the domain size */
         BigInteger val = size().subtract(BigInteger.ONE);
         BDD d = factory.universe();
@@ -115,19 +123,20 @@ public abstract class BDDDomain {
     public BigInteger size() {
         return this.realsize;
     }
-    
+
     public BDD buildAdd(BDDDomain that, long value) {
         if (this.varNum() != that.varNum())
             throw new BDDException();
         return buildAdd(that, this.varNum(), value);
     }
+
     public BDD buildAdd(BDDDomain that, int bits, long value) {
-        if (bits > this.varNum() ||
-            bits > that.varNum())
-            throw new BDDException("Number of bits requested ("+bits+") is larger than domain sizes "+this.varNum()+","+that.varNum());
-        
+        if (bits > this.varNum() || bits > that.varNum())
+            throw new BDDException("Number of bits requested (" + bits + ") is larger than domain sizes "
+                    + this.varNum() + "," + that.varNum());
+
         BDDFactory bdd = getFactory();
-        
+
         if (value == 0L) {
             BDD result = bdd.universe();
             int n;
@@ -136,7 +145,7 @@ public abstract class BDDDomain {
                 b.biimpWith(bdd.ithVar(that.ivar[n]));
                 result.andWith(b);
             }
-            for ( ; n < Math.max(this.varNum(), that.varNum()); n++) {
+            for (; n < Math.max(this.varNum(), that.varNum()); n++) {
                 BDD b = (n < this.varNum()) ? bdd.nithVar(this.ivar[n]) : bdd.one();
                 b.andWith((n < that.varNum()) ? bdd.nithVar(that.ivar[n]) : bdd.one());
                 result.andWith(b);
@@ -149,7 +158,7 @@ public abstract class BDDDomain {
         BDDBitVector y = bdd.buildVector(vars);
         BDDBitVector v = bdd.constantVector(bits, value);
         BDDBitVector z = y.add(v);
-        
+
         int[] thatvars = new int[bits];
         System.arraycopy(that.ivar, 0, thatvars, 0, thatvars.length);
         BDDBitVector x = bdd.buildVector(thatvars);
@@ -159,18 +168,20 @@ public abstract class BDDDomain {
             BDD b = x.bitvec[n].biimp(z.bitvec[n]);
             result.andWith(b);
         }
-        for ( ; n < Math.max(this.varNum(), that.varNum()); n++) {
+        for (; n < Math.max(this.varNum(), that.varNum()); n++) {
             BDD b = (n < this.varNum()) ? bdd.nithVar(this.ivar[n]) : bdd.one();
             b.andWith((n < that.varNum()) ? bdd.nithVar(that.ivar[n]) : bdd.one());
             result.andWith(b);
         }
-        x.free(); y.free(); z.free(); v.free();
+        x.free();
+        y.free();
+        z.free();
+        v.free();
         return result;
     }
-    
+
     /**
-     * Builds a BDD which is true for all the possible assignments to the
-     * variable blocks that makes the blocks equal.
+     * Builds a BDD which is true for all the possible assignments to the variable blocks that makes the blocks equal.
      * 
      * Compare to fdd_equals/fdd_equ.
      * 
@@ -179,7 +190,8 @@ public abstract class BDDDomain {
      */
     public BDD buildEquals(BDDDomain that) {
         if (!this.size().equals(that.size())) {
-            throw new BDDException("Size of "+this+" != size of that "+that+"( "+this.size()+" vs "+that.size()+")");
+            throw new BDDException(
+                    "Size of " + this + " != size of that " + that + "( " + this.size() + " vs " + that.size() + ")");
         }
 
         BDDFactory factory = getFactory();
@@ -197,10 +209,9 @@ public abstract class BDDDomain {
 
         return e;
     }
-    
+
     /**
-     * Returns the variable set that contains the variables used to define this
-     * finite domain block.
+     * Returns the variable set that contains the variables used to define this finite domain block.
      * 
      * Compare to fdd_ithset.
      * 
@@ -209,10 +220,9 @@ public abstract class BDDDomain {
     public BDDVarSet set() {
         return var.id();
     }
-    
+
     /**
-     * Returns the BDD that defines the given value for this finite domain
-     * block.
+     * Returns the BDD that defines the given value for this finite domain block.
      * 
      * Compare to fdd_ithvar.
      * 
@@ -221,9 +231,10 @@ public abstract class BDDDomain {
     public BDD ithVar(long val) {
         return ithVar(BigInteger.valueOf(val));
     }
+
     public BDD ithVar(BigInteger val) {
         if (val.signum() < 0 || val.compareTo(size()) >= 0) {
-            throw new BDDException(val+" is out of range");
+            throw new BDDException(val + " is out of range");
         }
 
         BDDFactory factory = getFactory();
@@ -239,19 +250,19 @@ public abstract class BDDDomain {
 
         return v;
     }
-    
+
     /**
-     * Returns the BDD that defines the given range of values, inclusive,
-     * for this finite domain block.
+     * Returns the BDD that defines the given range of values, inclusive, for this finite domain block.
      * 
      * @return BDD
      */
     public BDD varRange(long lo, long hi) {
         return varRange(BigInteger.valueOf(lo), BigInteger.valueOf(hi));
     }
+
     public BDD varRange(BigInteger lo, BigInteger hi) {
         if (lo.signum() < 0 || hi.compareTo(size()) >= 0 || lo.compareTo(hi) > 0) {
-            throw new BDDException("range <"+lo+", "+hi+"> is invalid");
+            throw new BDDException("range <" + lo + ", " + hi + "> is invalid");
         }
 
         BDDFactory factory = getFactory();
@@ -259,7 +270,7 @@ public abstract class BDDDomain {
         int[] ivar = this.vars();
         while (lo.compareTo(hi) <= 0) {
             BDD v = factory.universe();
-            for (int n = ivar.length - 1; ; n--) {
+            for (int n = ivar.length - 1;; n--) {
                 if (lo.testBit(n)) {
                     v.andWith(factory.ithVar(ivar[n]));
                 } else {
@@ -275,7 +286,7 @@ public abstract class BDDDomain {
         }
         return result;
     }
-    
+
     /**
      * Returns the number of BDD variables used for this finite domain block.
      * 
@@ -286,10 +297,9 @@ public abstract class BDDDomain {
     public int varNum() {
         return this.ivar.length;
     }
-    
+
     /**
-     * Returns an integer array containing the indices of the BDD variables used
-     * to define this finite domain.
+     * Returns an integer array containing the indices of the BDD variables used to define this finite domain.
      * 
      * Compare to fdd_vars.
      * 
@@ -298,10 +308,11 @@ public abstract class BDDDomain {
     public int[] vars() {
         return this.ivar;
     }
-    
+
     public int ensureCapacity(long range) {
         return ensureCapacity(BigInteger.valueOf(range));
     }
+
     public int ensureCapacity(BigInteger range) {
         BigInteger calcsize = BigInteger.valueOf(2L);
         if (range.signum() < 0)
@@ -311,15 +322,18 @@ public abstract class BDDDomain {
         this.realsize = range.add(BigInteger.ONE);
         int binsize = 1;
         while (calcsize.compareTo(range) <= 0) {
-           binsize++;
-           calcsize = calcsize.shiftLeft(1);
+            binsize++;
+            calcsize = calcsize.shiftLeft(1);
         }
-        if (ivar.length == binsize) return binsize;
-        
-        throw new BDDException("Can't add bits to domains, requested domain "+name+" upper limit "+range);
+        if (ivar.length == binsize)
+            return binsize;
+
+        throw new BDDException("Can't add bits to domains, requested domain " + name + " upper limit " + range);
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -327,15 +341,13 @@ public abstract class BDDDomain {
     }
 
     /**
-     * Convert a BDD that to a list of indices of this domain.
-     * This method assumes that the BDD passed is a disjunction
-     * of ithVar(i_1) to ithVar(i_k).  It returns an array
-     * of length 'k' with elements [i_1,...,i_k].
+     * Convert a BDD that to a list of indices of this domain. This method assumes that the BDD passed is a disjunction
+     * of ithVar(i_1) to ithVar(i_k). It returns an array of length 'k' with elements [i_1,...,i_k].
      * <p>
-     * Be careful when using this method for BDDs with a large number
-     * of entries, as it allocates a BigInteger[] array of dimension k.
+     * Be careful when using this method for BDDs with a large number of entries, as it allocates a BigInteger[] array
+     * of dimension k.
      *
-     * @param bdd  bdd that is the disjunction of domain indices
+     * @param bdd bdd that is the disjunction of domain indices
      * @see #getVarIndices(BDD,int)
      * @see #ithVar(BigInteger)
      */
@@ -344,9 +356,8 @@ public abstract class BDDDomain {
     }
 
     /**
-     * Convert a BDD that to a list of indices of this domain.
-     * Same as getVarIndices(BDD), except only 'max' indices
-     * are extracted.  
+     * Convert a BDD that to a list of indices of this domain. Same as getVarIndices(BDD), except only 'max' indices are
+     * extracted.
      *
      * @param bdd bdd that is the disjunction of domain indices
      * @param max maximum number of entries to be returned
@@ -355,7 +366,7 @@ public abstract class BDDDomain {
      */
     public BigInteger[] getVarIndices(BDD bdd, int max) {
         BDDVarSet myvarset = set(); // can't use var here, must respect subclass a factory may provide
-        int n = (int) bdd.satCount(myvarset);
+        int n = (int)bdd.satCount(myvarset);
         if (max != -1 && n > max)
             n = max;
         BigInteger[] res = new BigInteger[n];
