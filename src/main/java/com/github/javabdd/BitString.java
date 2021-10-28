@@ -685,14 +685,14 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Abstract bit string iterator class.
      */
-    public abstract static class BitStringIterator implements Iterator {
+    public abstract static class BitStringIterator implements Iterator<Integer> {
         /**
          * Returns the index of the next bit set.
          */
         public abstract int nextIndex();
 
         @Override
-        public final Object next() {
+        public final Integer next() {
             return nextIndex();
         }
 

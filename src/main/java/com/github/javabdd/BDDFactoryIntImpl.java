@@ -351,10 +351,10 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         return ((IntBDD)b).v;
     }
 
-    protected static final /* bdd */int[] unwrap(Collection/* <BDD> */ c) {
+    protected static final /* bdd */int[] unwrap(Collection<BDD> c) {
         /* bdd */int[] result = new /* bdd */int[c.size()];
         int k = -1;
-        for (Iterator i = c.iterator(); i.hasNext();) {
+        for (Iterator<BDD> i = c.iterator(); i.hasNext();) {
             result[++k] = ((IntBDD)i.next()).v;
         }
         return result;
@@ -672,7 +672,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
     }
 
     @Override
-    public int nodeCount(Collection/* <BDD> */ r) {
+    public int nodeCount(Collection<BDD> r) {
         return nodeCount_impl2(unwrap(r));
     }
 

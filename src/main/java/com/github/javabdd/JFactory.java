@@ -701,11 +701,11 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     public void setVarOrder(String ordering) {
-        List result = new LinkedList();
+        List<Object> result = new LinkedList<>();
         int nDomains = numberOfDomains();
         StringTokenizer st = new StringTokenizer(ordering, "x_", true);
         boolean[] done = new boolean[nDomains];
-        List last = null;
+        List<BDDDomain> last = null;
         for (/* int i=0 */;; /* ++i */) {
             String s = st.nextToken();
             BDDDomain d;
@@ -729,7 +729,7 @@ public class JFactory extends BDDFactoryIntImpl {
                 s = st.nextToken();
                 if (s.equals("x")) {
                     if (last == null) {
-                        last = new LinkedList();
+                        last = new LinkedList<>();
                         last.add(d);
                         result.add(last);
                     }
@@ -765,20 +765,21 @@ public class JFactory extends BDDFactoryIntImpl {
      *
      * @param domains domain order
      */
-    public void setVarOrder(List domains) {
+    @SuppressWarnings("unchecked")
+    public void setVarOrder(List<Object> domains) {
         BddTree[] my_vartree = new BddTree[fdvarnum];
         boolean[] interleaved = new boolean[fdvarnum];
         int k = 0;
-        for (Iterator i = domains.iterator(); i.hasNext();) {
+        for (Iterator<Object> i = domains.iterator(); i.hasNext();) {
             Object o = i.next();
-            Collection c;
+            Collection<BDDDomain> c;
             if (o instanceof BDDDomain) {
-                c = Collections.singleton(o);
+                c = Collections.singleton((BDDDomain)o);
             } else {
-                c = (Collection)o;
+                c = (Collection<BDDDomain>)o;
             }
-            for (Iterator j = c.iterator(); j.hasNext();) {
-                BDDDomain d = (BDDDomain)j.next();
+            for (Iterator<BDDDomain> j = c.iterator(); j.hasNext();) {
+                BDDDomain d = j.next();
                 int low = d.ivar[0];
                 int high = d.ivar[d.ivar.length - 1];
                 bdd_intaddvarblock(low, high, false);

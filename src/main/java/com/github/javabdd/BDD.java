@@ -676,10 +676,10 @@ public abstract class BDD {
      * Iterator that returns all satisfying assignments as byte arrays. In the byte arrays, -1 means dont-care, 0 means
      * 0, and 1 means 1.
      */
-    public static class AllSatIterator implements Iterator {
+    public static class AllSatIterator implements Iterator<byte[]> {
         protected final BDDFactory f;
 
-        protected LinkedList loStack, hiStack;
+        protected LinkedList<BDD> loStack, hiStack;
 
         protected byte[] allsatProfile;
 
@@ -717,8 +717,8 @@ public abstract class BDD {
             if (!f.isZDD()) {
                 Arrays.fill(allsatProfile, (byte)-1);
             }
-            loStack = new LinkedList();
-            hiStack = new LinkedList();
+            loStack = new LinkedList<>();
+            hiStack = new LinkedList<>();
             if (!r.isOne()) {
                 loStack.addLast(r.id());
                 if (!gotoNext()) {
@@ -735,9 +735,9 @@ public abstract class BDD {
                     if (hiStack.isEmpty()) {
                         return false;
                     }
-                    r = (BDD)hiStack.removeLast();
+                    r = hiStack.removeLast();
                 } else {
-                    r = (BDD)loStack.removeLast();
+                    r = loStack.removeLast();
                 }
                 int LEVEL_r = r.level();
                 allsatProfile[useLevel ? LEVEL_r : f.level2Var(LEVEL_r)] = lo_empty ? (byte)1 : (byte)0;
@@ -811,7 +811,7 @@ public abstract class BDD {
          * @see java.util.Iterator#next()
          */
         @Override
-        public Object next() {
+        public byte[] next() {
             return nextSat();
         }
 
@@ -945,7 +945,7 @@ public abstract class BDD {
      * @author jwhaley
      * @version $Id: BDD.java 481 2011-02-18 14:37:09Z gismo $
      */
-    public static class BDDIterator implements Iterator {
+    public static class BDDIterator implements Iterator<BDD> {
         final BDDFactory f;
 
         final AllSatIterator i;
@@ -985,7 +985,7 @@ public abstract class BDD {
 
         protected void gotoNext() {
             if (i.hasNext()) {
-                a = (byte[])i.next();
+                a = i.next();
             } else {
                 a = null;
                 return;
@@ -1031,7 +1031,7 @@ public abstract class BDD {
          * @see java.util.Iterator#next()
          */
         @Override
-        public Object next() {
+        public BDD next() {
             return nextBDD();
         }
 
@@ -1337,20 +1337,20 @@ public abstract class BDD {
         boolean[] visited = new boolean[nodeCount() + 2];
         visited[0] = true;
         visited[1] = true;
-        HashMap map = new HashMap();
+        HashMap<BDD, Integer> map = new HashMap<>();
         map.put(getFactory().zero(), 0);
         map.put(getFactory().one(), 1);
         printdot_rec(out, 1, visited, map);
 
-        for (Iterator i = map.keySet().iterator(); i.hasNext();) {
-            BDD b = (BDD)i.next();
+        for (Iterator<BDD> i = map.keySet().iterator(); i.hasNext();) {
+            BDD b = i.next();
             b.free();
         }
         out.println("}");
     }
 
-    protected int printdot_rec(PrintStream out, int current, boolean[] visited, HashMap map) {
-        Integer ri = ((Integer)map.get(this));
+    protected int printdot_rec(PrintStream out, int current, boolean[] visited, HashMap<BDD, Integer> map) {
+        Integer ri = (map.get(this));
         if (ri == null) {
             map.put(this.id(), ri = ++current);
         }
@@ -1364,12 +1364,12 @@ public abstract class BDD {
         out.println(r + " [label=\"" + this.var() + "\"];");
 
         BDD l = this.low(), h = this.high();
-        Integer li = (Integer)map.get(l);
+        Integer li = map.get(l);
         if (li == null) {
             map.put(l.id(), li = ++current);
         }
         int low = li.intValue();
-        Integer hi = (Integer)map.get(h);
+        Integer hi = map.get(h);
         if (hi == null) {
             map.put(h.id(), hi = ++current);
         }

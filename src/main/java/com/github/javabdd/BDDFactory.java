@@ -88,7 +88,7 @@ public abstract class BDDFactory {
             System.err.println("Could not load BDD package " + bddpackage + ": " + e.getLocalizedMessage());
         }
         try {
-            Class c = Class.forName(bddpackage);
+            Class<?> c = Class.forName(bddpackage);
             Method m = c.getMethod("init", new Class[] {int.class, int.class});
             return (BDDFactory)m.invoke(null, new Object[] {nodenum, cachesize});
         } catch (ClassNotFoundException e) {
@@ -251,12 +251,12 @@ public abstract class BDDFactory {
      * Compare to bdd_buildcube.
      * </p>
      */
-    public BDD buildCube(int value, List/* <BDD> */ variables) {
+    public BDD buildCube(int value, List<BDD> variables) {
         BDD result = universe();
-        Iterator i = variables.iterator();
+        Iterator<BDD> i = variables.iterator();
         // int z = 0;
         while (i.hasNext()) {
-            BDD var = (BDD)i.next();
+            BDD var = i.next();
             if ((value & 0x1) != 0) {
                 var = var.id();
             } else {
@@ -1265,7 +1265,7 @@ public abstract class BDDFactory {
      * Compare to bdd_anodecount.
      * </p>
      */
-    public abstract int nodeCount(Collection/* BDD */ r);
+    public abstract int nodeCount(Collection<BDD> r);
 
     /**
      * <p>
@@ -2158,7 +2158,7 @@ public abstract class BDDFactory {
 
     ///// CALLBACKS /////
 
-    protected List gc_callbacks, reorder_callbacks, resize_callbacks;
+    protected List<Object[]> gc_callbacks, reorder_callbacks, resize_callbacks;
 
     /**
      * <p>
@@ -2170,7 +2170,7 @@ public abstract class BDDFactory {
      */
     public void registerGCCallback(Object o, Method m) {
         if (gc_callbacks == null) {
-            gc_callbacks = new LinkedList();
+            gc_callbacks = new LinkedList<>();
         }
         registerCallback(gc_callbacks, o, m);
     }
@@ -2202,7 +2202,7 @@ public abstract class BDDFactory {
      */
     public void registerReorderCallback(Object o, Method m) {
         if (reorder_callbacks == null) {
-            reorder_callbacks = new LinkedList();
+            reorder_callbacks = new LinkedList<>();
         }
         registerCallback(reorder_callbacks, o, m);
     }
@@ -2234,7 +2234,7 @@ public abstract class BDDFactory {
      */
     public void registerResizeCallback(Object o, Method m) {
         if (resize_callbacks == null) {
-            resize_callbacks = new LinkedList();
+            resize_callbacks = new LinkedList<>();
         }
         registerCallback(resize_callbacks, o, m);
     }
@@ -2314,7 +2314,7 @@ public abstract class BDDFactory {
         }
     }
 
-    protected void registerCallback(List callbacks, Object o, Method m) {
+    protected void registerCallback(List<Object[]> callbacks, Object o, Method m) {
         if (!Modifier.isPublic(m.getModifiers()) && !m.isAccessible()) {
             throw new BDDException("Callback method not accessible");
         }
@@ -2327,7 +2327,7 @@ public abstract class BDDFactory {
             }
         }
         if (DEBUG) {
-            Class[] params = m.getParameterTypes();
+            Class<?>[] params = m.getParameterTypes();
             if (params.length != 1 || params[0] != int.class) {
                 throw new BDDException("Wrong signature for callback");
             }
@@ -2335,10 +2335,10 @@ public abstract class BDDFactory {
         callbacks.add(new Object[] {o, m});
     }
 
-    protected boolean unregisterCallback(List callbacks, Object o, Method m) {
+    protected boolean unregisterCallback(List<Object[]> callbacks, Object o, Method m) {
         if (callbacks != null) {
-            for (Iterator i = callbacks.iterator(); i.hasNext();) {
-                Object[] cb = (Object[])i.next();
+            for (Iterator<Object[]> i = callbacks.iterator(); i.hasNext();) {
+                Object[] cb = i.next();
                 if (o == cb[0] && m.equals(cb[1])) {
                     i.remove();
                     return true;
@@ -2348,10 +2348,10 @@ public abstract class BDDFactory {
         return false;
     }
 
-    protected void doCallbacks(List callbacks, Object arg1, Object arg2) {
+    protected void doCallbacks(List<Object[]> callbacks, Object arg1, Object arg2) {
         if (callbacks != null) {
-            for (Iterator i = callbacks.iterator(); i.hasNext();) {
-                Object[] cb = (Object[])i.next();
+            for (Iterator<Object[]> i = callbacks.iterator(); i.hasNext();) {
+                Object[] cb = i.next();
                 Object o = cb[0];
                 Method m = (Method)cb[1];
                 try {
