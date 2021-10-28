@@ -266,7 +266,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * Builds a BDD variable set from an integer array. The integer array <tt>varset</tt> holds the variable numbers.
+     * Builds a BDD variable set from an integer array. The integer array {@code varset} holds the variable numbers.
      * The BDD variable set is represented by a conjunction of all the variables in their positive form.
      *
      * <p>
@@ -380,7 +380,7 @@ public abstract class BDDFactory {
 
     /**
      * Set factor by which to increase node table after a garbage collection. The amount of growth is still limited by
-     * <tt>setMaxIncrease()</tt>.
+     * {@code setMaxIncrease()}.
      *
      * @param x factor by which to increase node table after GC
      * @return old value
@@ -459,7 +459,7 @@ public abstract class BDDFactory {
 
     /**
      * Returns a BDD representing the I'th variable. (One node with the children true and false.) The requested variable
-     * must be in the (zero-indexed) range defined by <tt>setVarNum</tt>.
+     * must be in the (zero-indexed) range defined by {@code setVarNum}.
      *
      * <p>
      * Compare to bdd_ithvar.
@@ -472,7 +472,7 @@ public abstract class BDDFactory {
 
     /**
      * Returns a BDD representing the negation of the I'th variable. (One node with the children false and true.) The
-     * requested variable must be in the (zero-indexed) range defined by <tt>setVarNum</tt>.
+     * requested variable must be in the (zero-indexed) range defined by {@code setVarNum}.
      *
      * <p>
      * Compare to bdd_nithvar.
@@ -1731,7 +1731,7 @@ public abstract class BDDFactory {
     // TODO: fdd_file_hook, fdd_strm_hook
 
     /**
-     * Creates a variable ordering from a string. The resulting order can be passed into <tt>setVarOrder()</tt>.
+     * Creates a variable ordering from a string. The resulting order can be passed into {@code setVarOrder()}.
      * Example: in the order "A_BxC_DxExF", the bits for A are first, followed by the bits for B and C interleaved,
      * followed by the bits for D, E, and F interleaved.
      *

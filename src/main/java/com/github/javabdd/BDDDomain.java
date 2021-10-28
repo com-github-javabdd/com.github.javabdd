@@ -17,7 +17,7 @@ import com.github.javabdd.BDD.BDDIterator;
  * </p>
  *
  * <p>
- * Use <tt>BDDFactory.extDomain()</tt> to create one or more domains with a specified list of sizes.
+ * Use {@code BDDFactory.extDomain()} to create one or more domains with a specified list of sizes.
  * </p>
  *
  * @see com.github.javabdd.BDDFactory#extDomain(int[])

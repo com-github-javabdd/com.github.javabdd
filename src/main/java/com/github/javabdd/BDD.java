@@ -456,7 +456,7 @@ public abstract class BDD {
     public abstract BDDVarSet support();
 
     /**
-     * Returns the result of applying the binary operator <tt>opr</tt> to the two BDDs.
+     * Returns the result of applying the binary operator {@code opr} to the two BDDs.
      *
      * <p>
      * Compare to bdd_apply.
@@ -469,7 +469,7 @@ public abstract class BDD {
     public abstract BDD apply(BDD that, BDDFactory.BDDOp opr);
 
     /**
-     * Makes this BDD be the result of the binary operator <tt>opr</tt> of two BDDs. The "that" BDD is consumed, and can
+     * Makes this BDD be the result of the binary operator {@code opr} of two BDDs. The "that" BDD is consumed, and can
      * no longer be used. Attempting to use the passed in BDD again will result in an exception being thrown.
      *
      * <p>
@@ -482,8 +482,8 @@ public abstract class BDD {
     public abstract BDD applyWith(BDD that, BDDFactory.BDDOp opr);
 
     /**
-     * Applies the binary operator <tt>opr</tt> to two BDDs and then performs a universal quantification of the
-     * variables from the variable set <tt>var</tt>.
+     * Applies the binary operator {@code opr} to two BDDs and then performs a universal quantification of the
+     * variables from the variable set {@code var}.
      *
      * <p>
      * Compare to bdd_appall.
@@ -498,8 +498,8 @@ public abstract class BDD {
     public abstract BDD applyAll(BDD that, BDDFactory.BDDOp opr, BDDVarSet var);
 
     /**
-     * Applies the binary operator <tt>opr</tt> to two BDDs and then performs an existential quantification of the
-     * variables from the variable set <tt>var</tt>.
+     * Applies the binary operator {@code opr} to two BDDs and then performs an existential quantification of the
+     * variables from the variable set {@code var}.
      *
      * <p>
      * Compare to bdd_appex.
@@ -514,8 +514,8 @@ public abstract class BDD {
     public abstract BDD applyEx(BDD that, BDDFactory.BDDOp opr, BDDVarSet var);
 
     /**
-     * Applies the binary operator <tt>opr</tt> to two BDDs and then performs a unique quantification of the variables
-     * from the variable set <tt>var</tt>.
+     * Applies the binary operator {@code opr} to two BDDs and then performs a unique quantification of the variables
+     * from the variable set {@code var}.
      *
      * <p>
      * Compare to bdd_appuni.
@@ -554,9 +554,9 @@ public abstract class BDD {
     public abstract BDD fullSatOne();
 
     /**
-     * Finds one satisfying variable assignment. Finds a minterm in this BDD. The <tt>var</tt> argument is a set of
+     * Finds one satisfying variable assignment. Finds a minterm in this BDD. The {@code var} argument is a set of
      * variables that must be mentioned in the result. The polarity of these variables in the result - in case they are
-     * undefined in this BDD - are defined by the <tt>pol</tt> parameter. If <tt>pol</tt> is false, then all variables
+     * undefined in this BDD - are defined by the {@code pol} parameter. If {@code pol} is false, then all variables
      * will be in negative form. Otherwise they will be in positive form.
      *
      * <p>
@@ -723,7 +723,7 @@ public abstract class BDD {
     }
 
     /**
-     * Finds one satisfying assignment of the domain <tt>d</tt> in this BDD and returns that value.
+     * Finds one satisfying assignment of the domain {@code d} in this BDD and returns that value.
      *
      * <p>
      * Compare to fdd_scanvar.
@@ -818,7 +818,7 @@ public abstract class BDD {
 
     /**
      * Returns an iteration of the satisfying assignments of this BDD. Returns an iteration of minterms. The
-     * <tt>var</tt> argument is the set of variables that will be mentioned in the result.
+     * {@code var} argument is the set of variables that will be mentioned in the result.
      *
      * @param var set of variables to mention in result
      * @return an iteration of minterms
@@ -1053,7 +1053,7 @@ public abstract class BDD {
         }
 
         /**
-         * Returns true if the given BDD variable number is a dont-care. <tt>var</tt> must be a variable in the
+         * Returns true if the given BDD variable number is a dont-care. {@code var} must be a variable in the
          * iteration set.
          *
          * @param var variable number to check
@@ -1116,7 +1116,7 @@ public abstract class BDD {
         }
 
         /**
-         * Assuming <tt>d</tt> is a dont-care, skip to the end of the iteration for <tt>d</tt>.
+         * Assuming {@code d} is a dont-care, skip to the end of the iteration for {@code d}.
          *
          * @param d BDD domain to fast-forward past
          */
