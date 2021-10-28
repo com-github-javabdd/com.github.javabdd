@@ -16,6 +16,8 @@ import java.util.Iterator;
 public abstract class BDDFactoryIntImpl extends BDDFactory {
     static final boolean USE_FINALIZER = false;
 
+    static final boolean FINALIZER_CHECK_BDD_NOT_FREED = false;
+
     protected abstract void addref_impl(/* bdd */int v);
 
     protected abstract void delref_impl(/* bdd */int v);
@@ -328,7 +330,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         @Override
         protected void finalize() throws Throwable {
             super.finalize();
-            if (false && v != invalid_bdd_impl()) {
+            if (FINALIZER_CHECK_BDD_NOT_FREED && v != invalid_bdd_impl()) {
                 System.out.println("BDD not freed! " + System.identityHashCode(this));
             }
             deferredFree(v);
@@ -504,7 +506,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         @Override
         protected void finalize() throws Throwable {
             super.finalize();
-            if (false && v != invalid_bdd_impl()) {
+            if (FINALIZER_CHECK_BDD_NOT_FREED && v != invalid_bdd_impl()) {
                 System.out.println("BDD not freed! " + System.identityHashCode(this));
             }
             deferredFree(v);
@@ -616,7 +618,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         protected void finalize() throws Throwable {
             super.finalize();
             if (USE_FINALIZER) {
-                if (false && v != invalid_bdd_impl()) {
+                if (FINALIZER_CHECK_BDD_NOT_FREED && v != invalid_bdd_impl()) {
                     System.out.println("BDD not freed! " + System.identityHashCode(this));
                 }
                 deferredFree(v);

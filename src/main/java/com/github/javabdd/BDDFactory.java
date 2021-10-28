@@ -29,10 +29,10 @@ import java.util.StringTokenizer;
  * Interface for the creation and manipulation of BDDs.
  * </p>
  *
- * @see com.github.javabdd.BDD
- *
  * @author John Whaley
  * @version $Id: BDDFactory.java 480 2010-11-16 01:29:49Z robimalik $
+ *
+ * @see com.github.javabdd.BDD
  */
 public abstract class BDDFactory {
     public static final String getProperty(String key, String def) {

@@ -22,11 +22,11 @@ import java.util.NoSuchElementException;
  * Use an implementation of BDDFactory to create BDD objects.
  * </p>
  *
- * @see com.github.javabdd.BDDFactory
- * @see com.github.javabdd.BDDDomain#set()
- *
  * @author John Whaley
  * @version $Id: BDD.java 481 2011-02-18 14:37:09Z gismo $
+ *
+ * @see com.github.javabdd.BDDFactory
+ * @see com.github.javabdd.BDDDomain#set()
  */
 public abstract class BDD {
     /**
@@ -1006,7 +1006,7 @@ public abstract class BDD {
                 if (a[vi] != -1) {
                     continue;
                 }
-                if (b[i] == false) {
+                if (!b[i]) {
                     b[i] = true;
                     return true;
                 }
@@ -1154,7 +1154,7 @@ public abstract class BDD {
             for (int i = v.length - 1; i >= 0; --i) {
                 int li = v[i];
                 int vi = f.level2Var(li);
-                if (b[i] == true) {
+                if (b[i]) {
                     lastReturned.andWith(f.ithVar(vi));
                 } else {
                     lastReturned.andWith(f.nithVar(vi));
@@ -1611,9 +1611,9 @@ public abstract class BDD {
      * Returns a string representation of this BDD on the defined domains, using the given BDDToString converter.
      * </p>
      *
-     * @see com.github.javabdd.BDD.BDDToString
-     *
      * @return string representation of this BDD using the given BDDToString converter
+     *
+     * @see com.github.javabdd.BDD.BDDToString
      */
     public String toStringWithDomains(BDDToString ts) {
         if (this.isZero()) {
