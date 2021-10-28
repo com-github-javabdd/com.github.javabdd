@@ -1721,7 +1721,7 @@ public abstract class BDDFactory {
     // TODO: bdd_sizeprobe_hook
     // TODO: bdd_reorder_probe
 
-    /**** FINITE DOMAINS ****/
+    ///// FINITE DOMAINS /////
 
     protected BDDDomain[] domain;
 
@@ -2184,7 +2184,7 @@ public abstract class BDDFactory {
         return v;
     }
 
-    /**** CALLBACKS ****/
+    ///// CALLBACKS /////
 
     protected List gc_callbacks, reorder_callbacks, resize_callbacks;
 

@@ -1248,7 +1248,7 @@ public abstract class BDD {
         }
 
         /**
-         * Assuming <tt>d</tt> is a dont-care, skip to the end of the iteration for <tt>d</tt>
+         * Assuming <tt>d</tt> is a dont-care, skip to the end of the iteration for <tt>d</tt>.
          *
          * @param d BDD domain to fast-forward past
          */

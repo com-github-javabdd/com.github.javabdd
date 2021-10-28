@@ -870,7 +870,7 @@ public class JFactory extends BDDFactoryIntImpl {
         return null;
     }
 
-    /***** IMPLEMENTATION BELOW *****/
+    ////// IMPLEMENTATION BELOW //////
 
     static final int REF_MASK = 0xFFC00000;
 
@@ -7648,9 +7648,9 @@ public class JFactory extends BDDFactoryIntImpl {
         return (int)(((long)a * (long)b) % c);
     }
 
-    /*************************************************************************
-     * Miller Rabin check
-     *************************************************************************/
+    //////////////////////////////////////////////////////////////////////////
+    // Miller Rabin check
+    //////////////////////////////////////////////////////////////////////////
 
     static int numberOfBits(int src) {
         int b;
@@ -7704,9 +7704,9 @@ public class JFactory extends BDDFactoryIntImpl {
         return true;
     }
 
-    /*************************************************************************
-     * Basic prime searching stuff
-     *************************************************************************/
+    //////////////////////////////////////////////////////////////////////////
+    // Basic prime searching stuff
+    //////////////////////////////////////////////////////////////////////////
 
     static boolean hasEasyFactors(int src) {
         return hasFactor(src, 3) || hasFactor(src, 5) || hasFactor(src, 7) || hasFactor(src, 11) || hasFactor(src, 13);
@@ -7720,9 +7720,9 @@ public class JFactory extends BDDFactoryIntImpl {
         return isMillerRabinPrime(src);
     }
 
-    /*************************************************************************
-     * External interface
-     *************************************************************************/
+    //////////////////////////////////////////////////////////////////////////
+    // External interface
+    //////////////////////////////////////////////////////////////////////////
 
     int bdd_prime_gte(int src) {
         if (isEven(src)) {

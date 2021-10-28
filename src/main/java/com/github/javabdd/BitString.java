@@ -398,7 +398,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
     }
 
     /**
-     * Check if the intersection of the two sets is empty
+     * Check if the intersection of the two sets is empty.
      *
      * @param other the set to check intersection with
      */
