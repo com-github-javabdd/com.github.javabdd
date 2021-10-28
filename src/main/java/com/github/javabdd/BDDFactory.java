@@ -29,7 +29,6 @@ import java.util.StringTokenizer;
  * </p>
  *
  * @author John Whaley
- * @version $Id: BDDFactory.java 480 2010-11-16 01:29:49Z robimalik $
  *
  * @see com.github.javabdd.BDD
  */
@@ -1245,13 +1244,6 @@ public abstract class BDDFactory {
     /**** BDD STATS ****/
 
     /**
-     * Get the BDD library version.
-     *
-     * @return version string
-     */
-    public abstract String getVersion();
-
-    /**
      * <p>
      * Counts the number of shared nodes in a collection of BDDs. Counts all distinct nodes that are used in the BDDs --
      * if a node is used in more than one BDD then it only counts once.
@@ -1322,7 +1314,6 @@ public abstract class BDDFactory {
      * Stores statistics about garbage collections.
      *
      * @author jwhaley
-     * @version $Id: BDDFactory.java 480 2010-11-16 01:29:49Z robimalik $
      */
     public static class GCStats {
         public int nodes;
@@ -1378,7 +1369,6 @@ public abstract class BDDFactory {
      * Stores statistics about reordering.
      *
      * @author jwhaley
-     * @version $Id: BDDFactory.java 480 2010-11-16 01:29:49Z robimalik $
      */
     public static class ReorderStats {
         public long time;
@@ -1434,7 +1424,6 @@ public abstract class BDDFactory {
      * @author jwhaley
      * @author sthuijsman
      * @author mgoorden
-     * @version $Id: BDDFactory.java 480 2010-11-16 01:29:49Z robimalik $
      */
     public static class CacheStats {
         protected boolean enabled = false;

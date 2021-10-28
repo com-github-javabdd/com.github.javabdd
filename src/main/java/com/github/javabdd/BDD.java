@@ -23,7 +23,6 @@ import java.util.NoSuchElementException;
  * </p>
  *
  * @author John Whaley
- * @version $Id: BDD.java 481 2011-02-18 14:37:09Z gismo $
  *
  * @see com.github.javabdd.BDDFactory
  * @see com.github.javabdd.BDDDomain#set()
@@ -928,7 +927,6 @@ public abstract class BDD {
      * bits are dont-cares and skip them.
      *
      * @author jwhaley
-     * @version $Id: BDD.java 481 2011-02-18 14:37:09Z gismo $
      */
     public static class BDDIterator implements Iterator<BDD> {
         final BDDFactory f;

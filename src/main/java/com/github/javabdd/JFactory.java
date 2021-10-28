@@ -25,7 +25,6 @@ import java.util.StringTokenizer;
  * </p>
  *
  * @author John Whaley
- * @version $Id: JFactory.java 480 2010-11-16 01:29:49Z robimalik $
  */
 public class JFactory extends BDDFactoryIntImpl {
     /**** Options ****/
@@ -43,13 +42,6 @@ public class JFactory extends BDDFactoryIntImpl {
     static final boolean PRE_INIT_OP_CACHES = false;
 
     static final boolean SWAPCOUNT = false;
-
-    public static final String REVISION = "$Revision: 480 $";
-
-    @Override
-    public String getVersion() {
-        return "JFactory " + REVISION.substring(11, REVISION.length() - 2);
-    }
 
     private JFactory() {
     }

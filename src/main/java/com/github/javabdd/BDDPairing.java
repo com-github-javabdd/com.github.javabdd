@@ -8,7 +8,6 @@ package com.github.javabdd;
  * Encodes a table of variable pairs. This is used for replacing variables in a BDD.
  *
  * @author John Whaley
- * @version $Id: BDDPairing.java 282 2004-10-16 02:59:52Z joewhaley $
  */
 public abstract class BDDPairing {
     /**

@@ -12,7 +12,6 @@ import java.math.BigInteger;
  * </p>
  *
  * @author John Whaley
- * @version $Id: BDDBitVector.java 287 2004-10-18 09:35:20Z joewhaley $
  */
 public abstract class BDDBitVector {
     protected BDD[] bitvec;

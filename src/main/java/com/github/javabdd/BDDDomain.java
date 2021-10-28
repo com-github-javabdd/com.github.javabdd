@@ -21,7 +21,6 @@ import com.github.javabdd.BDD.BDDIterator;
  * </p>
  *
  * @author John Whaley
- * @version $Id: BDDDomain.java 468 2006-11-29 08:07:13Z joewhaley $
  * @see com.github.javabdd.BDDFactory#extDomain(int[])
  */
 public abstract class BDDDomain {

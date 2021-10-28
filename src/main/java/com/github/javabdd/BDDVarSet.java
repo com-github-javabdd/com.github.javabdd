@@ -13,7 +13,6 @@ package com.github.javabdd;
  * </p>
  *
  * @author jwhaley
- * @version $Id$
  */
 public abstract class BDDVarSet {
     /**
@@ -199,7 +198,6 @@ public abstract class BDDVarSet {
      * Default implementation of BDDVarSet based on BDDs.
      *
      * @author jwhaley
-     * @version $Id$
      */
     public static class DefaultImpl extends BDDVarSet {
         /**

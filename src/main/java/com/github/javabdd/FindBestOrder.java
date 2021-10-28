@@ -17,7 +17,6 @@ import java.util.StringTokenizer;
  * Find best order.
  *
  * @author jwhaley
- * @version $Id: FindBestOrder.java 452 2006-07-16 21:50:02Z joewhaley $
  */
 public class FindBestOrder {
     static BDDFactory bdd = null;
