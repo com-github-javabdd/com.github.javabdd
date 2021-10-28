@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [2.0.0] - 2021-10-28
 * Added CHANGES.md to track changes between releases.
 * Added the collection of platform-independent performance statistics.
 * Added `bdd_used_nodes_count()` that counts the number of used nodes.
