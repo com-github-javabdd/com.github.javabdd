@@ -89,10 +89,8 @@ public abstract class BDDDomain {
     }
 
     /**
-     * <p>
      * Returns what corresponds to a disjunction of all possible values of this domain. This is more efficient than
      * doing ithVar(0) OR ithVar(1) ... explicitly for all values in the domain.
-     * </p>
      *
      * <p>
      * Compare to fdd_domain.

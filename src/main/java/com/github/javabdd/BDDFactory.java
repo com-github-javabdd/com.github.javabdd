@@ -24,9 +24,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- * <p>
  * Interface for the creation and manipulation of BDDs.
- * </p>
  *
  * @author John Whaley
  *
@@ -46,10 +44,8 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Initializes a BDD factory with the given initial node table size and operation cache size. Uses the "java"
      * factory.
-     * </p>
      *
      * @param nodenum initial node table size
      * @param cachesize operation cache size
@@ -61,11 +57,9 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Initializes a BDD factory of the given type with the given initial node table size and operation cache size. The
      * type is a string that can be "j", "java", "test", "typed", or a name of a class that has an init() method that
      * returns a BDDFactory. If it fails, it falls back to the "java" factory.
-     * </p>
      *
      * @param bddpackage BDD package string identifier
      * @param nodenum initial node table size
@@ -150,10 +144,8 @@ public abstract class BDDFactory {
     public static final BDDOp invimp = new BDDOp(9, "invimp");
 
     /**
-     * <p>
      * Enumeration class for binary operations on BDDs. Use the static fields in BDDFactory to access the different
      * binary operations.
-     * </p>
      */
     public static class BDDOp {
         final int id;
@@ -172,9 +164,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Construct a new BDDFactory.
-     * </p>
      */
     protected BDDFactory() {
         String s = this.getClass().toString();
@@ -185,18 +175,14 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Returns true if this is a ZDD factory, false otherwise.
-     * </p>
      */
     public boolean isZDD() {
         return false;
     }
 
     /**
-     * <p>
      * Get the constant false BDD.
-     * </p>
      *
      * <p>
      * Compare to bdd_false.
@@ -205,9 +191,7 @@ public abstract class BDDFactory {
     public abstract BDD zero();
 
     /**
-     * <p>
      * Get the constant true BDD.
-     * </p>
      *
      * <p>
      * Compare to bdd_true.
@@ -216,9 +200,7 @@ public abstract class BDDFactory {
     public abstract BDD one();
 
     /**
-     * <p>
      * Get the constant universe BDD. (The universe BDD differs from the one BDD in ZDD mode.)
-     * </p>
      *
      * <p>
      * Compare to bdd_true.
@@ -229,9 +211,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Get an empty BDDVarSet.
-     * </p>
      *
      * <p>
      * Compare to bdd_true.
@@ -242,9 +222,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Build a cube from an array of variables.
-     * </p>
      *
      * <p>
      * Compare to bdd_buildcube.
@@ -269,9 +247,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Build a cube from an array of variables.
-     * </p>
      *
      * <p>
      * Compare to bdd_ibuildcube.
@@ -292,10 +268,8 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Builds a BDD variable set from an integer array. The integer array <tt>varset</tt> holds the variable numbers.
      * The BDD variable set is represented by a conjunction of all the variables in their positive form.
-     * </p>
      *
      * <p>
      * Compare to bdd_makeset.
@@ -313,9 +287,7 @@ public abstract class BDDFactory {
     /**** STARTUP / SHUTDOWN ****/
 
     /**
-     * <p>
      * Compare to bdd_init.
-     * </p>
      *
      * @param nodenum the initial number of BDD nodes
      * @param cachesize the size of caches used by the BDD operators
@@ -323,9 +295,7 @@ public abstract class BDDFactory {
     protected abstract void initialize(int nodenum, int cachesize);
 
     /**
-     * <p>
      * Returns true if this BDD factory is initialized, false otherwise.
-     * </p>
      *
      * <p>
      * Compare to bdd_isrunning.
@@ -336,10 +306,8 @@ public abstract class BDDFactory {
     public abstract boolean isInitialized();
 
     /**
-     * <p>
      * Reset the BDD factory to its initial state. Everything is reallocated from scratch. This is like calling done()
      * followed by initialize().
-     * </p>
      */
     public void reset() {
         int nodes = getNodeTableSize();
@@ -352,10 +320,8 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * This function frees all memory used by the BDD package and resets the package to its uninitialized state. The BDD
      * package is no longer usable after this call.
-     * </p>
      *
      * <p>
      * Compare to bdd_done.
@@ -364,27 +330,21 @@ public abstract class BDDFactory {
     public abstract void done();
 
     /**
-     * <p>
      * Sets the error condition. This will cause the BDD package to throw an exception at the next garbage collection.
-     * </p>
      *
      * @param code the error code to set
      */
     public abstract void setError(int code);
 
     /**
-     * <p>
      * Clears any outstanding error condition.
-     * </p>
      */
     public abstract void clearError();
 
     /**** CACHE/TABLE PARAMETERS ****/
 
     /**
-     * <p>
      * Set the maximum available number of BDD nodes.
-     * </p>
      *
      * <p>
      * Compare to bdd_setmaxnodenum.
@@ -396,10 +356,8 @@ public abstract class BDDFactory {
     public abstract int setMaxNodeNum(int size);
 
     /**
-     * <p>
      * Set minimum percentage of nodes to be reclaimed after a garbage collection. If this percentage is not reclaimed,
      * the node table will be grown. The range of x is 0..1. The default is .20.
-     * </p>
      *
      * <p>
      * Compare to bdd_setminfreenodes.
@@ -411,9 +369,7 @@ public abstract class BDDFactory {
     public abstract double setMinFreeNodes(double x);
 
     /**
-     * <p>
      * Set maximum number of nodes by which to increase node table after a garbage collection.
-     * </p>
      *
      * <p>
      * Compare to bdd_setmaxincrease.
@@ -425,10 +381,8 @@ public abstract class BDDFactory {
     public abstract int setMaxIncrease(int x);
 
     /**
-     * <p>
      * Set factor by which to increase node table after a garbage collection. The amount of growth is still limited by
      * <tt>setMaxIncrease()</tt>.
-     * </p>
      *
      * @param x factor by which to increase node table after GC
      * @return old value
@@ -436,10 +390,8 @@ public abstract class BDDFactory {
     public abstract double setIncreaseFactor(double x);
 
     /**
-     * <p>
      * Sets the cache ratio for the operator caches. When the node table grows, operator caches will also grow to
      * maintain the ratio.
-     * </p>
      *
      * <p>
      * Compare to bdd_setcacheratio.
@@ -450,9 +402,7 @@ public abstract class BDDFactory {
     public abstract double setCacheRatio(double x);
 
     /**
-     * <p>
      * Sets the node table size.
-     * </p>
      *
      * @param n new size of table
      * @return old size of table
@@ -460,9 +410,7 @@ public abstract class BDDFactory {
     public abstract int setNodeTableSize(int n);
 
     /**
-     * <p>
      * Sets cache size.
-     * </p>
      *
      * @return old cache size
      */
@@ -471,9 +419,7 @@ public abstract class BDDFactory {
     /**** VARIABLE NUMBERS ****/
 
     /**
-     * <p>
      * Returns the number of defined variables.
-     * </p>
      *
      * <p>
      * Compare to bdd_varnum.
@@ -482,10 +428,8 @@ public abstract class BDDFactory {
     public abstract int varNum();
 
     /**
-     * <p>
      * Set the number of used BDD variables. It can be called more than one time, but only to increase the number of
      * variables.
-     * </p>
      *
      * <p>
      * Compare to bdd_setvarnum.
@@ -497,9 +441,7 @@ public abstract class BDDFactory {
     public abstract int setVarNum(int num);
 
     /**
-     * <p>
      * Add extra BDD variables. Extends the current number of allocated BDD variables with num extra variables.
-     * </p>
      *
      * <p>
      * Compare to bdd_extvarnum.
@@ -518,10 +460,8 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Returns a BDD representing the I'th variable. (One node with the children true and false.) The requested variable
      * must be in the (zero-indexed) range defined by <tt>setVarNum</tt>.
-     * </p>
      *
      * <p>
      * Compare to bdd_ithvar.
@@ -533,10 +473,8 @@ public abstract class BDDFactory {
     public abstract BDD ithVar(int var);
 
     /**
-     * <p>
      * Returns a BDD representing the negation of the I'th variable. (One node with the children false and true.) The
      * requested variable must be in the (zero-indexed) range defined by <tt>setVarNum</tt>.
-     * </p>
      *
      * <p>
      * Compare to bdd_nithvar.
@@ -550,9 +488,7 @@ public abstract class BDDFactory {
     /**** INPUT / OUTPUT ****/
 
     /**
-     * <p>
      * Prints all used entries in the node table.
-     * </p>
      *
      * <p>
      * Compare to bdd_printall.
@@ -561,9 +497,7 @@ public abstract class BDDFactory {
     public abstract void printAll();
 
     /**
-     * <p>
      * Prints the node table entries used by a BDD.
-     * </p>
      *
      * <p>
      * Compare to bdd_printtable.
@@ -572,9 +506,7 @@ public abstract class BDDFactory {
     public abstract void printTable(BDD b);
 
     /**
-     * <p>
      * Loads a BDD from a file.
-     * </p>
      *
      * <p>
      * Compare to bdd_load.
@@ -598,9 +530,7 @@ public abstract class BDDFactory {
     // TODO: error code from bdd_load (?)
 
     /**
-     * <p>
      * Loads a BDD from the given input.
-     * </p>
      *
      * <p>
      * Compare to bdd_load.
@@ -614,9 +544,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Loads a BDD from the given input, translating BDD variables according to the given map.
-     * </p>
      *
      * <p>
      * Compare to bdd_load.
@@ -771,9 +699,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Saves a BDD to a file.
-     * </p>
      *
      * <p>
      * Compare to bdd_save.
@@ -796,9 +722,7 @@ public abstract class BDDFactory {
     // TODO: error code from bdd_save (?)
 
     /**
-     * <p>
      * Saves a BDD to an output writer.
-     * </p>
      *
      * <p>
      * Compare to bdd_save.
@@ -872,9 +796,7 @@ public abstract class BDDFactory {
     /**** REORDERING ****/
 
     /**
-     * <p>
      * Convert from a BDD level to a BDD variable.
-     * </p>
      *
      * <p>
      * Compare to bdd_level2var.
@@ -883,9 +805,7 @@ public abstract class BDDFactory {
     public abstract int level2Var(int level);
 
     /**
-     * <p>
      * Convert from a BDD variable to a BDD level.
-     * </p>
      *
      * <p>
      * Compare to bdd_var2level.
@@ -955,9 +875,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Reorder the BDD with the given method.
-     * </p>
      *
      * <p>
      * Compare to bdd_reorder.
@@ -966,9 +884,7 @@ public abstract class BDDFactory {
     public abstract void reorder(ReorderMethod m);
 
     /**
-     * <p>
      * Enables automatic reordering. If method is REORDER_NONE then automatic reordering is disabled.
-     * </p>
      *
      * <p>
      * Compare to bdd_autoreorder.
@@ -977,10 +893,8 @@ public abstract class BDDFactory {
     public abstract void autoReorder(ReorderMethod method);
 
     /**
-     * <p>
      * Enables automatic reordering with the given (maximum) number of reorderings. If method is REORDER_NONE then
      * automatic reordering is disabled.
-     * </p>
      *
      * <p>
      * Compare to bdd_autoreorder_times.
@@ -989,9 +903,7 @@ public abstract class BDDFactory {
     public abstract void autoReorder(ReorderMethod method, int max);
 
     /**
-     * <p>
      * Returns the current reorder method as defined by autoReorder.
-     * </p>
      *
      * <p>
      * Compare to bdd_getreorder_method.
@@ -1002,9 +914,7 @@ public abstract class BDDFactory {
     public abstract ReorderMethod getReorderMethod();
 
     /**
-     * <p>
      * Returns the number of allowed reorderings left. This value can be defined by autoReorder.
-     * </p>
      *
      * <p>
      * Compare to bdd_getreorder_times.
@@ -1013,10 +923,8 @@ public abstract class BDDFactory {
     public abstract int getReorderTimes();
 
     /**
-     * <p>
      * Disable automatic reordering until enableReorder is called. Reordering is enabled by default as soon as any
      * variable blocks have been defined.
-     * </p>
      *
      * <p>
      * Compare to bdd_disable_reorder.
@@ -1025,9 +933,7 @@ public abstract class BDDFactory {
     public abstract void disableReorder();
 
     /**
-     * <p>
      * Enable automatic reordering after a call to disableReorder.
-     * </p>
      *
      * <p>
      * Compare to bdd_enable_reorder.
@@ -1036,10 +942,8 @@ public abstract class BDDFactory {
     public abstract void enableReorder();
 
     /**
-     * <p>
      * Enables verbose information about reordering. A value of zero means no information, one means some information
      * and greater than one means lots of information.
-     * </p>
      *
      * @param v the new verbose level
      * @return the old verbose level
@@ -1047,12 +951,10 @@ public abstract class BDDFactory {
     public abstract int reorderVerbose(int v);
 
     /**
-     * <p>
      * This function sets the current variable order to be the one defined by neworder. The variable parameter neworder
      * is interpreted as a sequence of variable indices and the new variable order is exactly this sequence. The array
      * must contain all the variables defined so far. If, for instance the current number of variables is 3 and neworder
      * contains [1; 0; 2] then the new variable order is v1 &lt; v0 &lt; v2.
-     * </p>
      *
      * <p>
      * Note that this operation must walk through the node table many times, and therefore it is much more efficient to
@@ -1064,9 +966,7 @@ public abstract class BDDFactory {
     public abstract void setVarOrder(int[] neworder);
 
     /**
-     * <p>
      * Gets the current variable order.
-     * </p>
      *
      * @return variable order
      */
@@ -1080,9 +980,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Make a new BDDPairing object.
-     * </p>
      *
      * <p>
      * Compare to bdd_newpair.
@@ -1130,9 +1028,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Swap two variables.
-     * </p>
      *
      * <p>
      * Compare to bdd_swapvar.
@@ -1143,9 +1039,7 @@ public abstract class BDDFactory {
     /**** VARIABLE BLOCKS ****/
 
     /**
-     * <p>
      * Adds a new variable block for reordering.
-     * </p>
      *
      * <p>
      * Creates a new variable block with the variables in the variable set var. The variables in var must be contiguous.
@@ -1182,9 +1076,7 @@ public abstract class BDDFactory {
     // TODO: handle error code for addVarBlock.
 
     /**
-     * <p>
      * Adds a new variable block for reordering.
-     * </p>
      *
      * <p>
      * Creates a new variable block with the variables numbered first through last, inclusive.
@@ -1203,9 +1095,7 @@ public abstract class BDDFactory {
     // TODO: fdd_intaddvarblock (?)
 
     /**
-     * <p>
      * Add a variable block for all variables.
-     * </p>
      *
      * <p>
      * Adds a variable block for all BDD variables declared so far. Each block contains one variable only. More variable
@@ -1220,9 +1110,7 @@ public abstract class BDDFactory {
     public abstract void varBlockAll();
 
     /**
-     * <p>
      * Clears all the variable blocks that have been defined by calls to addVarBlock.
-     * </p>
      *
      * <p>
      * Compare to bdd_clrvarblocks.
@@ -1231,9 +1119,7 @@ public abstract class BDDFactory {
     public abstract void clearVarBlocks();
 
     /**
-     * <p>
      * Prints an indented list of the variable blocks.
-     * </p>
      *
      * <p>
      * Compare to bdd_printorder.
@@ -1244,10 +1130,8 @@ public abstract class BDDFactory {
     /**** BDD STATS ****/
 
     /**
-     * <p>
      * Counts the number of shared nodes in a collection of BDDs. Counts all distinct nodes that are used in the BDDs --
      * if a node is used in more than one BDD then it only counts once.
-     * </p>
      *
      * <p>
      * Compare to bdd_anodecount.
@@ -1256,9 +1140,7 @@ public abstract class BDDFactory {
     public abstract int nodeCount(Collection<BDD> r);
 
     /**
-     * <p>
      * Get the number of allocated nodes. This includes both dead and active nodes.
-     * </p>
      *
      * <p>
      * Compare to bdd_getallocnum.
@@ -1267,10 +1149,8 @@ public abstract class BDDFactory {
     public abstract int getNodeTableSize();
 
     /**
-     * <p>
      * Get the number of active nodes in use. Note that dead nodes that have not been reclaimed yet by a garbage
      * collection are counted as active.
-     * </p>
      *
      * <p>
      * Compare to bdd_getnodenum.
@@ -1279,19 +1159,15 @@ public abstract class BDDFactory {
     public abstract int getNodeNum();
 
     /**
-     * <p>
      * Get the current size of the cache, in entries.
-     * </p>
      *
      * @return size of cache
      */
     public abstract int getCacheSize();
 
     /**
-     * <p>
      * Calculate the gain in size after a reordering. The value returned is (100*(A-B))/A, where A is previous number of
      * used nodes and B is current number of used nodes.
-     * </p>
      *
      * <p>
      * Compare to bdd_reorder_gain.
@@ -1300,9 +1176,7 @@ public abstract class BDDFactory {
     public abstract int reorderGain();
 
     /**
-     * <p>
      * Print cache statistics.
-     * </p>
      *
      * <p>
      * Compare to bdd_printstat.
@@ -1355,9 +1229,7 @@ public abstract class BDDFactory {
     protected GCStats gcstats = new GCStats();
 
     /**
-     * <p>
      * Return the current GC statistics for this BDD factory.
-     * </p>
      *
      * @return GC statistics
      */
@@ -1408,9 +1280,7 @@ public abstract class BDDFactory {
     protected ReorderStats reorderstats = new ReorderStats();
 
     /**
-     * <p>
      * Return the current reordering statistics for this BDD factory.
-     * </p>
      *
      * @return reorder statistics
      */
@@ -1542,9 +1412,7 @@ public abstract class BDDFactory {
     protected CacheStats cachestats = new CacheStats();
 
     /**
-     * <p>
      * Return the current cache statistics for this BDD factory.
-     * </p>
      *
      * @return cache statistics
      */
@@ -1592,9 +1460,7 @@ public abstract class BDDFactory {
     protected MaxUsedBddNodesStats maxusedbddnodesstats = new MaxUsedBddNodesStats();
 
     /**
-     * <p>
      * Return the current maximum used BDD nodes statistics for this BDD factory.
-     * </p>
      *
      * @return maximum used BDD nodes statistics
      */
@@ -1652,9 +1518,7 @@ public abstract class BDDFactory {
     protected ContinuousStats continuousstats = new ContinuousStats();
 
     /**
-     * <p>
      * Return the current continuous statistics for this BDD factory.
-     * </p>
      *
      * @return continuous statistics
      */
@@ -1674,9 +1538,7 @@ public abstract class BDDFactory {
     protected int firstbddvar;
 
     /**
-     * <p>
      * Implementors must implement this factory method to create BDDDomain objects of the correct type.
-     * </p>
      */
     protected BDDDomain createDomain(int a, BigInteger b) {
         return new BDDDomain(a, b) {
@@ -1688,9 +1550,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Creates a new finite domain block of the given size. Allocates log 2 (|domainSize|) BDD variables for the domain.
-     * </p>
      */
     public BDDDomain extDomain(long domainSize) {
         return extDomain(BigInteger.valueOf(domainSize));
@@ -1701,7 +1561,6 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Extends the set of finite domain blocks with domains of the given sizes. Each entry in domainSizes is the size of
      * a new finite domain which later on can be used for finite state machine traversal and other operations on finite
      * domains. Each domain allocates log 2 (|domainSizes[i]|) BDD variables to be used later. The ordering is
@@ -1709,7 +1568,6 @@ public abstract class BDDFactory {
      * variables x1 and x2 , and another domain D1 needs 4 BDD variables y1, y2, y3 and y4, then the order then will be
      * x1, y1, x2, y2, y3, y4. The new domains are returned in order. The BDD variables needed to encode the domain are
      * created for the purpose and do not interfere with the BDD variables already in use.
-     * </p>
      *
      * <p>
      * Compare to fdd_extdomain.
@@ -1795,10 +1653,8 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * This function takes two finite domain blocks and merges them into a new one, such that the new one is encoded
      * using both sets of BDD variables.
-     * </p>
      *
      * <p>
      * Compare to fdd_overlapdomain.
@@ -1835,9 +1691,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Returns a BDD defining all the variable sets used to define the variable blocks in the given array.
-     * </p>
      *
      * <p>
      * Compare to fdd_makeset.
@@ -1855,9 +1709,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Clear all allocated finite domain blocks that were defined by extDomain() or overlapDomain().
-     * </p>
      *
      * <p>
      * Compare to fdd_clearall.
@@ -1870,9 +1722,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Returns the number of finite domain blocks defined by calls to extDomain().
-     * </p>
      *
      * <p>
      * Compare to fdd_domainnum.
@@ -1883,9 +1733,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Returns the ith finite domain block, as defined by calls to extDomain().
-     * </p>
      */
     public BDDDomain getDomain(int i) {
         if (i < 0 || i >= fdvarnum) {
@@ -1897,11 +1745,9 @@ public abstract class BDDFactory {
     // TODO: fdd_file_hook, fdd_strm_hook
 
     /**
-     * <p>
      * Creates a variable ordering from a string. The resulting order can be passed into <tt>setVarOrder()</tt>.
      * Example: in the order "A_BxC_DxExF", the bits for A are first, followed by the bits for B and C interleaved,
      * followed by the bits for D, E, and F interleaved.
-     * </p>
      *
      * <p>
      * Obviously, domain names cannot contain the 'x' or '_' characters.
@@ -2037,9 +1883,7 @@ public abstract class BDDFactory {
     /**** BIT VECTORS ****/
 
     /**
-     * <p>
      * Implementors must implement this factory method to create BDDBitVector objects of the correct type.
-     * </p>
      */
     protected BDDBitVector createBitVector(int a) {
         return new BDDBitVector(a) {
@@ -2051,9 +1895,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Build a bit vector that is constant true or constant false.
-     * </p>
      *
      * <p>
      * Compare to bvec_true, bvec_false.
@@ -2066,9 +1908,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Build a bit vector that corresponds to a constant value.
-     * </p>
      *
      * <p>
      * Compare to bvec_con.
@@ -2087,9 +1927,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Build a bit vector using variables offset, offset+step, offset+2*step, ... , offset+(bitnum-1)*step.
-     * </p>
      *
      * <p>
      * Compare to bvec_var.
@@ -2102,9 +1940,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Build a bit vector using variables from the given BDD domain.
-     * </p>
      *
      * <p>
      * Compare to bvec_varfdd.
@@ -2117,9 +1953,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Build a bit vector using the given variables.
-     * </p>
      *
      * <p>
      * compare to bvec_varvec.
@@ -2136,9 +1970,7 @@ public abstract class BDDFactory {
     protected List<Object[]> gc_callbacks, reorder_callbacks, resize_callbacks;
 
     /**
-     * <p>
      * Register a callback that is called when garbage collection is about to occur.
-     * </p>
      *
      * @param o base object
      * @param m method
@@ -2151,9 +1983,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Unregister a garbage collection callback that was previously registered.
-     * </p>
      *
      * @param o base object
      * @param m method
@@ -2168,9 +1998,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Register a callback that is called when reordering is about to occur.
-     * </p>
      *
      * @param o base object
      * @param m method
@@ -2183,9 +2011,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Unregister a reorder callback that was previously registered.
-     * </p>
      *
      * @param o base object
      * @param m method
@@ -2200,9 +2026,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Register a callback that is called when node table resizing is about to occur.
-     * </p>
      *
      * @param o base object
      * @param m method
@@ -2215,9 +2039,7 @@ public abstract class BDDFactory {
     }
 
     /**
-     * <p>
      * Unregister a reorder callback that was previously registered.
-     * </p>
      *
      * @param o base object
      * @param m method

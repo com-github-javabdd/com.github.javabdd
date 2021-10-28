@@ -7,9 +7,7 @@ package com.github.javabdd;
 import java.math.BigInteger;
 
 /**
- * <p>
  * Bit vector implementation for BDDs.
- * </p>
  *
  * @author John Whaley
  */

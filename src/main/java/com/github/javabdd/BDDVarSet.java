@@ -7,18 +7,14 @@ package com.github.javabdd;
 //import java.util.Arrays;
 
 /**
- * <p>
  * Some BDD methods, namely <tt>exist()</tt>, <tt>forall()</tt>, <tt>unique()</tt>, <tt>relprod()</tt>,
  * <tt>applyAll()</tt>, <tt>applyEx()</tt>, <tt>applyUni()</tt>, and <tt>satCount()</tt> take a BDDVarSet argument.
- * </p>
  *
  * @author jwhaley
  */
 public abstract class BDDVarSet {
     /**
-     * <p>
      * Returns the factory that created this BDDVarSet.
-     * </p>
      *
      * @return factory that created this BDDVarSet
      */
@@ -55,10 +51,8 @@ public abstract class BDDVarSet {
     }
 
     /**
-     * <p>
      * Scans this BDD and copies the stored variables into an array of BDDDomains. The domains returned are guaranteed
      * to be in ascending order.
-     * </p>
      *
      * <p>
      * Compare to fdd_scanset.
@@ -111,10 +105,8 @@ public abstract class BDDVarSet {
     }
 
     /**
-     * <p>
      * Returns a new BDDVarSet that is the union of the current BDDVarSet and the given BDDVarSet. This constructs a new
      * set; neither the current nor the given BDDVarSet is modified.
-     * </p>
      *
      * @param b BDDVarSet to union with
      * @return a new BDDVarSet that is the union of the two sets
@@ -122,10 +114,8 @@ public abstract class BDDVarSet {
     public abstract BDDVarSet union(BDDVarSet b);
 
     /**
-     * <p>
      * Returns a new BDDVarSet that is the union of the current BDDVarSet and the given variable. This constructs a new
      * set; the current BDDVarSet is not modified.
-     * </p>
      *
      * @param var variable to add to set
      * @return a new BDDVarSet that includes the given variable
@@ -133,10 +123,8 @@ public abstract class BDDVarSet {
     public abstract BDDVarSet union(int var);
 
     /**
-     * <p>
      * Modifies this BDDVarSet to include all of the vars in the given set. This modifies the current set in place and
      * consumes the given set.
-     * </p>
      *
      * @param b BDDVarSet to union in
      * @return this
@@ -144,9 +132,7 @@ public abstract class BDDVarSet {
     public abstract BDDVarSet unionWith(BDDVarSet b);
 
     /**
-     * <p>
      * Modifies this BDDVarSet to include the given variable. This modifies the current set in place.
-     * </p>
      *
      * @param var variable to add to set
      * @return this
@@ -154,10 +140,8 @@ public abstract class BDDVarSet {
     public abstract BDDVarSet unionWith(int var);
 
     /**
-     * <p>
      * Returns a new BDDVarSet that is the union of the current BDDVarSet and the given BDDVarSet. This constructs a new
      * set; neither the current nor the given BDDVarSet is modified.
-     * </p>
      *
      * @param b BDDVarSet to union with
      * @return a new BDDVarSet that is the union of the two sets
@@ -165,10 +149,8 @@ public abstract class BDDVarSet {
     public abstract BDDVarSet intersect(BDDVarSet b);
 
     /**
-     * <p>
      * Modifies this BDDVarSet to include all of the vars in the given set. This modifies the current set in place and
      * consumes the given set.
-     * </p>
      *
      * @param b BDDVarSet to union in
      * @return this
