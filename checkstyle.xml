@@ -32,17 +32,21 @@ JavaBDD Checkstyle.
       <message key="javadoc.paragraph.line.before" value="&lt;p&gt; tag should be preceded an with empty line."/>
     </module>
     <module name="ConstantName">
+      <property name="severity" value="ignore"/>
       <message key="name.invalidPattern" value="Constant name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="LocalVariableName">
+      <property name="severity" value="ignore"/>
       <property name="format" value="^_?[a-z][a-zA-Z0-9]*_?$"/>
       <message key="name.invalidPattern" value="Local variable name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="LocalFinalVariableName">
+      <property name="severity" value="ignore"/>
       <property name="format" value="^([A-Z][A-Z0-9]*(_[A-Z0-9]+)*)|(^_?[a-z][a-zA-Z0-9]*_?$)$"/>
       <message key="name.invalidPattern" value="Local final variable name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="MemberName">
+      <property name="severity" value="ignore"/>
       <message key="name.invalidPattern" value="Member name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="MethodName">
@@ -54,14 +58,17 @@ JavaBDD Checkstyle.
       <message key="name.invalidPattern" value="Package name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="ParameterName">
+      <property name="severity" value="ignore"/>
       <property name="format" value="^_?[a-z][a-zA-Z0-9]*_?$"/>
       <property name="accessModifiers" value="private"/>
     </module>
     <module name="StaticVariableName">
+      <property name="severity" value="ignore"/>
       <message key="name.invalidPattern" value="Static variable name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="TypeName">
       <metadata name="net.sf.eclipsecs.core.comment" value="General type name"/>
+      <property name="severity" value="ignore"/>
       <message key="name.invalidPattern" value="Type name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="ClassTypeParameterName">
@@ -226,7 +233,9 @@ JavaBDD Checkstyle.
     </module>
     <module name="TypeName">
       <metadata name="net.sf.eclipsecs.core.comment" value="Test classes must end with 'Test', not 'Tests' to be picked up by Tycho"/>
+      <property name="severity" value="ignore"/>
       <property name="format" value="^.*(?&lt;!Tests)$"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="SingleSpaceSeparator"/>
     <module name="UnnecessarySemicolonAfterOuterTypeDeclaration"/>
