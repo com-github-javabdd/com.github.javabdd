@@ -5,8 +5,8 @@
 package com.github.javabdd;
 
 /**
- * Some BDD methods, namely {@code exist()}, {@code forall()}, {@code unique()}, {@code relprod()},
- * {@code applyAll()}, {@code applyEx()}, {@code applyUni()}, and {@code satCount()} take a BDDVarSet argument.
+ * Some BDD methods, namely {@code exist()}, {@code forall()}, {@code unique()}, {@code relprod()}, {@code applyAll()},
+ * {@code applyEx()}, {@code applyUni()}, and {@code satCount()} take a BDDVarSet argument.
  */
 public abstract class BDDVarSet {
     /**

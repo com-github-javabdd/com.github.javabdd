@@ -174,6 +174,8 @@ public abstract class BDDFactory {
 
     /**
      * Returns true if this is a ZDD factory, false otherwise.
+     *
+     * @return true if this is a ZDD factory, false otherwise
      */
     public boolean isZDD() {
         return false;
@@ -185,6 +187,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_false.
      * </p>
+     *
+     * @return constant false BDD
      */
     public abstract BDD zero();
 
@@ -194,6 +198,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_true.
      * </p>
+     *
+     * @return constant true BDD
      */
     public abstract BDD one();
 
@@ -203,6 +209,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_true.
      * </p>
+     *
+     * @return constant universe BDD
      */
     public BDD universe() {
         return one();
@@ -214,6 +222,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_true.
      * </p>
+     *
+     * @return empty BDDVarSet
      */
     public BDDVarSet emptySet() {
         return new BDDVarSet.DefaultImpl(one());
@@ -225,6 +235,10 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_buildcube.
      * </p>
+     *
+     * @param value bitset
+     * @param variables BDDs for variables
+     * @return cube
      */
     public BDD buildCube(int value, List<BDD> variables) {
         BDD result = universe();
@@ -250,6 +264,10 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_ibuildcube.
      * </p>
+     *
+     * @param value bitset
+     * @param variables variables indices
+     * @return cube
      */
     public BDD buildCube(int value, int[] variables) {
         BDD result = universe();
@@ -266,12 +284,15 @@ public abstract class BDDFactory {
     }
 
     /**
-     * Builds a BDD variable set from an integer array. The integer array {@code varset} holds the variable numbers.
-     * The BDD variable set is represented by a conjunction of all the variables in their positive form.
+     * Builds a BDD variable set from an integer array. The integer array {@code varset} holds the variable numbers. The
+     * BDD variable set is represented by a conjunction of all the variables in their positive form.
      *
      * <p>
      * Compare to bdd_makeset.
      * </p>
+     *
+     * @param varset variable array
+     * @return BDD variable set
      */
     public BDDVarSet makeSet(int[] varset) {
         BDDVarSet res = emptySet();
@@ -396,6 +417,7 @@ public abstract class BDDFactory {
      * </p>
      *
      * @param x cache ratio
+     * @return old cache ratio
      */
     public abstract double setCacheRatio(double x);
 
@@ -410,6 +432,7 @@ public abstract class BDDFactory {
     /**
      * Sets cache size.
      *
+     * @param n new cache size
      * @return old cache size
      */
     public abstract int setCacheSize(int n);
@@ -422,6 +445,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_varnum.
      * </p>
+     *
+     * @return number of defined variables
      */
     public abstract int varNum();
 
@@ -500,6 +525,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_printtable.
      * </p>
+     *
+     * @param b BDD
      */
     public abstract void printTable(BDD b);
 
@@ -509,6 +536,10 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_load.
      * </p>
+     *
+     * @param filename filename
+     * @return BDD
+     * @throws IOException In case of an I/O error.
      */
     public BDD load(String filename) throws IOException {
         BufferedReader r = null;
@@ -536,6 +567,7 @@ public abstract class BDDFactory {
      *
      * @param ifile reader
      * @return BDD
+     * @throws IOException In case of an I/O error.
      */
     public BDD load(BufferedReader ifile) throws IOException {
         return load(ifile, null);
@@ -551,6 +583,7 @@ public abstract class BDDFactory {
      * @param ifile reader
      * @param translate variable translation map
      * @return BDD
+     * @throws IOException In case of an I/O error.
      */
     public BDD load(BufferedReader ifile, int[] translate) throws IOException {
         tokenizer = null;
@@ -645,6 +678,7 @@ public abstract class BDDFactory {
      *
      * @param ifile reader
      * @return next string token
+     * @throws IOException In case of an I/O error.
      */
     protected String readNext(BufferedReader ifile) throws IOException {
         while (tokenizer == null || !tokenizer.hasMoreTokens()) {
@@ -672,6 +706,11 @@ public abstract class BDDFactory {
 
     /**
      * Gets a BDD from the load hash table.
+     *
+     * @param lh_table load hash table
+     * @param lh_nodenum node number
+     * @param key key
+     * @return BDD
      */
     protected BDD loadhash_get(LoadHash[] lh_table, int lh_nodenum, int key) {
         if (key < 0) {
@@ -702,6 +741,10 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_save.
      * </p>
+     *
+     * @param filename filename
+     * @param var BDD
+     * @throws IOException In case of an I/O error.
      */
     public void save(String filename, BDD var) throws IOException {
         BufferedWriter is = null;
@@ -725,6 +768,10 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_save.
      * </p>
+     *
+     * @param out writer
+     * @praam r BDD
+     * @throws IOException In case of an I/O error.
      */
     public void save(BufferedWriter out, BDD r) throws IOException {
         if (r.isOne() || r.isZero()) {
@@ -799,6 +846,9 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_level2var.
      * </p>
+     *
+     * @param level BDD level
+     * @return BDD variable
      */
     public abstract int level2Var(int level);
 
@@ -808,6 +858,9 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_var2level.
      * </p>
+     *
+     * @param var BDD variable
+     * @return BDD level
      */
     public abstract int var2Level(int var);
 
@@ -878,6 +931,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_reorder.
      * </p>
+     *
+     * @param m reorder method
      */
     public abstract void reorder(ReorderMethod m);
 
@@ -887,6 +942,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_autoreorder.
      * </p>
+     *
+     * @param method reorder method
      */
     public abstract void autoReorder(ReorderMethod method);
 
@@ -897,6 +954,9 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_autoreorder_times.
      * </p>
+     *
+     * @param method reorder method
+     * @param max maximum number of reorderings
      */
     public abstract void autoReorder(ReorderMethod method, int max);
 
@@ -917,6 +977,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_getreorder_times.
      * </p>
+     *
+     * @return number of allowed reorderings left
      */
     public abstract int getReorderTimes();
 
@@ -983,6 +1045,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_newpair.
      * </p>
+     *
+     * @return BDD pairing
      */
     public abstract BDDPairing makePair();
 
@@ -1031,6 +1095,9 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_swapvar.
      * </p>
+     *
+     * @param v1 first variable
+     * @param v2 second variable
      */
     public abstract void swapVar(int v1, int v2);
 
@@ -1050,6 +1117,9 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_addvarblock.
      * </p>
+     *
+     * @param var variable
+     * @param fixed fixed or free
      */
     public void addVarBlock(BDDVarSet var, boolean fixed) {
         int[] v = var.toArray();
@@ -1087,6 +1157,10 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_intaddvarblock.
      * </p>
+     *
+     * @param first first variable number
+     * @param last last variable number
+     * @param fixed fixed or free
      */
     public abstract void addVarBlock(int first, int last, boolean fixed);
     // TODO: handle error code for addVarBlock.
@@ -1134,6 +1208,9 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_anodecount.
      * </p>
+     *
+     * @param r collection of BDDs
+     * @return number of shared nodes
      */
     public abstract int nodeCount(Collection<BDD> r);
 
@@ -1143,6 +1220,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_getallocnum.
      * </p>
+     *
+     * @return number of allocated nodes
      */
     public abstract int getNodeTableSize();
 
@@ -1153,6 +1232,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_getnodenum.
      * </p>
+     *
+     * @return number of active nodes in use
      */
     public abstract int getNodeNum();
 
@@ -1170,6 +1251,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bdd_reorder_gain.
      * </p>
+     *
+     * @return gain in size after a reordering
      */
     public abstract int reorderGain();
 
@@ -1525,6 +1608,10 @@ public abstract class BDDFactory {
 
     /**
      * Implementors must implement this factory method to create BDDDomain objects of the correct type.
+     *
+     * @param a index of this domain
+     * @param b size of this domain
+     * @return BDD domain
      */
     protected BDDDomain createDomain(int a, BigInteger b) {
         return new BDDDomain(a, b) {
@@ -1537,6 +1624,9 @@ public abstract class BDDFactory {
 
     /**
      * Creates a new finite domain block of the given size. Allocates log 2 (|domainSize|) BDD variables for the domain.
+     *
+     * @param domainSize domainSize
+     * @return BDD domain
      */
     public BDDDomain extDomain(long domainSize) {
         return extDomain(BigInteger.valueOf(domainSize));
@@ -1558,6 +1648,9 @@ public abstract class BDDFactory {
      * <p>
      * Compare to fdd_extdomain.
      * </p>
+     *
+     * @param dom domain sizes
+     * @return BDD domains
      */
     public BDDDomain[] extDomain(int[] dom) {
         BigInteger[] a = new BigInteger[dom.length];
@@ -1645,6 +1738,10 @@ public abstract class BDDFactory {
      * <p>
      * Compare to fdd_overlapdomain.
      * </p>
+     *
+     * @param d1 first domain
+     * @param d2 second domain
+     * @return BDD domain
      */
     public BDDDomain overlapDomain(BDDDomain d1, BDDDomain d2) {
         BDDDomain d;
@@ -1682,6 +1779,9 @@ public abstract class BDDFactory {
      * <p>
      * Compare to fdd_makeset.
      * </p>
+     *
+     * @param v variable block array
+     * @return BDD variable set
      */
     public BDDVarSet makeSet(BDDDomain[] v) {
         BDDVarSet res = emptySet();
@@ -1713,6 +1813,8 @@ public abstract class BDDFactory {
      * <p>
      * Compare to fdd_domainnum.
      * </p>
+     *
+     * @return number of finite domain blocks
      */
     public int numberOfDomains() {
         return fdvarnum;
@@ -1720,6 +1822,9 @@ public abstract class BDDFactory {
 
     /**
      * Returns the ith finite domain block, as defined by calls to extDomain().
+     *
+     * @param i index
+     * @return finite domain block
      */
     public BDDDomain getDomain(int i) {
         if (i < 0 || i >= fdvarnum) {
@@ -1731,9 +1836,9 @@ public abstract class BDDFactory {
     // TODO: fdd_file_hook, fdd_strm_hook
 
     /**
-     * Creates a variable ordering from a string. The resulting order can be passed into {@code setVarOrder()}.
-     * Example: in the order "A_BxC_DxExF", the bits for A are first, followed by the bits for B and C interleaved,
-     * followed by the bits for D, E, and F interleaved.
+     * Creates a variable ordering from a string. The resulting order can be passed into {@code setVarOrder()}. Example:
+     * in the order "A_BxC_DxExF", the bits for A are first, followed by the bits for B and C interleaved, followed by
+     * the bits for D, E, and F interleaved.
      *
      * <p>
      * Obviously, domain names cannot contain the 'x' or '_' characters.
@@ -1834,6 +1939,14 @@ public abstract class BDDFactory {
 
     /**
      * Helper function for makeVarOrder().
+     *
+     * @param doms domains
+     * @param domainIndex domain index
+     * @param numDomains number of domains
+     * @param localOrders local orders
+     * @param bitIndex bit index
+     * @param varorder variable order
+     * @return bit index
      */
     static int fillInVarIndices(BDDDomain[] doms, int domainIndex, int numDomains, int[][] localOrders, int bitIndex,
             int[] varorder)
@@ -1870,6 +1983,9 @@ public abstract class BDDFactory {
 
     /**
      * Implementors must implement this factory method to create BDDBitVector objects of the correct type.
+     *
+     * @param a bit number
+     * @return BDD bit vector
      */
     protected BDDBitVector createBitVector(int a) {
         return new BDDBitVector(a) {
@@ -1886,6 +2002,10 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bvec_true, bvec_false.
      * </p>
+     *
+     * @param bitnum bit number
+     * @param b bit value
+     * @return BDD bit vector
      */
     public BDDBitVector buildVector(int bitnum, boolean b) {
         BDDBitVector v = createBitVector(bitnum);
@@ -1899,6 +2019,10 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bvec_con.
      * </p>
+     *
+     * @param bitnum bit number
+     * @param val bit value
+     * @return BDD bit vector
      */
     public BDDBitVector constantVector(int bitnum, long val) {
         BDDBitVector v = createBitVector(bitnum);
@@ -1918,6 +2042,11 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bvec_var.
      * </p>
+     *
+     * @param bitnum bit number
+     * @param offset offset
+     * @param step step
+     * @return BDD bit vector
      */
     public BDDBitVector buildVector(int bitnum, int offset, int step) {
         BDDBitVector v = createBitVector(bitnum);
@@ -1931,6 +2060,9 @@ public abstract class BDDFactory {
      * <p>
      * Compare to bvec_varfdd.
      * </p>
+     *
+     * @param d BDD domain
+     * @return BDD bit vector
      */
     public BDDBitVector buildVector(BDDDomain d) {
         BDDBitVector v = createBitVector(d.varNum());
@@ -1944,6 +2076,9 @@ public abstract class BDDFactory {
      * <p>
      * compare to bvec_varvec.
      * </p>
+     *
+     * @param var variables
+     * @return BDD bit vector
      */
     public BDDBitVector buildVector(int[] var) {
         BDDBitVector v = createBitVector(var.length);

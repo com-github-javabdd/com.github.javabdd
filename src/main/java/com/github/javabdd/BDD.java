@@ -163,6 +163,7 @@ public abstract class BDD {
      * </p>
      *
      * @param that the BDD to 'and' with
+     * @return the logical 'and' of the two BDDs
      */
     public BDD andWith(BDD that) {
         return this.applyWith(that, BDDFactory.and);
@@ -191,6 +192,7 @@ public abstract class BDD {
      * </p>
      *
      * @param that the BDD to 'or' with
+     * @return the logical 'or' of the two BDDs
      */
     public BDD orWith(BDD that) {
         return this.applyWith(that, BDDFactory.or);
@@ -219,6 +221,7 @@ public abstract class BDD {
      * </p>
      *
      * @param that the BDD to 'xor' with
+     * @return the logical 'xor' of the two BDDs
      */
     public BDD xorWith(BDD that) {
         return this.applyWith(that, BDDFactory.xor);
@@ -247,6 +250,7 @@ public abstract class BDD {
      * </p>
      *
      * @param that the BDD to 'implication' with
+     * @return the logical 'implication' of the two BDDs
      */
     public BDD impWith(BDD that) {
         return this.applyWith(that, BDDFactory.imp);
@@ -276,6 +280,7 @@ public abstract class BDD {
      * </p>
      *
      * @param that the BDD to 'bi-implication' with
+     * @return the logical 'bi-implication' of two BDDs
      */
     public BDD biimpWith(BDD that) {
         return this.applyWith(that, BDDFactory.biimp);
@@ -426,6 +431,7 @@ public abstract class BDD {
      * </p>
      *
      * @param var BDD containing the variables to be restricted
+     * @return the result of the restrict operation
      * @see com.github.javabdd.BDDDomain#set()
      */
     public abstract BDD restrictWith(BDD var);
@@ -478,12 +484,13 @@ public abstract class BDD {
      *
      * @param that the BDD to apply the operator on
      * @param opr the operator to apply
+     * @return the result of applying the operator
      */
     public abstract BDD applyWith(BDD that, BDDFactory.BDDOp opr);
 
     /**
-     * Applies the binary operator {@code opr} to two BDDs and then performs a universal quantification of the
-     * variables from the variable set {@code var}.
+     * Applies the binary operator {@code opr} to two BDDs and then performs a universal quantification of the variables
+     * from the variable set {@code var}.
      *
      * <p>
      * Compare to bdd_appall.
@@ -817,8 +824,8 @@ public abstract class BDD {
      */
 
     /**
-     * Returns an iteration of the satisfying assignments of this BDD. Returns an iteration of minterms. The
-     * {@code var} argument is the set of variables that will be mentioned in the result.
+     * Returns an iteration of the satisfying assignments of this BDD. Returns an iteration of minterms. The {@code var}
+     * argument is the set of variables that will be mentioned in the result.
      *
      * @param var set of variables to mention in result
      * @return an iteration of minterms
@@ -1053,8 +1060,8 @@ public abstract class BDD {
         }
 
         /**
-         * Returns true if the given BDD variable number is a dont-care. {@code var} must be a variable in the
-         * iteration set.
+         * Returns true if the given BDD variable number is a dont-care. {@code var} must be a variable in the iteration
+         * set.
          *
          * @param var variable number to check
          * @return if the given variable is a dont-care
@@ -1153,6 +1160,7 @@ public abstract class BDD {
      * </p>
      *
      * @param pair pairing of variables to the BDDs that replace those variables
+     * @return result of replace
      */
     public abstract BDD replaceWith(BDDPairing pair);
 
@@ -1285,6 +1293,7 @@ public abstract class BDD {
      * Compare to bdd_satcountset.
      * </p>
      *
+     * @param varset the given varset
      * @return the number of satisfying variable assignments
      */
     public double satCount(BDDVarSet varset) {
@@ -1321,6 +1330,7 @@ public abstract class BDD {
      * Compare to bdd_satcountset.
      * </p>
      *
+     * @param varset the given varset
      * @return the logarithm of the number of satisfying variable assignments
      */
     public double logSatCount(BDDVarSet varset) {
@@ -1334,6 +1344,8 @@ public abstract class BDD {
      * <p>
      * Compare to bdd_varprofile.
      * </p>
+     *
+     * @return the variable profile
      */
     public abstract int[] varProfile();
 
@@ -1434,8 +1446,8 @@ public abstract class BDD {
     /**
      * Returns a string representation of this BDD on the defined domains, using the given BDDToString converter.
      *
+     * @param ts the given BDDToString converter
      * @return string representation of this BDD using the given BDDToString converter
-     *
      * @see com.github.javabdd.BDD.BDDToString
      */
     public String toStringWithDomains(BDDToString ts) {
