@@ -124,6 +124,7 @@ public class FindBestOrder {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public long tryOrder(boolean reverse, String varOrder) {
         System.gc();
         TryThread t = new TryThread();

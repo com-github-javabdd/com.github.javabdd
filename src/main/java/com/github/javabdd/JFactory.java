@@ -706,7 +706,7 @@ public class JFactory extends BDDFactoryIntImpl {
         StringTokenizer st = new StringTokenizer(ordering, "x_", true);
         boolean[] done = new boolean[nDomains];
         List<BDDDomain> last = null;
-        for (/* int i=0 */;; /* ++i */) {
+        while (true) { // for (int i = 0 ;; ++i)
             String s = st.nextToken();
             BDDDomain d;
             for (int j = 0;; ++j) {

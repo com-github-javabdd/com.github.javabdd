@@ -697,6 +697,7 @@ public abstract class BDDFactory {
             lh_table[pos].key = key;
             lh_table[pos].data = root;
         }
+        @SuppressWarnings("null")
         BDD tmproot = root.id();
 
         for (int n = 0; n < lh_nodenum; n++) {
@@ -2314,6 +2315,7 @@ public abstract class BDDFactory {
         }
     }
 
+    @SuppressWarnings("deprecation")
     protected void registerCallback(List<Object[]> callbacks, Object o, Method m) {
         if (!Modifier.isPublic(m.getModifiers()) && !m.isAccessible()) {
             throw new BDDException("Callback method not accessible");

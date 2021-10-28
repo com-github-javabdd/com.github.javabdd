@@ -196,7 +196,9 @@ JavaBDD Checkstyle.
     <module name="DefaultComesLast"/>
     <module name="InnerAssignment">
       <metadata name="net.sf.eclipsecs.core.comment" value="Detects more than Eclipse JDT check."/>
+      <property name="severity" value="ignore"/>
       <message key="assignment.inner.avoid" value="Assignment in expression (inner assignment) should be avoided."/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="ModifiedControlVariable">
       <property name="skipEnhancedForLoopVariable" value="true"/>
