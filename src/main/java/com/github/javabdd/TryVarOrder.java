@@ -299,7 +299,6 @@ public class TryVarOrder {
     /** File pointers for output and input BDDs. */
     File f0, f1, f2, f3;
 
-    /** Construct a new TryVarOrder. */
     public TryVarOrder(int nodeTableSize, int cacheSize, int maxIncrease, long bestTime, long delayTime) {
         this.bestCalcTime = bestTime;
         // this.nodeTableSize = b1.getFactory().getAllocNum();
@@ -388,6 +387,7 @@ public class TryVarOrder {
     /**
      * Try out a variable order.
      *
+     * @param factory BDD factory name
      * @param reverse whether to reverse the bits
      * @param varOrder variable order to try
      * @return time spent, or Long.MAX_VALUE if it didn't terminate
