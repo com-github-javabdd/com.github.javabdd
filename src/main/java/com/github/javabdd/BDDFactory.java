@@ -1642,9 +1642,9 @@ public abstract class BDDFactory {
     public static class ContinuousStats {
         protected boolean enabled = false;
 
-        protected List<Integer> contUsedBddNodes = new ArrayList<Integer>();
+        protected List<Integer> contUsedBddNodes = new ArrayList<>();
 
-        protected List<Long> contOperations = new ArrayList<Long>();
+        protected List<Long> contOperations = new ArrayList<>();
 
         protected ContinuousStats() {
         }
@@ -1658,8 +1658,8 @@ public abstract class BDDFactory {
         }
 
         public void resetMeasurements() {
-            contUsedBddNodes = new ArrayList<Integer>();
-            contOperations = new ArrayList<Long>();
+            contUsedBddNodes = new ArrayList<>();
+            contOperations = new ArrayList<>();
         }
 
         public List<Integer> getNodesStats() {
