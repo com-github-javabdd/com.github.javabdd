@@ -16,4 +16,8 @@ All notable changes to this project will be documented in this file.
 * Updated SCM URL for proper Maven Central metadata.
 
 ## [1.0.0] - 2020-03-13
+* This project is a fork of the JavaBDD project on Sourceforge (see https://sourceforge.net/projects/javabdd/ and http://javabdd.sourceforge.net/), based on trunk revision r483 from 2011-11-24.
+* Kept only the pure Java implementations, removing the interfaces to the JDD, BuDDy, CUDD and CAL libraries.
+* Cleaned up the project setup.
+* Adapted project to allow deployment to Maven Central.
 * First release of com.github.javabdd.
