@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 * Added `opAccess` statistic to cache statistics.
 * Added functionality to reset statistics.
 * Removed `MicroFactory`, `UberMicroFactory`, `TypedBDDFactory` and `TestBDDFactory`.
+* Upgrade to Java 11. Java 11 is now required to use this library.
 
 ## [1.0.1] - 2020-03-17
 * Updated SCM URL for proper Maven Central metadata.
