@@ -324,6 +324,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             super(v);
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         protected void finalize() throws Throwable {
             super.finalize();
@@ -499,6 +500,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             super(v);
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         protected void finalize() throws Throwable {
             super.finalize();
@@ -609,6 +611,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             super(v);
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         protected void finalize() throws Throwable {
             super.finalize();
@@ -701,6 +704,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
