@@ -21,20 +21,14 @@ advanced variable reordering.
 
 ## History
 
-This version of JavaBDD is a fork from the Sourceforge version, see:
+This version of JavaBDD is a fork of the Sourceforge version, see:
 
  * http://javabdd.sourceforge.net/
  * https://sourceforge.net/projects/javabdd/
 
-The code from trunk revision r483 from 2011-11-24 was used.
+It is based on trunk revision r483 from 2011-11-24.
 
-It has been modified as follows:
- * Only the pure Java implementations are kept. The interfaces to the JDD
-   library, as well as the BuDDy, CUDD, and CAL libraries have been removed.
- * Cleaned up the project setup.
- * Adapted project to allow deployment to Maven Central.
- 
-Subsequent changes are recorded in the [CHANGES.md](CHANGES.md) file.
+See [CHANGES.md](CHANGES.md) for all changes that have been made in this fork.
 
 ## License
 
