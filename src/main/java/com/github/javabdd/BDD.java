@@ -20,8 +20,6 @@ import java.util.NoSuchElementException;
  * Use an implementation of BDDFactory to create BDD objects.
  * </p>
  *
- * @author John Whaley
- *
  * @see com.github.javabdd.BDDFactory
  * @see com.github.javabdd.BDDDomain#set()
  */
@@ -833,8 +831,6 @@ public abstract class BDD {
     /**
      * BDDIterator is used to iterate through the satisfying assignments of a BDD. It includes the ability to check if
      * bits are dont-cares and skip them.
-     *
-     * @author jwhaley
      */
     public static class BDDIterator implements Iterator<BDD> {
         final BDDFactory f;

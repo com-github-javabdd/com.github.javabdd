@@ -21,8 +21,6 @@ import java.util.StringTokenizer;
 /**
  * This is a 100% Java implementation of the BDD factory. It is based on the C source code for BuDDy. As such, the
  * implementation is very ugly, but it works. Like BuDDy, it uses a reference counting scheme for garbage collection.
- *
- * @author John Whaley
  */
 public class JFactory extends BDDFactoryIntImpl {
     /**** Options ****/

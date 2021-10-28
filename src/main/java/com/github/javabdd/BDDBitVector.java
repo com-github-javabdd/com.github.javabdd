@@ -8,8 +8,6 @@ import java.math.BigInteger;
 
 /**
  * Bit vector implementation for BDDs.
- *
- * @author John Whaley
  */
 public abstract class BDDBitVector {
     protected BDD[] bitvec;

@@ -27,8 +27,6 @@ import java.util.Iterator;
  * size is related to the implementation of a bit set, so it may change with implementation. The length of a bit set
  * related to the logical length of a bit set and is defined independently of implementation.
  * </p>
- *
- * @author John Whaley
  */
 public final class BitString implements Cloneable, java.io.Serializable {
     /**

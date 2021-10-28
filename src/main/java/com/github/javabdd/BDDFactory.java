@@ -26,8 +26,6 @@ import java.util.StringTokenizer;
 /**
  * Interface for the creation and manipulation of BDDs.
  *
- * @author John Whaley
- *
  * @see com.github.javabdd.BDD
  */
 public abstract class BDDFactory {
@@ -1186,8 +1184,6 @@ public abstract class BDDFactory {
 
     /**
      * Stores statistics about garbage collections.
-     *
-     * @author jwhaley
      */
     public static class GCStats {
         public int nodes;
@@ -1239,8 +1235,6 @@ public abstract class BDDFactory {
 
     /**
      * Stores statistics about reordering.
-     *
-     * @author jwhaley
      */
     public static class ReorderStats {
         public long time;
@@ -1290,10 +1284,6 @@ public abstract class BDDFactory {
 
     /**
      * Stores statistics about the operator cache.
-     *
-     * @author jwhaley
-     * @author sthuijsman
-     * @author mgoorden
      */
     public static class CacheStats {
         protected boolean enabled = false;
@@ -1422,8 +1412,6 @@ public abstract class BDDFactory {
 
     /**
      * Stores statistics about the maximum BDD nodes usage.
-     *
-     * @author mgoorden
      */
     public static class MaxUsedBddNodesStats {
         protected boolean enabled = false;
@@ -1471,8 +1459,6 @@ public abstract class BDDFactory {
     /**
      * Stores continuously statistics about the BDD nodes usage and BDD operations, where BDD operations is a proxy for
      * time.
-     *
-     * @author mgoorden
      */
     public static class ContinuousStats {
         protected boolean enabled = false;
