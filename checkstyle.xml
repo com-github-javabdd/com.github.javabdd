@@ -258,8 +258,10 @@ JavaBDD Checkstyle.
     </module>
     <module name="RegexpSinglelineJava">
       <metadata name="net.sf.eclipsecs.core.comment" value="JavaDoc @-tag description should not start with a lower-case letter."/>
+      <property name="severity" value="ignore"/>
       <property name="format" value="(@param \w+|@return) [a-z]"/>
       <property name="message" value="JavaDoc @-tag description should not start with a lower-case letter."/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
   </module>
   <module name="RegexpSingleline">
