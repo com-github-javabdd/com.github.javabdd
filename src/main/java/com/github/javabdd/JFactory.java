@@ -4773,7 +4773,6 @@ public class JFactory extends BDDFactoryIntImpl {
 
     void bdd_operator_done() {
         if (quantvarset != null) {
-            free(quantvarset);
             quantvarset = null;
         }
 
@@ -4793,7 +4792,6 @@ public class JFactory extends BDDFactoryIntImpl {
         countcache = null;
 
         if (supportSet != null) {
-            free(supportSet);
             supportSet = null;
             supportSize = 0;
         }
@@ -4820,10 +4818,6 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     void bdd_operator_varresize() {
-        if (quantvarset != null) {
-            free(quantvarset);
-        }
-
         quantvarset = new int[bddvarnum];
 
         // memset(quantvarset, 0, sizeof(int)*bddvarnum);
@@ -4897,7 +4891,6 @@ public class JFactory extends BDDFactoryIntImpl {
             return;
         }
 
-        free(cache.table);
         cache.table = null;
         cache.tablesize = 0;
     }
@@ -4910,7 +4903,6 @@ public class JFactory extends BDDFactoryIntImpl {
 
         boolean is_d = cache.table instanceof BddCacheDataD[];
 
-        free(cache.table);
         cache.table = null;
 
         newsize = bdd_prime_gte(newsize);
@@ -5110,9 +5102,6 @@ public class JFactory extends BDDFactoryIntImpl {
 
     int pairsid; /* Pair identifier */
 
-    static final void free(Object o) {
-    }
-
     /*************************************************************************
     *************************************************************************/
 
@@ -5131,8 +5120,6 @@ public class JFactory extends BDDFactoryIntImpl {
                 bdd_delref(p.result[n]);
             }
             p.result = null;
-            free(p.result);
-            free(p);
             p = next;
         }
     }
@@ -5248,7 +5235,6 @@ public class JFactory extends BDDFactoryIntImpl {
 
                 reorder_block(top, method);
                 vartree = top.nextlevel;
-                free(top);
 
                 usednum_after = bddnodesize - bddfreenum;
 
@@ -5764,8 +5750,6 @@ public class JFactory extends BDDFactoryIntImpl {
             /* nil */
         }
 
-        free(seq);
-
         if (verbose != 0) {
             System.out.println("Random order: " + reorder_nodenum() + " nodes");
         }
@@ -5831,9 +5815,6 @@ public class JFactory extends BDDFactoryIntImpl {
 
         /* Do the sifting on this sequence */
         t = reorder_sift_seq(t, seq, num);
-
-        free(seq);
-        free(p);
 
         return t;
     }
@@ -6058,12 +6039,6 @@ public class JFactory extends BDDFactoryIntImpl {
         // bdd_reorder_done();
         bdd_pairs_done();
 
-        free(bddnodes);
-        free(bddrefstack);
-        free(bddvarset);
-        free(bddvar2level);
-        free(bddlevel2var);
-
         bddnodes = null;
         bddrefstack = null;
         bddvarset = null;
@@ -6177,9 +6152,6 @@ public class JFactory extends BDDFactoryIntImpl {
             bddvar2level = bddvar2level2;
         }
 
-        if (bddrefstack != null) {
-            free(bddrefstack);
-        }
         bddrefstack = new int[num * 2 + 1];
         bddrefstacktop = 0;
 
@@ -6392,11 +6364,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
         bddtree_del(t.nextlevel);
         bddtree_del(t.next);
-        if (t.seq != null) {
-            free(t.seq);
-        }
         t.seq = null;
-        free(t);
     }
 
     void bdd_clrvarblocks() {
@@ -6965,7 +6933,6 @@ public class JFactory extends BDDFactoryIntImpl {
         SETHASH(0, 0);
         SETHASH(1, 0);
 
-        free(dep);
         return 0;
     }
 
@@ -7076,8 +7043,6 @@ public class JFactory extends BDDFactoryIntImpl {
             SETLEVELANDMARK(n, bddvar2level[LEVELANDMARK(n)]);
         }
 
-        free(extroots);
-        free(levels);
         imatrixDelete(iactmtx);
         bdd_gbc();
 
@@ -7088,12 +7053,9 @@ public class JFactory extends BDDFactoryIntImpl {
         int n;
 
         for (n = 0; n < mtx.size; n++) {
-            free(mtx.rows[n]);
             mtx.rows[n] = null;
         }
-        free(mtx.rows);
         mtx.rows = null;
-        free(mtx);
     }
 
     int bdd_getallocnum() {
@@ -7239,9 +7201,7 @@ public class JFactory extends BDDFactoryIntImpl {
             bdd_delref(lh_table[n].data);
         }
 
-        free(lh_table);
         lh_table = null;
-        free(loadvar2level);
         loadvar2level = null;
 
         root = tmproot;
