@@ -5642,7 +5642,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
         /* Find first block */
         for (dis = t; dis.prev != null; dis = dis.prev) {
-            /* nil */;
+            /* nil */
         }
 
         return dis;
@@ -5761,7 +5761,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
         /* Find first block */
         for (dis = t; dis.prev != null; dis = dis.prev) {
-            /* nil */;
+            /* nil */
         }
 
         free(seq);
