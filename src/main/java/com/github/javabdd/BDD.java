@@ -1338,8 +1338,8 @@ public abstract class BDD {
         visited[0] = true;
         visited[1] = true;
         HashMap map = new HashMap();
-        map.put(getFactory().zero(), new Integer(0));
-        map.put(getFactory().one(), new Integer(1));
+        map.put(getFactory().zero(), 0);
+        map.put(getFactory().one(), 1);
         printdot_rec(out, 1, visited, map);
 
         for (Iterator i = map.keySet().iterator(); i.hasNext();) {
@@ -1352,7 +1352,7 @@ public abstract class BDD {
     protected int printdot_rec(PrintStream out, int current, boolean[] visited, HashMap map) {
         Integer ri = ((Integer)map.get(this));
         if (ri == null) {
-            map.put(this.id(), ri = new Integer(++current));
+            map.put(this.id(), ri = ++current);
         }
         int r = ri.intValue();
         if (visited[r]) {
@@ -1366,12 +1366,12 @@ public abstract class BDD {
         BDD l = this.low(), h = this.high();
         Integer li = (Integer)map.get(l);
         if (li == null) {
-            map.put(l.id(), li = new Integer(++current));
+            map.put(l.id(), li = ++current);
         }
         int low = li.intValue();
         Integer hi = (Integer)map.get(h);
         if (hi == null) {
-            map.put(h.id(), hi = new Integer(++current));
+            map.put(h.id(), hi = ++current);
         }
         int high = hi.intValue();
 

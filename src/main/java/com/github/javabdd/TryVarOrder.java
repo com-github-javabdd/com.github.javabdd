@@ -45,9 +45,9 @@ public class TryVarOrder {
             }
             Class c = cl.loadClass("com.github.javabdd.BDDFactory");
             Method m = c.getMethod("init", new Class[] {String.class, int.class, int.class});
-            bdd = m.invoke(null, new Object[] {s, new Integer(nodeTableSize), new Integer(cacheSize)});
+            bdd = m.invoke(null, new Object[] {s, nodeTableSize, cacheSize});
             m = c.getMethod("setMaxIncrease", new Class[] {int.class});
-            m.invoke(bdd, new Object[] {new Integer(maxIncrease)});
+            m.invoke(bdd, new Object[] {maxIncrease});
 
             BufferedReader in = null;
             try {
@@ -98,7 +98,7 @@ public class TryVarOrder {
         Class c = bdd.getClass();
         try {
             Method m = c.getMethod("setError", new Class[] {int.class});
-            m.invoke(bdd, new Object[] {new Integer(code)});
+            m.invoke(bdd, new Object[] {code});
         } catch (Exception x) {
             System.err.println("Exception occurred while setting error for BDD factory: " + x.getLocalizedMessage());
             x.printStackTrace();
@@ -134,7 +134,7 @@ public class TryVarOrder {
         Constructor c = bddop_class.getConstructor(new Class[0]);
         bddoperation = c.newInstance(null);
         Method m = bddop_class.getMethod("setOp", new Class[] {int.class});
-        m.invoke(bddoperation, new Object[] {new Integer(op.id)});
+        m.invoke(bddoperation, new Object[] {op.id});
         m = bddop_class.getMethod("setFilenames", new Class[] {String.class, String.class, String.class});
         m.invoke(bddoperation, new Object[] {filename1, filename2, filename3});
     }

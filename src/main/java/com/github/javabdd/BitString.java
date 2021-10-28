@@ -696,7 +696,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
          */
         @Override
         public final Object next() {
-            return new Integer(nextIndex());
+            return nextIndex();
         }
 
         @Override

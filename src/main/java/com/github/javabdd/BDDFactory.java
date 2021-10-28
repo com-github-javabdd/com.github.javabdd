@@ -87,7 +87,7 @@ public abstract class BDDFactory {
         try {
             Class c = Class.forName(bddpackage);
             Method m = c.getMethod("init", new Class[] {int.class, int.class});
-            return (BDDFactory)m.invoke(null, new Object[] {new Integer(nodenum), new Integer(cachesize)});
+            return (BDDFactory)m.invoke(null, new Object[] {nodenum, cachesize});
         } catch (ClassNotFoundException e) {
         } catch (NoSuchMethodException e) {
         } catch (IllegalAccessException e) {
@@ -842,7 +842,7 @@ public abstract class BDDFactory {
             return i.intValue();
         }
         int v = visited.size() + 2;
-        visited.put(root, new Integer(v));
+        visited.put(root, v);
 
         BDD l = root.low();
         int lo = save_rec_original(out, visited, l);
@@ -2288,7 +2288,7 @@ public abstract class BDDFactory {
         if (gc_callbacks == null) {
             bdd_default_gbchandler(pre, s);
         } else {
-            doCallbacks(gc_callbacks, new Integer(pre ? 1 : 0), s);
+            doCallbacks(gc_callbacks, pre ? 1 : 0, s);
         }
     }
 
@@ -2333,7 +2333,7 @@ public abstract class BDDFactory {
         if (resize_callbacks == null) {
             bdd_default_reshandler(oldsize, newsize);
         } else {
-            doCallbacks(resize_callbacks, new Integer(oldsize), new Integer(newsize));
+            doCallbacks(resize_callbacks, oldsize, newsize);
         }
     }
 
