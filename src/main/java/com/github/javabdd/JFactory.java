@@ -1342,7 +1342,7 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     static final int APPEXHASH(int l, int r, int op) {
-        return PAIR(l, r);
+        return TRIPLE(l, r, op);
     }
 
     static final double M_LN2 = 0.69314718055994530942;
