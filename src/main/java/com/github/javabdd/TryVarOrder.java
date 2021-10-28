@@ -17,8 +17,6 @@ import java.util.StringTokenizer;
 
 /**
  * Try var order.
- *
- * @author jwhaley
  */
 public class TryVarOrder {
     /** BDD Factory, reused if possible. */

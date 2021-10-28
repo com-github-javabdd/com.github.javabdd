@@ -4,13 +4,9 @@
 
 package com.github.javabdd;
 
-//import java.util.Arrays;
-
 /**
  * Some BDD methods, namely <tt>exist()</tt>, <tt>forall()</tt>, <tt>unique()</tt>, <tt>relprod()</tt>,
  * <tt>applyAll()</tt>, <tt>applyEx()</tt>, <tt>applyUni()</tt>, and <tt>satCount()</tt> take a BDDVarSet argument.
- *
- * @author jwhaley
  */
 public abstract class BDDVarSet {
     /**
@@ -178,8 +174,6 @@ public abstract class BDDVarSet {
 
     /**
      * Default implementation of BDDVarSet based on BDDs.
-     *
-     * @author jwhaley
      */
     public static class DefaultImpl extends BDDVarSet {
         /**

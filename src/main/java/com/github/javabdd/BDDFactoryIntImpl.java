@@ -9,8 +9,6 @@ import java.util.Iterator;
 
 /**
  * A shared superclass for BDD factories that refer to BDDs as ints.
- *
- * @author jwhaley
  */
 public abstract class BDDFactoryIntImpl extends BDDFactory {
     static final boolean USE_FINALIZER = false;

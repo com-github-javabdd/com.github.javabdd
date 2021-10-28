@@ -6,8 +6,6 @@ package com.github.javabdd;
 
 /**
  * An exception caused by an invalid BDD operation.
- *
- * @author John Whaley
  */
 public class BDDException extends RuntimeException {
     /**

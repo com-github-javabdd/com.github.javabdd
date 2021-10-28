@@ -15,8 +15,6 @@ import java.util.StringTokenizer;
 
 /**
  * Find best order.
- *
- * @author jwhaley
  */
 public class FindBestOrder {
     static BDDFactory bdd = null;
