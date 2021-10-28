@@ -770,7 +770,7 @@ public abstract class BDDFactory {
      * </p>
      *
      * @param out writer
-     * @praam r BDD
+     * @param r BDD
      * @throws IOException In case of an I/O error.
      */
     public void save(BufferedWriter out, BDD r) throws IOException {
@@ -798,6 +798,12 @@ public abstract class BDDFactory {
 
     /**
      * Helper function for save().
+     *
+     * @param out writer
+     * @param visited visited nodes bitset
+     * @param root root BDD
+     * @return bitset index
+     * @throws IOException In case of an I/O error.
      */
     protected int save_rec(BufferedWriter out, BitSet visited, BDD root) throws IOException {
         if (root.isZero()) {

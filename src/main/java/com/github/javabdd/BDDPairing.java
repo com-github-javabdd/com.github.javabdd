@@ -15,6 +15,9 @@ public abstract class BDDPairing {
      * <p>
      * Compare to bdd_setpair.
      * </p>
+     *
+     * @param oldvar old variable
+     * @param newvar new variable
      */
     public abstract void set(int oldvar, int newvar);
 
@@ -24,6 +27,9 @@ public abstract class BDDPairing {
      * <p>
      * Compare to bdd_setpairs.
      * </p>
+     *
+     * @param oldvar old variables
+     * @param newvar new variables
      */
     public void set(int[] oldvar, int[] newvar) {
         if (oldvar.length != newvar.length) {
@@ -44,6 +50,9 @@ public abstract class BDDPairing {
      * <p>
      * Compare to bdd_setbddpair.
      * </p>
+     *
+     * @param oldvar old variable
+     * @param newvar new BDD
      */
     public abstract void set(int oldvar, BDD newvar);
 
@@ -53,6 +62,9 @@ public abstract class BDDPairing {
      * <p>
      * Compare to bdd_setbddpairs.
      * </p>
+     *
+     * @param oldvar old variables
+     * @param newvar new BDDs
      */
     public void set(int[] oldvar, BDD[] newvar) {
         if (oldvar.length != newvar.length) {
@@ -70,6 +82,9 @@ public abstract class BDDPairing {
      * <p>
      * Compare to fdd_setpair.
      * </p>
+     *
+     * @param p1 first finite domain block
+     * @param p2 second finite domain block
      */
     public void set(BDDDomain p1, BDDDomain p2) {
         int[] ivar1 = p1.vars();
@@ -83,6 +98,9 @@ public abstract class BDDPairing {
      * <p>
      * Compare to fdd_setpairs.
      * </p>
+     *
+     * @param p1 first finite domain blocks
+     * @param p2 second finite domain blocks
      */
     public void set(BDDDomain[] p1, BDDDomain[] p2) {
         if (p1.length != p2.length) {

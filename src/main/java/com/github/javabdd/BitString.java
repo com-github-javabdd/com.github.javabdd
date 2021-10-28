@@ -43,6 +43,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Convert bitIndex to a subscript into the bits[] array.
+     *
+     * @param bitIndex bit index
+     * @return subscript
      */
     private static int subscript(int bitIndex) {
         return bitIndex >> BITS_PER_UNIT;
@@ -63,6 +66,8 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Returns the first index in the bit string which is set, or -1 if there is no such index.
+     *
+     * @return the first index
      */
     public int firstSet() {
         return firstSet(-1);
@@ -73,6 +78,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
      * index.
      *
      * @param where the starting point for the search. May be negative.
+     * @return the first index
      */
     public int firstSet(int where) {
         // convert exclusive starting point to inclusive starting point
@@ -175,6 +181,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
      * index.
      *
      * @param where the starting point for the search.
+     * @return last index
      */
     public int lastSet(int where) {
         // convert exclusive starting point to inclusive starting point
@@ -199,6 +206,8 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Returns the last index in the bit string which is set, or -1 if there is no such index.
+     *
+     * @return last index
      */
     public int lastSet() {
         return lastSet(size());
@@ -291,6 +300,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
      * Gets a bit.
      *
      * @param bit the bit to be gotten (zero-based)
+     * @return the bit
      */
     public boolean get(int bit) {
         int n = subscript(bit);
@@ -302,6 +312,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
      * modified in response to the operation.
      *
      * @param set the bit set to be ANDed with
+     * @return modified
      */
     public boolean and(BitString set) {
         if (this == set) { // should help alias analysis
@@ -322,6 +333,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
      * modified in response to the operation.
      *
      * @param set the bit set to be ORed with
+     * @return modified
      */
     public boolean or(BitString set) {
         if (this == set) { // should help alias analysis
@@ -342,6 +354,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
      * modified in response to the operation.
      *
      * @param set the bit set to be ORed with
+     * @return modified
      */
     public boolean or_upTo(BitString set, int bit) {
         if (this == set) { // should help alias analysis
@@ -365,6 +378,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
      * modified in response to the operation.
      *
      * @param set the bit set to be XORed with
+     * @return modified
      */
     public boolean xor(BitString set) {
         int setLength = set.bits.length;
@@ -382,6 +396,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
      * was modified in response to the operation.
      *
      * @param set the bit set to subtract
+     * @return modified
      */
     public boolean minus(BitString set) {
         int n = bits.length;
@@ -398,6 +413,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
      * Check if the intersection of the two sets is empty.
      *
      * @param other the set to check intersection with
+     * @return is empty or not
      */
     public boolean intersectionEmpty(BitString other) {
         int n = bits.length;
@@ -413,6 +429,7 @@ public final class BitString implements Cloneable, java.io.Serializable {
      * Check if this set contains all bits of the given set.
      *
      * @param other the set to check containment with
+     * @return contains or not
      */
     public boolean contains(BitString other) {
         int n = bits.length;
@@ -523,6 +540,8 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Returns the "logical size" of this <code>BitString</code>: the index of the highest set bit in the
      * <code>BitString</code> plus one. Returns zero if the <code>BitString</code> contains no set bits.
+     *
+     * @return logical size
      */
     public int length() {
         return lastSet() + 1;
@@ -531,6 +550,8 @@ public final class BitString implements Cloneable, java.io.Serializable {
     /**
      * Returns the number of bits of space actually in use by this <code>BitString</code> to represent bit values. The
      * maximum element in the set is the size - 1st element. The minimum element in the set is the zero'th element.
+     *
+     * @return number of bits
      */
     public int size() {
         return bits.length << BITS_PER_UNIT;
@@ -656,6 +677,8 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Returns an iterator that iterates through the bits in forward order.
+     *
+     * @return an iterator
      */
     public ForwardBitStringIterator iterator() {
         return new ForwardBitStringIterator();
@@ -667,6 +690,8 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Returns an iterator that iterates through the bits in backward order.
+     *
+     * @return an iterator
      */
     public BackwardBitStringIterator backwardsIterator() {
         return new BackwardBitStringIterator();
@@ -674,6 +699,8 @@ public final class BitString implements Cloneable, java.io.Serializable {
 
     /**
      * Returns an iterator that iterates through the bits in backward order, starting at the given index.
+     *
+     * @return an iterator
      */
     public BackwardBitStringIterator backwardsIterator(int i) {
         return new BackwardBitStringIterator(i);
@@ -685,6 +712,8 @@ public final class BitString implements Cloneable, java.io.Serializable {
     public abstract static class BitStringIterator implements Iterator<Integer> {
         /**
          * Returns the index of the next bit set.
+         *
+         * @return the index
          */
         public abstract int nextIndex();
 
