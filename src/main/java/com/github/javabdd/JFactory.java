@@ -1009,7 +1009,7 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     private static class BddCache {
-        BddCacheData table[];
+        BddCacheData[] table;
 
         int tablesize;
 
@@ -1149,7 +1149,7 @@ public class JFactory extends BDDFactoryIntImpl {
     static final int BDD_ERRNUM = 24;
 
     /* Strings for all error mesages */
-    static String errorstrings[] = {"", "Out of memory", "Unknown variable", "Value out of range",
+    static String[] errorstrings = {"", "Out of memory", "Unknown variable", "Value out of range",
             "Unknown BDD root dereferenced", "bdd_init() called twice", "File operation failed",
             "Incorrect file format", "Variables not in ascending order", "User called break",
             "Mismatch in size of variable sets", "Cannot allocate fewer nodes than already in use", "Unknown operator",
@@ -4339,7 +4339,7 @@ public class JFactory extends BDDFactoryIntImpl {
     static final int OPERATOR_NUM = 11;
 
     /* Operator results - entry = left<<1 | right (left,right in {0,1}) */
-    static int oprres[][] = {{0, 0, 0, 1}, /* and ( & ) */ {0, 1, 1, 0}, /* xor ( ^ ) */ {0, 1, 1, 1},
+    static int[][] oprres = {{0, 0, 0, 1}, /* and ( & ) */ {0, 1, 1, 0}, /* xor ( ^ ) */ {0, 1, 1, 1},
             /* or ( | ) */
             {1, 1, 1, 0}, /* nand */ {1, 0, 0, 0}, /* nor */ {1, 1, 0, 1}, /* implication ( >> ) */ {1, 0, 0, 1},
             /* bi-implication */
@@ -5204,7 +5204,7 @@ public class JFactory extends BDDFactoryIntImpl {
         return next;
     }
 
-    BddTree reorder_sift_seq(BddTree t, BddTree seq[], int num) {
+    BddTree reorder_sift_seq(BddTree t, BddTree[] seq, int num) {
         BddTree dis;
         int n;
 
@@ -5374,7 +5374,8 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     BddTree reorder_sift(BddTree t) {
-        BddTree dis, seq[];
+        BddTree dis;
+        BddTree[] seq;
         sizePair[] p;
         int n, num;
 
@@ -5842,7 +5843,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
     int extrootsize;
 
-    levelData levels[]; /* Indexed by variable! */
+    levelData[] levels; /* Indexed by variable! */
 
     static class levelData {
         int start; /* Start of this sub-table (entry in "bddnodes") */
@@ -5855,7 +5856,7 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     static class imatrix {
-        byte rows[][];
+        byte[][] rows;
 
         int size;
     }
