@@ -24,7 +24,9 @@ public abstract class BDDPairing {
     /**
      * Like set(), but with a whole list of pairs.
      *
-     * <p>Compare to bdd_setpairs.</p>
+     * <p>
+     * Compare to bdd_setpairs.
+     * </p>
      */
     public void set(int[] oldvar, int[] newvar) {
         if (oldvar.length != newvar.length) {
@@ -42,14 +44,18 @@ public abstract class BDDPairing {
      * any BDD as newvar is utilized in BDD.compose(), whereas only the topmost variable in the BDD is used in
      * BDD.replace().
      *
-     * <p>Compare to bdd_setbddpair.</p>
+     * <p>
+     * Compare to bdd_setbddpair.
+     * </p>
      */
     public abstract void set(int oldvar, BDD newvar);
 
     /**
      * Like set(), but with a whole list of pairs.
      *
-     * <p>Compare to bdd_setbddpairs.</p>
+     * <p>
+     * Compare to bdd_setbddpairs.
+     * </p>
      */
     public void set(int[] oldvar, BDD[] newvar) {
         if (oldvar.length != newvar.length) {
@@ -64,7 +70,9 @@ public abstract class BDDPairing {
     /**
      * Defines each variable in the finite domain block p1 to be paired with the corresponding variable in p2.
      *
-     * <p>Compare to fdd_setpair.</p>
+     * <p>
+     * Compare to fdd_setpair.
+     * </p>
      */
     public void set(BDDDomain p1, BDDDomain p2) {
         int[] ivar1 = p1.vars();
@@ -75,7 +83,9 @@ public abstract class BDDPairing {
     /**
      * Like set(), but with a whole list of pairs.
      *
-     * <p>Compare to fdd_setpairs.</p>
+     * <p>
+     * Compare to fdd_setpairs.
+     * </p>
      */
     public void set(BDDDomain[] p1, BDDDomain[] p2) {
         if (p1.length != p2.length) {
@@ -96,7 +106,9 @@ public abstract class BDDPairing {
     /**
      * Resets this table of pairs by setting all substitutions to their default values (that is, no change).
      *
-     * <p>Compare to bdd_resetpair.</p>
+     * <p>
+     * Compare to bdd_resetpair.
+     * </p>
      */
     public abstract void reset();
 }
