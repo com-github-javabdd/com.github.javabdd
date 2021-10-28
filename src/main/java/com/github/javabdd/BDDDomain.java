@@ -49,8 +49,9 @@ public abstract class BDDDomain {
      */
     protected BDDDomain(int index, BigInteger range) {
         BigInteger calcsize = BigInteger.valueOf(2L);
-        if (range.signum() <= 0)
+        if (range.signum() <= 0) {
             throw new BDDException();
+        }
         this.name = Integer.toString(index);
         this.index = index;
         this.realsize = range;
@@ -106,10 +107,11 @@ public abstract class BDDDomain {
         BDD d = factory.universe();
         int[] ivar = vars();
         for (int n = 0; n < this.varNum(); n++) {
-            if (val.testBit(0))
+            if (val.testBit(0)) {
                 d.orWith(factory.nithVar(ivar[n]));
-            else
+            } else {
                 d.andWith(factory.nithVar(ivar[n]));
+            }
             val = val.shiftRight(1);
         }
         return d;
@@ -125,15 +127,17 @@ public abstract class BDDDomain {
     }
 
     public BDD buildAdd(BDDDomain that, long value) {
-        if (this.varNum() != that.varNum())
+        if (this.varNum() != that.varNum()) {
             throw new BDDException();
+        }
         return buildAdd(that, this.varNum(), value);
     }
 
     public BDD buildAdd(BDDDomain that, int bits, long value) {
-        if (bits > this.varNum() || bits > that.varNum())
+        if (bits > this.varNum() || bits > that.varNum()) {
             throw new BDDException("Number of bits requested (" + bits + ") is larger than domain sizes "
                     + this.varNum() + "," + that.varNum());
+        }
 
         BDDFactory bdd = getFactory();
 
@@ -241,10 +245,11 @@ public abstract class BDDDomain {
         BDD v = factory.universe();
         int[] ivar = this.vars();
         for (int n = 0; n < ivar.length; n++) {
-            if (val.testBit(0))
+            if (val.testBit(0)) {
                 v.andWith(factory.ithVar(ivar[n]));
-            else
+            } else {
                 v.andWith(factory.nithVar(ivar[n]));
+            }
             val = val.shiftRight(1);
         }
 
@@ -315,18 +320,21 @@ public abstract class BDDDomain {
 
     public int ensureCapacity(BigInteger range) {
         BigInteger calcsize = BigInteger.valueOf(2L);
-        if (range.signum() < 0)
+        if (range.signum() < 0) {
             throw new BDDException();
-        if (range.compareTo(realsize) < 0)
+        }
+        if (range.compareTo(realsize) < 0) {
             return ivar.length;
+        }
         this.realsize = range.add(BigInteger.ONE);
         int binsize = 1;
         while (calcsize.compareTo(range) <= 0) {
             binsize++;
             calcsize = calcsize.shiftLeft(1);
         }
-        if (ivar.length == binsize)
+        if (ivar.length == binsize) {
             return binsize;
+        }
 
         throw new BDDException("Can't add bits to domains, requested domain " + name + " upper limit " + range);
     }
@@ -370,8 +378,9 @@ public abstract class BDDDomain {
     public BigInteger[] getVarIndices(BDD bdd, int max) {
         BDDVarSet myvarset = set(); // can't use var here, must respect subclass a factory may provide
         int n = (int)bdd.satCount(myvarset);
-        if (max != -1 && n > max)
+        if (max != -1 && n > max) {
             n = max;
+        }
         BigInteger[] res = new BigInteger[n];
         BDDIterator it = bdd.iterator(myvarset);
         myvarset.free();

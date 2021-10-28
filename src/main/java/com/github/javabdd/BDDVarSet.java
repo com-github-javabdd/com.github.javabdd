@@ -46,8 +46,9 @@ public abstract class BDDVarSet {
         StringBuffer sb = new StringBuffer(a.length * 4 + 2);
         sb.append('[');
         for (int i = 0; i < a.length; ++i) {
-            if (i != 0)
+            if (i != 0) {
                 sb.append(',');
+            }
             sb.append(a[i]);
         }
         sb.append(']');
@@ -198,8 +199,9 @@ public abstract class BDDVarSet {
      */
     @Override
     public final boolean equals(Object o) {
-        if (o instanceof BDDVarSet)
+        if (o instanceof BDDVarSet) {
             return equals((BDDVarSet)o);
+        }
         return false;
     }
 
@@ -302,8 +304,9 @@ public abstract class BDDVarSet {
             int result = 0;
             BDD r = b.id();
             while (!r.isOne()) {
-                if (r.isZero())
+                if (r.isZero()) {
                     throw new BDDException("varset contains zero");
+                }
                 ++result;
                 BDD q = r.high();
                 r.free();
@@ -324,8 +327,9 @@ public abstract class BDDVarSet {
             int i = -1;
             BDD r = b.id();
             while (!r.isOne()) {
-                if (r.isZero())
+                if (r.isZero()) {
                     throw new BDDException("varset contains zero");
+                }
                 result[++i] = r.var();
                 BDD q = r.high();
                 r.free();
@@ -356,8 +360,9 @@ public abstract class BDDVarSet {
             int i = -1;
             BDD r = b.id();
             while (!r.isOne()) {
-                if (r.isZero())
+                if (r.isZero()) {
                     throw new BDDException("varset contains zero");
+                }
                 result[++i] = r.level();
                 BDD q = r.high();
                 r.free();
@@ -432,8 +437,9 @@ public abstract class BDDVarSet {
          */
         @Override
         public boolean equals(BDDVarSet s) {
-            if (s instanceof DefaultImpl)
+            if (s instanceof DefaultImpl) {
                 return equals((DefaultImpl)s);
+            }
             return false;
         }
 

@@ -85,8 +85,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
         // search through units
         for (int i = subscript(where); i < bits.length; i++, mask = ~0) {
             int unit = bits[i] & mask;
-            if (unit != 0)
+            if (unit != 0) {
                 return (i << BITS_PER_UNIT) + (bsf(unit) - 1);
+            }
         }
         return -1;
     }
@@ -149,15 +150,17 @@ public final class BitString implements Cloneable, java.io.Serializable {
      */
     public static final int bsr(int v) {
         if ((v & 0xFFFF0000) != 0) {
-            if ((v & 0xFF000000) != 0)
+            if ((v & 0xFF000000) != 0) {
                 return 24 + bytemsb[(v >> 24) & 0xFF];
-            else
+            } else {
                 return 16 + bytemsb[v >> 16];
+            }
         }
-        if ((v & 0x0000FF00) != 0)
+        if ((v & 0x0000FF00) != 0) {
             return 8 + bytemsb[v >> 8];
-        else
+        } else {
             return bytemsb[v];
+        }
     }
 
     /** Highest bit set in a byte. */
@@ -178,8 +181,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
      */
     public int lastSet(int where) {
         // convert exclusive starting point to inclusive starting point
-        if (--where < 0)
+        if (--where < 0) {
             return -1;
+        }
         int start = (bits.length - 1), mask = ~0;
         if (subscript(where) < bits.length) {
             // search in first unit is masked.
@@ -189,8 +193,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
         // search through units
         for (int i = start; i >= 0; i--, mask = ~0) {
             int unit = bits[i] & mask;
-            if (unit != 0)
+            if (unit != 0) {
                 return (i << BITS_PER_UNIT) + (bsr(unit) - 1);
+            }
         }
         return -1;
     }
@@ -230,8 +235,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
         int where1 = subscript(lo);
         int where2 = subscript(hi);
         if (where1 == where2) {
-            for (; lo <= hi; ++lo)
+            for (; lo <= hi; ++lo) {
                 bits[where1] |= (1 << (lo & MASK));
+            }
         } else {
             /* preaddition of 1 to bit is a clever hack to avoid long arithmetic */
             bits[where2] |= ((1 << ((hi + 1) & MASK)) - 1);
@@ -399,8 +405,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
     public boolean intersectionEmpty(BitString other) {
         int n = bits.length;
         for (int i = n; i-- > 0;) {
-            if ((bits[i] & other.bits[i]) != 0)
+            if ((bits[i] & other.bits[i]) != 0) {
                 return false;
+            }
         }
         return true;
     }
@@ -413,8 +420,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
     public boolean contains(BitString other) {
         int n = bits.length;
         for (int i = n; i-- > 0;) {
-            if ((bits[i] & other.bits[i]) != other.bits[i])
+            if ((bits[i] & other.bits[i]) != other.bits[i]) {
                 return false;
+            }
         }
         return true;
     }
@@ -440,8 +448,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
         // big moves
         if (div > 0) {
             System.arraycopy(bits, 0, bits, div, size - div);
-            for (int i = 0; i < div; ++i)
+            for (int i = 0; i < div; ++i) {
                 bits[i] = 0;
+            }
             /*
              * int i; for (i = size - 1; i >= div; --i) { bits[i] = bits[i - div]; } for (; i >= 0; --i) { bits[i] = 0;
              * }
@@ -474,8 +483,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
         // big moves
         if (div > 0) {
             System.arraycopy(bits, div, bits, 0, size - div);
-            for (int i = size - div; i < size; ++i)
+            for (int i = size - div; i < size; ++i) {
                 bits[i] = 0;
+            }
             /*
              * int i; for (i = 0; i < size - div; ++i) { bits[i] = bits[i + div]; } for (; i < size; ++i) { bits[i] = 0;
              * }
@@ -538,20 +548,24 @@ public final class BitString implements Cloneable, java.io.Serializable {
     @Override
     public boolean equals(Object obj) {
         BitString set;
-        if (obj == null)
+        if (obj == null) {
             return false;
-        if (this == obj)
+        }
+        if (this == obj) {
             return true; // should help alias analysis
+        }
         try {
             set = (BitString)obj;
         } catch (ClassCastException e) {
             return false;
         }
-        if (length() != set.length())
+        if (length() != set.length()) {
             return false;
+        }
         int n = bits.length - 1;
-        while (n >= 0 && bits[n] == 0)
+        while (n >= 0 && bits[n] == 0) {
             n--;
+        }
         // now n has the first non-zero entry
         for (int i = n; i >= 0; i--) {
             if (bits[i] != set.bits[i]) {
@@ -569,8 +583,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
     public boolean isZero() {
         int setLength = bits.length;
         for (int i = setLength; i-- > 0;) {
-            if (bits[i] != 0)
+            if (bits[i] != 0) {
                 return false;
+            }
         }
         return true;
     }
@@ -708,8 +723,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
         @Override
         public boolean hasNext() {
             while (t == 0) {
-                if (j == bits.length - 1)
+                if (j == bits.length - 1) {
                     return false;
+                }
                 t = bits[++j];
                 k += 1 << BITS_PER_UNIT;
             }
@@ -722,8 +738,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
         @Override
         public int nextIndex() {
             while (t == 0) {
-                if (j == bits.length - 1)
+                if (j == bits.length - 1) {
                     throw new java.util.NoSuchElementException();
+                }
                 t = bits[++j];
                 k += 1 << BITS_PER_UNIT;
             }
@@ -755,8 +772,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
         @Override
         public boolean hasNext() {
             while (t == 0) {
-                if (j == bits.length - 1)
+                if (j == bits.length - 1) {
                     return false;
+                }
                 t = ~bits[++j];
                 k += 1 << BITS_PER_UNIT;
             }
@@ -769,8 +787,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
         @Override
         public int nextIndex() {
             while (t == 0) {
-                if (j == bits.length - 1)
+                if (j == bits.length - 1) {
                     throw new java.util.NoSuchElementException();
+                }
                 t = ~bits[++j];
                 k += 1 << BITS_PER_UNIT;
             }
@@ -821,8 +840,9 @@ public final class BitString implements Cloneable, java.io.Serializable {
         @Override
         public int nextIndex() {
             while (t == 0) {
-                if (j == 0)
+                if (j == 0) {
                     throw new java.util.NoSuchElementException();
+                }
                 t = bits[--j];
                 k -= 1 << BITS_PER_UNIT;
             }

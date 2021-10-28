@@ -128,8 +128,9 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             /* bdd */int v3 = apply_impl(v, v2, opr);
             addref_impl(v3);
             delref_impl(v);
-            if (this != that)
+            if (this != that) {
                 that.free();
+            }
             v = v3;
             return this;
         }
@@ -260,8 +261,9 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             /* bdd */int v3 = restrict_impl(v, v2);
             addref_impl(v3);
             delref_impl(v);
-            if (this != that)
+            if (this != that) {
                 that.free();
+            }
             v = v3;
             return this;
         }
@@ -333,10 +335,11 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
     }
 
     protected IntBDD makeBDD(/* bdd */int v) {
-        if (USE_FINALIZER)
+        if (USE_FINALIZER) {
             return new IntBDDWithFinalizer(v);
-        else
+        } else {
             return new IntBDD(v);
+        }
     }
 
     protected static final /* bdd */int unwrap(BDD b) {
@@ -401,8 +404,9 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             /* bdd */int v3 = do_intersect(v, v2);
             addref_impl(v3);
             delref_impl(v);
-            if (this != b)
+            if (this != b) {
                 b.free();
+            }
             v = v3;
             return this;
         }
@@ -416,8 +420,9 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         public int size() {
             int result = 0;
             for (/* bdd */int p = v; p != one_impl(); p = high_impl(p)) {
-                if (p == zero_impl())
+                if (p == zero_impl()) {
                     throw new BDDException("varset contains zero");
+                }
                 ++result;
             }
             return result;
@@ -472,8 +477,9 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
             /* bdd */int v3 = do_union(v, v2);
             addref_impl(v3);
             delref_impl(v);
-            if (this != b)
+            if (this != b) {
                 b.free();
+            }
             v = v3;
             return this;
         }
@@ -510,25 +516,30 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
 
         @Override
         protected int do_intersect(int v1, int v2) {
-            if (v1 == one_impl())
+            if (v1 == one_impl()) {
                 return v2;
-            if (v2 == one_impl())
+            }
+            if (v2 == one_impl()) {
                 return v1;
+            }
             int l1, l2;
             l1 = level_impl(v1);
             l2 = level_impl(v2);
             for (;;) {
-                if (v1 == v2)
+                if (v1 == v2) {
                     return v1;
+                }
                 if (l1 < l2) {
                     v1 = high_impl(v1);
-                    if (v1 == one_impl())
+                    if (v1 == one_impl()) {
                         return v2;
+                    }
                     l1 = level_impl(v1);
                 } else if (l1 > l2) {
                     v2 = high_impl(v2);
-                    if (v2 == one_impl())
+                    if (v2 == one_impl()) {
                         return v1;
+                    }
                     l2 = level_impl(v2);
                 } else {
                     int k = do_intersect(high_impl(v1), high_impl(v2));
@@ -542,18 +553,22 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
 
         @Override
         protected int do_union(int v1, int v2) {
-            if (v1 == v2)
+            if (v1 == v2) {
                 return v1;
-            if (v1 == one_impl())
+            }
+            if (v1 == one_impl()) {
                 return v2;
-            if (v2 == one_impl())
+            }
+            if (v2 == one_impl()) {
                 return v1;
+            }
             int l1, l2;
             l1 = level_impl(v1);
             l2 = level_impl(v2);
             int vv1 = v1, vv2 = v2, lev = l1;
-            if (l1 <= l2)
+            if (l1 <= l2) {
                 vv1 = high_impl(v1);
+            }
             if (l1 >= l2) {
                 vv2 = high_impl(v2);
                 lev = l2;
@@ -571,8 +586,9 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         }
 
         private int do_unionlevel(int v, int lev) {
-            if (v == one_impl())
+            if (v == one_impl()) {
                 return makenode_impl(lev, zero_impl(), one_impl());
+            }
             int l = level_impl(v);
             if (l == lev) {
                 return v;
@@ -607,15 +623,17 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
 
     protected IntBDDVarSet makeBDDVarSet(/* bdd */int v) {
         if (isZDD()) {
-            if (USE_FINALIZER)
+            if (USE_FINALIZER) {
                 return new IntZDDVarSetWithFinalizer(v);
-            else
+            } else {
                 return new IntZDDVarSet(v);
+            }
         } else {
-            if (USE_FINALIZER)
+            if (USE_FINALIZER) {
                 return new IntBDDVarSetWithFinalizer(v);
-            else
+            } else {
                 return new IntBDDVarSet(v);
+            }
         }
     }
 
@@ -694,8 +712,9 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
     protected /* bdd */int to_free_length = 0;
 
     public void deferredFree(int v) {
-        if (v == invalid_bdd_impl())
+        if (v == invalid_bdd_impl()) {
             return;
+        }
         synchronized (to_free) {
             if (to_free_length == to_free.length) {
                 /* bdd */int[] t = new /* bdd */int[to_free.length * 2];

@@ -107,8 +107,9 @@ public abstract class BDD {
      * @return the level of this BDD
      */
     public int level() {
-        if (isZero() || isOne())
+        if (isZero() || isOne()) {
             return getFactory().varNum();
+        }
         return getFactory().var2Level(var());
     }
 
@@ -709,17 +710,20 @@ public abstract class BDD {
         public AllSatIterator(BDD r, boolean lev) {
             f = r.getFactory();
             useLevel = lev;
-            if (r.isZero())
+            if (r.isZero()) {
                 return;
+            }
             allsatProfile = new byte[f.varNum()];
-            if (!f.isZDD())
+            if (!f.isZDD()) {
                 Arrays.fill(allsatProfile, (byte)-1);
+            }
             loStack = new LinkedList();
             hiStack = new LinkedList();
             if (!r.isOne()) {
                 loStack.addLast(r.id());
-                if (!gotoNext())
+                if (!gotoNext()) {
                     allsatProfile = null;
+                }
             }
         }
 
@@ -790,12 +794,14 @@ public abstract class BDD {
          * @return byte[]
          */
         public byte[] nextSat() {
-            if (allsatProfile == null)
+            if (allsatProfile == null) {
                 throw new NoSuchElementException();
+            }
             byte[] b = new byte[allsatProfile.length];
             System.arraycopy(allsatProfile, 0, b, 0, b.length);
-            if (!gotoNext())
+            if (!gotoNext()) {
                 allsatProfile = null;
+            }
             return b;
         }
 
@@ -833,8 +839,9 @@ public abstract class BDD {
      * @return one satisfying assignment for that domain
      */
     public BigInteger scanVar(BDDDomain d) {
-        if (this.isZero())
+        if (this.isZero()) {
             return BigInteger.valueOf(-1);
+        }
         BigInteger[] allvar = this.scanAllVar();
         BigInteger res = allvar[d.getIndex()];
         return res;
@@ -857,8 +864,9 @@ public abstract class BDD {
         boolean[] store;
         BigInteger[] res;
 
-        if (this.isZero())
+        if (this.isZero()) {
             return null;
+        }
 
         BDDFactory factory = getFactory();
 
@@ -892,8 +900,9 @@ public abstract class BDD {
             BigInteger val = BigInteger.ZERO;
             for (int m = dom.varNum() - 1; m >= 0; m--) {
                 val = val.shiftLeft(1);
-                if (store[ivar[m]])
+                if (store[ivar[m]]) {
                     val = val.add(BigInteger.ONE);
+                }
             }
 
             res[n] = val;
@@ -983,18 +992,20 @@ public abstract class BDD {
             }
             for (int i = 0; i < v.length; ++i) {
                 int vi = v[i];
-                if (a[vi] == 1)
+                if (a[vi] == 1) {
                     b[i] = true;
-                else
+                } else {
                     b[i] = false;
+                }
             }
         }
 
         protected boolean gotoNextA() {
             for (int i = v.length - 1; i >= 0; --i) {
                 int vi = v[i];
-                if (a[vi] != -1)
+                if (a[vi] != -1) {
                     continue;
+                }
                 if (b[i] == false) {
                     b[i] = true;
                     return true;
@@ -1099,8 +1110,9 @@ public abstract class BDD {
                 BigInteger val = BigInteger.ZERO;
                 for (int m = dom.varNum() - 1; m >= 0; m--) {
                     val = val.shiftLeft(1);
-                    if (store[ivar[m]])
+                    if (store[ivar[m]]) {
                         val = val.add(BigInteger.ONE);
+                    }
                 }
                 result[i] = val;
             }
@@ -1142,10 +1154,11 @@ public abstract class BDD {
             for (int i = v.length - 1; i >= 0; --i) {
                 int li = v[i];
                 int vi = f.level2Var(li);
-                if (b[i] == true)
+                if (b[i] == true) {
                     lastReturned.andWith(f.ithVar(vi));
-                else
+                } else {
                     lastReturned.andWith(f.nithVar(vi));
+                }
             }
             if (!gotoNextA()) {
                 gotoNext();
@@ -1160,8 +1173,9 @@ public abstract class BDD {
          */
         @Override
         public void remove() {
-            if (lastReturned == null)
+            if (lastReturned == null) {
                 throw new IllegalStateException();
+            }
             initialBDD.applyWith(lastReturned.id(), BDDFactory.diff);
             lastReturned = null;
         }
@@ -1176,8 +1190,9 @@ public abstract class BDD {
          * @return if the given variable is a dont-care
          */
         public boolean isDontCare(int var) {
-            if (a == null)
+            if (a == null) {
                 return false;
+            }
             int level = f.var2Level(var);
             return a[level] == -1;
         }
@@ -1192,12 +1207,14 @@ public abstract class BDD {
          * @throws BDDException if d is not in the iteration set
          */
         public boolean isDontCare(BDDDomain d) {
-            if (a == null)
+            if (a == null) {
                 return false;
+            }
             int[] vars = d.vars();
             for (int i = 0; i < vars.length; ++i) {
-                if (!isDontCare(vars[i]))
+                if (!isDontCare(vars[i])) {
                     return false;
+                }
             }
             return true;
         }
@@ -1208,12 +1225,14 @@ public abstract class BDD {
          * @param var number of variable
          */
         public void fastForward(int var) {
-            if (a == null)
+            if (a == null) {
                 throw new BDDException();
+            }
             int level = f.var2Level(var);
             int i = Arrays.binarySearch(v, level);
-            if (i < 0 || a[i] != -1)
+            if (i < 0 || a[i] != -1) {
                 throw new BDDException();
+            }
             b[i] = true;
         }
 
@@ -1336,8 +1355,9 @@ public abstract class BDD {
             map.put(this.id(), ri = new Integer(++current));
         }
         int r = ri.intValue();
-        if (visited[r])
+        if (visited[r]) {
             return current;
+        }
         visited[r] = true;
 
         // TODO: support labelling of vars.
@@ -1420,8 +1440,9 @@ public abstract class BDD {
     public double satCount(BDDVarSet varset) {
         BDDFactory factory = getFactory();
 
-        if (varset.isEmpty() || isZero()) /* empty set */
+        if (varset.isEmpty() || isZero()) { /* empty set */
             return 0.;
+        }
 
         double unused = factory.varNum();
         unused -= varset.size();
@@ -1489,8 +1510,9 @@ public abstract class BDD {
      */
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof BDD))
+        if (!(o instanceof BDD)) {
             return false;
+        }
         return this.equals((BDD)o);
     }
 
@@ -1511,8 +1533,9 @@ public abstract class BDD {
     public String toString() {
         BDDFactory f = this.getFactory();
         int[] set = new int[f.varNum()];
-        if (f.isZDD())
+        if (f.isZDD()) {
             Arrays.fill(set, 1);
+        }
         StringBuffer sb = new StringBuffer();
         bdd_printset_rec(f, sb, this, set);
         return sb.toString();
@@ -1522,16 +1545,17 @@ public abstract class BDD {
         int n;
         boolean first;
 
-        if (r.isZero())
+        if (r.isZero()) {
             return;
-        else if (r.isOne()) {
+        } else if (r.isOne()) {
             sb.append('<');
             first = true;
 
             for (n = 0; n < set.length; n++) {
                 if (set[n] > 0) {
-                    if (!first)
+                    if (!first) {
                         sb.append(", ");
+                    }
                     first = false;
                     sb.append(f.level2Var(n));
                     sb.append(':');
@@ -1592,10 +1616,12 @@ public abstract class BDD {
      * @return string representation of this BDD using the given BDDToString converter
      */
     public String toStringWithDomains(BDDToString ts) {
-        if (this.isZero())
+        if (this.isZero()) {
             return "F";
-        if (this.isOne())
+        }
+        if (this.isOne()) {
             return "T";
+        }
 
         BDDFactory bdd = getFactory();
         StringBuffer sb = new StringBuffer();
@@ -1638,12 +1664,14 @@ public abstract class BDD {
 
         StringBuffer finish() {
             if (!lastHigh.equals(MINUS2)) {
-                if (done)
+                if (done) {
                     sb.append('/');
-                if (lastLow.equals(lastHigh))
+                }
+                if (lastLow.equals(lastHigh)) {
                     sb.append(ts.elementName(domain, lastHigh));
-                else
+                } else {
                     sb.append(ts.elementNames(domain, lastLow, lastHigh));
+                }
                 lastHigh = MINUS2;
             }
             done = true;
@@ -1680,9 +1708,9 @@ public abstract class BDD {
         int[] var;
         boolean first;
 
-        if (r.isZero())
+        if (r.isZero()) {
             return;
-        else if (r.isOne()) {
+        } else if (r.isOne()) {
             sb.append('<');
             first = true;
 
@@ -1693,13 +1721,16 @@ public abstract class BDD {
 
                 int[] domain_n_ivar = domain_n.vars();
                 int domain_n_varnum = domain_n_ivar.length;
-                for (m = 0; m < domain_n_varnum; m++)
-                    if (set[domain_n_ivar[m]] != 0)
+                for (m = 0; m < domain_n_varnum; m++) {
+                    if (set[domain_n_ivar[m]] != 0) {
                         used = true;
+                    }
+                }
 
                 if (used) {
-                    if (!first)
+                    if (!first) {
                         sb.append(", ");
+                    }
                     first = false;
                     sb.append(domain_n.getName());
                     sb.append(':');
@@ -1713,8 +1744,9 @@ public abstract class BDD {
                         int val = set[var[i]];
                         if (val == 0) {
                             hasDontCare = true;
-                            if (maxSkip == i - 1)
+                            if (maxSkip == i - 1) {
                                 maxSkip = i;
+                            }
                         }
                     }
                     for (i = domain_n_varnum - 1; i >= 0; --i) {

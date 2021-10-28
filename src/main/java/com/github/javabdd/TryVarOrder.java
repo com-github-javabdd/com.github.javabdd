@@ -38,10 +38,11 @@ public class TryVarOrder {
     void initBDDFactory(String s) {
         try {
             ClassLoader cl;
-            if (bddoperation != null)
+            if (bddoperation != null) {
                 cl = bddoperation.getClass().getClassLoader();
-            else
+            } else {
                 cl = makeClassLoader();
+            }
             Class c = cl.loadClass("com.github.javabdd.BDDFactory");
             Method m = c.getMethod("init", new Class[] {String.class, int.class, int.class});
             bdd = m.invoke(null, new Object[] {s, new Integer(nodeTableSize), new Integer(cacheSize)});
@@ -53,8 +54,9 @@ public class TryVarOrder {
                 in = new BufferedReader(new FileReader(filename0));
                 for (;;) {
                     String s2 = in.readLine();
-                    if (s2 == null || s2.equals(""))
+                    if (s2 == null || s2.equals("")) {
                         break;
+                    }
                     StringTokenizer st = new StringTokenizer(s2);
                     String name = st.nextToken();
                     long size = Long.parseLong(st.nextToken()) - 1;
@@ -62,11 +64,12 @@ public class TryVarOrder {
                 }
             } catch (IOException x) {
             } finally {
-                if (in != null)
+                if (in != null) {
                     try {
                         in.close();
                     } catch (IOException e) {
                     }
+                }
             }
         } catch (Exception x) {
             System.err.println("Exception occurred while initializing BDD factory: " + x.getLocalizedMessage());
@@ -379,8 +382,9 @@ public class TryVarOrder {
                 dos.write(d.getName() + " " + d.size() + "\n");
             }
         } finally {
-            if (dos != null)
+            if (dos != null) {
                 dos.close();
+            }
         }
     }
 
@@ -392,8 +396,9 @@ public class TryVarOrder {
      * @return time spent, or Long.MAX_VALUE if it didn't terminate
      */
     public long tryOrder(String factory, boolean reverse, String varOrder) {
-        if (bdd == null)
+        if (bdd == null) {
             initBDDFactory(factory);
+        }
         // System.gc();
         TryThread t = new TryThread(reverse, varOrder);
         t.start();
