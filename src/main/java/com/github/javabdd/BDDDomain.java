@@ -17,7 +17,7 @@ import com.github.javabdd.BDD.BDDIterator;
  * </p>
  *
  * <p>
- * Use <tt>BDDFactory.extDomain()</tt> to create one or more domains with a specified list of sizes.
+ * Use {@code BDDFactory.extDomain()} to create one or more domains with a specified list of sizes.
  * </p>
  *
  * @see com.github.javabdd.BDDFactory#extDomain(int[])
@@ -63,11 +63,15 @@ public abstract class BDDDomain {
 
     /**
      * Returns the factory that created this domain.
+     *
+     * @return the BDD factory
      */
     public abstract BDDFactory getFactory();
 
     /**
      * Sets the name of this domain.
+     *
+     * @param name the name
      */
     public void setName(String name) {
         this.name = name;
@@ -75,6 +79,8 @@ public abstract class BDDDomain {
 
     /**
      * Gets the name of this domain.
+     *
+     * @return the name
      */
     public String getName() {
         return name;
@@ -82,6 +88,8 @@ public abstract class BDDDomain {
 
     /**
      * Returns the index of this domain.
+     *
+     * @return the index
      */
     public int getIndex() {
         return index;
@@ -94,6 +102,8 @@ public abstract class BDDDomain {
      * <p>
      * Compare to fdd_domain.
      * </p>
+     *
+     * @return BDD representing the possible values of this domain
      */
     public BDD domain() {
         BDDFactory factory = getFactory();
@@ -119,6 +129,8 @@ public abstract class BDDDomain {
      * <p>
      * Compare to fdd_domainsize.
      * </p>
+     *
+     * @return the size
      */
     public BigInteger size() {
         return this.realsize;
@@ -189,6 +201,7 @@ public abstract class BDDDomain {
      * Compare to fdd_equals/fdd_equ.
      * </p>
      *
+     * @param that the other BDD domain
      * @return BDD
      */
     public BDD buildEquals(BDDDomain that) {
@@ -233,6 +246,7 @@ public abstract class BDDDomain {
      * Compare to fdd_ithvar.
      * </p>
      *
+     * @param val the given value
      * @return BDD
      */
     public BDD ithVar(long val) {
@@ -262,6 +276,8 @@ public abstract class BDDDomain {
     /**
      * Returns the BDD that defines the given range of values, inclusive, for this finite domain block.
      *
+     * @param lo low value (inclusive)
+     * @param hi high value (inclusive)
      * @return BDD
      */
     public BDD varRange(long lo, long hi) {
@@ -352,39 +368,40 @@ public abstract class BDDDomain {
     }
 
     /**
-     * Convert a BDD that to a list of indices of this domain. This method assumes that the BDD passed is a disjunction
-     * of ithVar(i_1) to ithVar(i_k). It returns an array of length 'k' with elements [i_1,...,i_k].
+     * Convert a BDD {@code that} to a list of indices of this domain. This method assumes that the BDD passed is a
+     * disjunction of ithVar(i_1) to ithVar(i_k). It returns an array of length 'k' with elements [i_1,...,i_k].
      *
      * <p>
      * Be careful when using this method for BDDs with a large number of entries, as it allocates a BigInteger[] array
      * of dimension k.
      * </p>
      *
-     * @param bdd bdd that is the disjunction of domain indices
+     * @param that bdd that is the disjunction of domain indices
+     * @return list of indices in this domain
      * @see #getVarIndices(BDD,int)
      * @see #ithVar(BigInteger)
      */
-    public BigInteger[] getVarIndices(BDD bdd) {
-        return getVarIndices(bdd, -1);
+    public BigInteger[] getVarIndices(BDD that) {
+        return getVarIndices(that, -1);
     }
 
     /**
-     * Convert a BDD that to a list of indices of this domain. Same as getVarIndices(BDD), except only 'max' indices are
-     * extracted.
+     * Convert a BDD {@code that} to a list of indices of this domain. Same as getVarIndices(BDD), except only 'max'
+     * indices are extracted.
      *
-     * @param bdd bdd that is the disjunction of domain indices
+     * @param that bdd that is the disjunction of domain indices
      * @param max maximum number of entries to be returned
-     *
+     * @return list of indices of this domain
      * @see #ithVar(long)
      */
-    public BigInteger[] getVarIndices(BDD bdd, int max) {
+    public BigInteger[] getVarIndices(BDD that, int max) {
         BDDVarSet myvarset = set(); // can't use var here, must respect subclass a factory may provide
-        int n = (int)bdd.satCount(myvarset);
+        int n = (int)that.satCount(myvarset);
         if (max != -1 && n > max) {
             n = max;
         }
         BigInteger[] res = new BigInteger[n];
-        BDDIterator it = bdd.iterator(myvarset);
+        BDDIterator it = that.iterator(myvarset);
         myvarset.free();
         for (int i = 0; i < n; i++) {
             res[i] = it.nextValue(this);

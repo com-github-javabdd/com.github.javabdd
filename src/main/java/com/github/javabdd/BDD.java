@@ -163,6 +163,7 @@ public abstract class BDD {
      * </p>
      *
      * @param that the BDD to 'and' with
+     * @return the logical 'and' of the two BDDs
      */
     public BDD andWith(BDD that) {
         return this.applyWith(that, BDDFactory.and);
@@ -191,6 +192,7 @@ public abstract class BDD {
      * </p>
      *
      * @param that the BDD to 'or' with
+     * @return the logical 'or' of the two BDDs
      */
     public BDD orWith(BDD that) {
         return this.applyWith(that, BDDFactory.or);
@@ -219,6 +221,7 @@ public abstract class BDD {
      * </p>
      *
      * @param that the BDD to 'xor' with
+     * @return the logical 'xor' of the two BDDs
      */
     public BDD xorWith(BDD that) {
         return this.applyWith(that, BDDFactory.xor);
@@ -247,6 +250,7 @@ public abstract class BDD {
      * </p>
      *
      * @param that the BDD to 'implication' with
+     * @return the logical 'implication' of the two BDDs
      */
     public BDD impWith(BDD that) {
         return this.applyWith(that, BDDFactory.imp);
@@ -276,6 +280,7 @@ public abstract class BDD {
      * </p>
      *
      * @param that the BDD to 'bi-implication' with
+     * @return the logical 'bi-implication' of two BDDs
      */
     public BDD biimpWith(BDD that) {
         return this.applyWith(that, BDDFactory.biimp);
@@ -426,6 +431,7 @@ public abstract class BDD {
      * </p>
      *
      * @param var BDD containing the variables to be restricted
+     * @return the result of the restrict operation
      * @see com.github.javabdd.BDDDomain#set()
      */
     public abstract BDD restrictWith(BDD var);
@@ -456,7 +462,7 @@ public abstract class BDD {
     public abstract BDDVarSet support();
 
     /**
-     * Returns the result of applying the binary operator <tt>opr</tt> to the two BDDs.
+     * Returns the result of applying the binary operator {@code opr} to the two BDDs.
      *
      * <p>
      * Compare to bdd_apply.
@@ -469,7 +475,7 @@ public abstract class BDD {
     public abstract BDD apply(BDD that, BDDFactory.BDDOp opr);
 
     /**
-     * Makes this BDD be the result of the binary operator <tt>opr</tt> of two BDDs. The "that" BDD is consumed, and can
+     * Makes this BDD be the result of the binary operator {@code opr} of two BDDs. The "that" BDD is consumed, and can
      * no longer be used. Attempting to use the passed in BDD again will result in an exception being thrown.
      *
      * <p>
@@ -478,12 +484,13 @@ public abstract class BDD {
      *
      * @param that the BDD to apply the operator on
      * @param opr the operator to apply
+     * @return the result of applying the operator
      */
     public abstract BDD applyWith(BDD that, BDDFactory.BDDOp opr);
 
     /**
-     * Applies the binary operator <tt>opr</tt> to two BDDs and then performs a universal quantification of the
-     * variables from the variable set <tt>var</tt>.
+     * Applies the binary operator {@code opr} to two BDDs and then performs a universal quantification of the variables
+     * from the variable set {@code var}.
      *
      * <p>
      * Compare to bdd_appall.
@@ -498,8 +505,8 @@ public abstract class BDD {
     public abstract BDD applyAll(BDD that, BDDFactory.BDDOp opr, BDDVarSet var);
 
     /**
-     * Applies the binary operator <tt>opr</tt> to two BDDs and then performs an existential quantification of the
-     * variables from the variable set <tt>var</tt>.
+     * Applies the binary operator {@code opr} to two BDDs and then performs an existential quantification of the
+     * variables from the variable set {@code var}.
      *
      * <p>
      * Compare to bdd_appex.
@@ -514,8 +521,8 @@ public abstract class BDD {
     public abstract BDD applyEx(BDD that, BDDFactory.BDDOp opr, BDDVarSet var);
 
     /**
-     * Applies the binary operator <tt>opr</tt> to two BDDs and then performs a unique quantification of the variables
-     * from the variable set <tt>var</tt>.
+     * Applies the binary operator {@code opr} to two BDDs and then performs a unique quantification of the variables
+     * from the variable set {@code var}.
      *
      * <p>
      * Compare to bdd_appuni.
@@ -554,9 +561,9 @@ public abstract class BDD {
     public abstract BDD fullSatOne();
 
     /**
-     * Finds one satisfying variable assignment. Finds a minterm in this BDD. The <tt>var</tt> argument is a set of
+     * Finds one satisfying variable assignment. Finds a minterm in this BDD. The {@code var} argument is a set of
      * variables that must be mentioned in the result. The polarity of these variables in the result - in case they are
-     * undefined in this BDD - are defined by the <tt>pol</tt> parameter. If <tt>pol</tt> is false, then all variables
+     * undefined in this BDD - are defined by the {@code pol} parameter. If {@code pol} is false, then all variables
      * will be in negative form. Otherwise they will be in positive form.
      *
      * <p>
@@ -723,7 +730,7 @@ public abstract class BDD {
     }
 
     /**
-     * Finds one satisfying assignment of the domain <tt>d</tt> in this BDD and returns that value.
+     * Finds one satisfying assignment of the domain {@code d} in this BDD and returns that value.
      *
      * <p>
      * Compare to fdd_scanvar.
@@ -817,8 +824,8 @@ public abstract class BDD {
      */
 
     /**
-     * Returns an iteration of the satisfying assignments of this BDD. Returns an iteration of minterms. The
-     * <tt>var</tt> argument is the set of variables that will be mentioned in the result.
+     * Returns an iteration of the satisfying assignments of this BDD. Returns an iteration of minterms. The {@code var}
+     * argument is the set of variables that will be mentioned in the result.
      *
      * @param var set of variables to mention in result
      * @return an iteration of minterms
@@ -1053,8 +1060,8 @@ public abstract class BDD {
         }
 
         /**
-         * Returns true if the given BDD variable number is a dont-care. <tt>var</tt> must be a variable in the
-         * iteration set.
+         * Returns true if the given BDD variable number is a dont-care. {@code var} must be a variable in the iteration
+         * set.
          *
          * @param var variable number to check
          * @return if the given variable is a dont-care
@@ -1116,7 +1123,7 @@ public abstract class BDD {
         }
 
         /**
-         * Assuming <tt>d</tt> is a dont-care, skip to the end of the iteration for <tt>d</tt>.
+         * Assuming {@code d} is a dont-care, skip to the end of the iteration for {@code d}.
          *
          * @param d BDD domain to fast-forward past
          */
@@ -1153,6 +1160,7 @@ public abstract class BDD {
      * </p>
      *
      * @param pair pairing of variables to the BDDs that replace those variables
+     * @return result of replace
      */
     public abstract BDD replaceWith(BDDPairing pair);
 
@@ -1285,6 +1293,7 @@ public abstract class BDD {
      * Compare to bdd_satcountset.
      * </p>
      *
+     * @param varset the given varset
      * @return the number of satisfying variable assignments
      */
     public double satCount(BDDVarSet varset) {
@@ -1321,6 +1330,7 @@ public abstract class BDD {
      * Compare to bdd_satcountset.
      * </p>
      *
+     * @param varset the given varset
      * @return the logarithm of the number of satisfying variable assignments
      */
     public double logSatCount(BDDVarSet varset) {
@@ -1334,6 +1344,8 @@ public abstract class BDD {
      * <p>
      * Compare to bdd_varprofile.
      * </p>
+     *
+     * @return the variable profile
      */
     public abstract int[] varProfile();
 
@@ -1434,8 +1446,8 @@ public abstract class BDD {
     /**
      * Returns a string representation of this BDD on the defined domains, using the given BDDToString converter.
      *
+     * @param ts the given BDDToString converter
      * @return string representation of this BDD using the given BDDToString converter
-     *
      * @see com.github.javabdd.BDD.BDDToString
      */
     public String toStringWithDomains(BDDToString ts) {
