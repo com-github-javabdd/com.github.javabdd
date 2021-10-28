@@ -350,11 +350,6 @@ public abstract class BDDDomain {
         throw new BDDException("Can't add bits to domains, requested domain " + name + " upper limit " + range);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return getName();

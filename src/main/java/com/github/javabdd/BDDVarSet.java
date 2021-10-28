@@ -176,11 +176,6 @@ public abstract class BDDVarSet {
      */
     public abstract BDDVarSet intersectWith(BDDVarSet b);
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public abstract int hashCode();
 
@@ -192,11 +187,6 @@ public abstract class BDDVarSet {
      */
     public abstract boolean equalsBDDVarSet(BDDVarSet that);
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public final boolean equals(Object o) {
         if (o instanceof BDDVarSet) {
@@ -227,11 +217,6 @@ public abstract class BDDVarSet {
             this.b = b;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#free()
-         */
         @Override
         public void free() {
             if (b != null) {
@@ -240,42 +225,22 @@ public abstract class BDDVarSet {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#getFactory()
-         */
         @Override
         public BDDFactory getFactory() {
             return b.getFactory();
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#id()
-         */
         @Override
         public BDDVarSet id() {
             return new DefaultImpl(b.id());
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#intersect(com.github.javabdd.BDDVarSet)
-         */
         @Override
         public BDDVarSet intersect(BDDVarSet s) {
             DefaultImpl i = (DefaultImpl)s;
             return new DefaultImpl(b.or(i.b));
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#intersectWith(com.github.javabdd.BDDVarSet)
-         */
         @Override
         public BDDVarSet intersectWith(BDDVarSet s) {
             DefaultImpl i = (DefaultImpl)s;
@@ -284,21 +249,11 @@ public abstract class BDDVarSet {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#isEmpty()
-         */
         @Override
         public boolean isEmpty() {
             return b.isOne();
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#size()
-         */
         @Override
         public int size() {
             int result = 0;
@@ -316,11 +271,6 @@ public abstract class BDDVarSet {
             return result;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#toArray()
-         */
         @Override
         public int[] toArray() {
             int[] result = new int[size()];
@@ -339,21 +289,11 @@ public abstract class BDDVarSet {
             return result;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#toBDD()
-         */
         @Override
         public BDD toBDD() {
             return b.id();
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#toLevelArray()
-         */
         @Override
         public int[] toLevelArray() {
             int[] result = new int[size()];
@@ -372,22 +312,12 @@ public abstract class BDDVarSet {
             return result;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#union(com.github.javabdd.BDDVarSet)
-         */
         @Override
         public BDDVarSet union(BDDVarSet s) {
             DefaultImpl i = (DefaultImpl)s;
             return new DefaultImpl(b.and(i.b));
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#union(int)
-         */
         @Override
         public BDDVarSet union(int var) {
             BDD ith = b.getFactory().ithVar(var);
@@ -396,11 +326,6 @@ public abstract class BDDVarSet {
             return j;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#unionWith(com.github.javabdd.BDDVarSet)
-         */
         @Override
         public BDDVarSet unionWith(BDDVarSet s) {
             DefaultImpl i = (DefaultImpl)s;
@@ -409,32 +334,17 @@ public abstract class BDDVarSet {
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#unionWith(int)
-         */
         @Override
         public BDDVarSet unionWith(int var) {
             b.andWith(b.getFactory().ithVar(var));
             return this;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#hashCode()
-         */
         @Override
         public int hashCode() {
             return b.hashCode();
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDVarSet#equals(com.github.javabdd.BDDVarSet)
-         */
         @Override
         public boolean equalsBDDVarSet(BDDVarSet s) {
             if (s instanceof DefaultImpl) {

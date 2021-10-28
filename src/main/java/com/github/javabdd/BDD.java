@@ -778,11 +778,6 @@ public abstract class BDD {
             }
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.util.Iterator#hasNext()
-         */
         @Override
         public boolean hasNext() {
             return allsatProfile != null;
@@ -805,21 +800,11 @@ public abstract class BDD {
             return b;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.util.Iterator#next()
-         */
         @Override
         public byte[] next() {
             return nextSat();
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.util.Iterator#remove()
-         */
         @Override
         public void remove() {
             throw new UnsupportedOperationException();
@@ -1015,21 +1000,11 @@ public abstract class BDD {
             return false;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.util.Iterator#hasNext()
-         */
         @Override
         public boolean hasNext() {
             return a != null;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.util.Iterator#next()
-         */
         @Override
         public BDD next() {
             return nextBDD();
@@ -1166,11 +1141,6 @@ public abstract class BDD {
             return lastReturned;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.util.Iterator#remove()
-         */
         @Override
         public void remove() {
             if (lastReturned == null) {
@@ -1503,11 +1473,6 @@ public abstract class BDD {
      */
     public abstract boolean equalsBDD(BDD that);
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof BDD)) {
@@ -1516,19 +1481,9 @@ public abstract class BDD {
         return this.equalsBDD((BDD)o);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public abstract int hashCode();
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         BDDFactory f = this.getFactory();

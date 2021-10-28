@@ -949,11 +949,6 @@ public abstract class BDDFactory {
             this.name = name;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.lang.Object#toString()
-         */
         @Override
         public String toString() {
             return name;
@@ -1343,11 +1338,6 @@ public abstract class BDDFactory {
         protected GCStats() {
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.lang.Object#toString()
-         */
         @Override
         public String toString() {
             StringBuffer sb = new StringBuffer();
@@ -1498,11 +1488,6 @@ public abstract class BDDFactory {
             swapCount = 0;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.lang.Object#toString()
-         */
         @Override
         public String toString() {
             StringBuffer sb = new StringBuffer();

@@ -54,11 +54,6 @@ public class JFactory extends BDDFactoryIntImpl {
     private JFactory() {
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.github.javabdd.BDDFactory#init(int, int)
-     */
     public static BDDFactory init(int nodenum, int cachesize) {
         BDDFactory f = new JFactory();
         f.initialize(nodenum, cachesize);
@@ -79,31 +74,16 @@ public class JFactory extends BDDFactoryIntImpl {
 
         bddPair next;
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDPairing#set(int, int)
-         */
         @Override
         public void set(int oldvar, int newvar) {
             bdd_setpair(this, oldvar, newvar);
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDPairing#set(int, com.github.javabdd.BDD)
-         */
         @Override
         public void set(int oldvar, BDD newvar) {
             bdd_setbddpair(this, oldvar, unwrap(newvar));
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see com.github.javabdd.BDDPairing#reset()
-         */
         @Override
         public void reset() {
             bdd_resetpair(this);
@@ -137,11 +117,6 @@ public class JFactory extends BDDFactoryIntImpl {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.github.javabdd.BDDFactory#makePair()
-     */
     @Override
     public BDDPairing makePair() {
         bddPair p = new bddPair();
