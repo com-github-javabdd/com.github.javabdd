@@ -17,7 +17,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
 
     <groupId>com.github.com-github-javabdd</groupId>
     <artifactId>com.github.javabdd</artifactId>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
 
     <name>com.github.javabdd</name>
@@ -186,7 +186,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
             scm:git:git@github.com:dexecutor/dexecutor.git
         </developerConnection>
         <url>https://github.com/com-github-javabdd/com.github.javabdd</url>
-        <tag>HEAD</tag>
+        <tag>3.0.0</tag>
     </scm>
 
     <profiles>
