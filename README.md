@@ -30,6 +30,8 @@ It is based on trunk revision r483 from 2011-11-24.
 
 See [CHANGES.md](CHANGES.md) for all changes that have been made in this fork.
 
+See [CONTRIBUTORS.md][CONTRIBUTORS.md] for all contributors.
+
 ## License
 
 This project inherits the license from the Sourceforge project it is forked
