@@ -2,7 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JavaBDD
 Bundle-SymbolicName: com.github.javabdd
-Bundle-Version: 2.0.1.qualifier
+Bundle-Version: 3.0.0.qualifier
 Export-Package: com.github.javabdd
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: com.github.javabdd
+Bundle-Vendor: com-github-javabdd
