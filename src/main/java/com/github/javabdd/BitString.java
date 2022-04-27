@@ -1,6 +1,15 @@
-// BitString.java, created Wed May 16 17:26:33 2001 by joewhaley
-// Copyright (C) 2001-3 John Whaley <jwhaley@alum.mit.edu>
-// Licensed under the terms of the GNU LGPL; see COPYING for details.
+//////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2001, 2022 John Whaley and others
+//
+// See the CONTRIBUTORS file(s) distributed with this work for additional
+// information regarding copyright ownership.
+//
+// This program and the accompanying materials are made available under the
+// terms of the GNU Library General Public License v2 or later, which is
+// available at https://spdx.org/licenses/LGPL-2.0-or-later.html
+//
+// SPDX-License-Identifier: LGPL-2.0-or-later
+//////////////////////////////////////////////////////////////////////////////
 
 package com.github.javabdd;
 
