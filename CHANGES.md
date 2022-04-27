@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1] - unreleased
+
+* Improved license headers, and related changes.
+
 ## [2.0.0] - 2021-10-28
 * Added CHANGES.md to track changes between releases.
 * Added the collection of platform-independent performance statistics.
