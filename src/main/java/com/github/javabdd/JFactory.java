@@ -578,6 +578,7 @@ public class JFactory extends BDDFactoryIntImpl {
         INSTANCE.rng = new Random();
         INSTANCE.verbose = this.verbose;
         INSTANCE.cachestats.copyFrom(this.cachestats);
+        INSTANCE.maxusedbddnodesstats.copyFrom(this.maxusedbddnodesstats);
 
         INSTANCE.bddrunning = this.bddrunning;
         INSTANCE.bdderrorcond = this.bdderrorcond;
@@ -4212,7 +4213,7 @@ public class JFactory extends BDDFactoryIntImpl {
             gcstats.time = 0;
             gcstats.sumtime = gbcclock;
             gcstats.num = gbcollectnum;
-            gbc_handler(true, gcstats);
+            invokeGcStatsCallbacks(true);
         }
 
         // Handle nodes that were marked as free by finalizer.
@@ -4265,7 +4266,7 @@ public class JFactory extends BDDFactoryIntImpl {
             gcstats.time = c2 - c1;
             gcstats.sumtime = gbcclock;
             gcstats.num = gbcollectnum;
-            gbc_handler(false, gcstats);
+            invokeGcStatsCallbacks(false);
         }
 
         // validate_all();
@@ -4538,7 +4539,7 @@ public class JFactory extends BDDFactoryIntImpl {
             return 0;
         }
 
-        resize_handler(oldsize, newsize);
+        invokeResizeStatsCallbacks(oldsize, newsize);
 
         int[] newnodes;
         int n;
@@ -5985,25 +5986,29 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     void bdd_add_perf_stats() {
+        if (cachestats.enabled || hasCacheStatsCallback()) {
+            invokeCacheStatsCallbacks();
+        }
+
         // The number of currently used BDD nodes, between 0 and bddnodesize.
         // -1 indicates that it has not yet been calculated.
         int usedBddNodes = -1;
 
-        if (maxusedbddnodesstats.enabled) {
+        if (maxusedbddnodesstats.enabled || hasMaxUsedBddNodesStatsCallback()) {
             if (usedBddNodes == -1) {
                 usedBddNodes = bdd_used_nodes_count();
             }
             maxusedbddnodesstats.newMeasurement(usedBddNodes);
+            invokeMaxUsedBddNodesStatsCallbacks();
         }
 
-        if (continuousstats.enabled) {
+        if (hasContinuousStatsCallback()) {
             if (usedBddNodes == -1) {
                 usedBddNodes = bdd_used_nodes_count();
             }
-            continuousstats.contUsedBddNodes.add(usedBddNodes);
             // cachestats.opMiss is the number of BDD operations performed until now that could not
             // be taken from the cache. Thus it approximates time.
-            continuousstats.contOperations.add(cachestats.opMiss);
+            invokeContinuousStatsCallbacks(usedBddNodes, cachestats.opMiss);
         }
     }
 
@@ -6833,7 +6838,9 @@ public class JFactory extends BDDFactoryIntImpl {
 
         int n;
 
-        reorder_handler(true, reorderstats);
+        reorderstats.usednum_before = getNodeNum();
+        reorderstats.time = System.currentTimeMillis();
+        invokeReorderStatsCallbacks(true);
 
         // Split the hash table into a separate region for each variable.
         levels = new levelData[bddvarnum];
@@ -7023,7 +7030,9 @@ public class JFactory extends BDDFactoryIntImpl {
         imatrixDelete(iactmtx);
         bdd_gbc();
 
-        reorder_handler(false, reorderstats);
+        reorderstats.usednum_after = getNodeNum();
+        reorderstats.time = System.currentTimeMillis() - reorderstats.time;
+        invokeReorderStatsCallbacks(false);
     }
 
     void imatrixDelete(imatrix mtx) {

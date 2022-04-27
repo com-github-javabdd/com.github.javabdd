@@ -20,10 +20,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.math.BigInteger;
 import java.security.AccessControlException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
@@ -1299,7 +1297,7 @@ public abstract class BDDFactory {
 
         @Override
         public String toString() {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("Garbage collection #");
             sb.append(num);
             sb.append(": ");
@@ -1323,16 +1321,7 @@ public abstract class BDDFactory {
     protected GCStats gcstats = new GCStats();
 
     /**
-     * Return the current GC statistics for this BDD factory.
-     *
-     * @return GC statistics
-     */
-    public GCStats getGCStats() {
-        return gcstats;
-    }
-
-    /**
-     * Stores statistics about reordering.
+     * Stores statistics about the last variable reordering.
      */
     public static class ReorderStats {
         public long time;
@@ -1352,7 +1341,7 @@ public abstract class BDDFactory {
 
         @Override
         public String toString() {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("Went from ");
             sb.append(usednum_before);
             sb.append(" to ");
@@ -1370,15 +1359,6 @@ public abstract class BDDFactory {
      * Singleton object for reorder statistics.
      */
     protected ReorderStats reorderstats = new ReorderStats();
-
-    /**
-     * Return the current reordering statistics for this BDD factory.
-     *
-     * @return reorder statistics
-     */
-    public ReorderStats getReorderStats() {
-        return reorderstats;
-    }
 
     /**
      * Stores statistics about the operator cache.
@@ -1437,7 +1417,7 @@ public abstract class BDDFactory {
 
         @Override
         public String toString() {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             String newLine = getProperty("line.separator", "\n");
             sb.append(newLine);
             sb.append("Cache statistics");
@@ -1495,14 +1475,14 @@ public abstract class BDDFactory {
     }
 
     /**
-     * Singleton object for cache statistics.
+     * Singleton object for operator cache statistics.
      */
     protected CacheStats cachestats = new CacheStats();
 
     /**
-     * Return the current cache statistics for this BDD factory.
+     * Return the current operator cache statistics for this BDD factory.
      *
-     * @return cache statistics
+     * @return operator cache statistics
      */
     public CacheStats getCacheStats() {
         return cachestats;
@@ -1517,6 +1497,10 @@ public abstract class BDDFactory {
         protected int maxUsedBddNodes;
 
         protected MaxUsedBddNodesStats() {
+        }
+
+        void copyFrom(MaxUsedBddNodesStats that) {
+            this.maxUsedBddNodes = that.maxUsedBddNodes;
         }
 
         public void enableMeasurements() {
@@ -1538,6 +1522,14 @@ public abstract class BDDFactory {
         public int getMaxUsedBddNodes() {
             return maxUsedBddNodes;
         }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Max used BDD nodes: ");
+            sb.append(maxUsedBddNodes);
+            return sb.toString();
+        }
     }
 
     /**
@@ -1552,62 +1544,6 @@ public abstract class BDDFactory {
      */
     public MaxUsedBddNodesStats getMaxUsedBddNodesStats() {
         return maxusedbddnodesstats;
-    }
-
-    /**
-     * Stores continuously statistics about the BDD nodes usage and BDD operations, where BDD operations is a proxy for
-     * time.
-     */
-    public static class ContinuousStats {
-        protected boolean enabled = false;
-
-        protected List<Integer> contUsedBddNodes = new ArrayList<>();
-
-        protected List<Long> contOperations = new ArrayList<>();
-
-        protected ContinuousStats() {
-        }
-
-        public void enableMeasurements() {
-            enabled = true;
-        }
-
-        public void disableMeasurements() {
-            enabled = false;
-        }
-
-        public void resetMeasurements() {
-            contUsedBddNodes = new ArrayList<>();
-            contOperations = new ArrayList<>();
-        }
-
-        public List<Integer> getNodesStats() {
-            if (contUsedBddNodes.size() != contOperations.size()) {
-                throw new AssertionError("Incorrect data collection.");
-            }
-            return contUsedBddNodes;
-        }
-
-        public List<Long> getOperationsStats() {
-            if (contUsedBddNodes.size() != contOperations.size()) {
-                throw new AssertionError("Incorrect data collection.");
-            }
-            return contOperations;
-        }
-    }
-
-    /**
-     * Singleton object for continuous statistics.
-     */
-    protected ContinuousStats continuousstats = new ContinuousStats();
-
-    /**
-     * Return the current continuous statistics for this BDD factory.
-     *
-     * @return continuous statistics
-     */
-    public ContinuousStats getContinuousStats() {
-        return continuousstats;
     }
 
     // TODO: bdd_sizeprobe_hook
@@ -2103,219 +2039,511 @@ public abstract class BDDFactory {
 
     ///// CALLBACKS /////
 
-    protected List<Object[]> gc_callbacks, reorder_callbacks, resize_callbacks;
+    /** Garbage collection statistics callback. */
+    @FunctionalInterface
+    public static interface GCStatsCallback {
+        /**
+         * Garbage collection statistics callback.
+         *
+         * @param stats The statistics.
+         * @param pre Whether this callback is invoked before ({@code true}) or after ({@code false}) garbage
+         *      collection.
+         */
+        public void gc(GCStats stats, boolean pre);
+    }
+
+    /** Variable reorder statistics callback. */
+    @FunctionalInterface
+    public static interface ReorderStatsCallback {
+        /**
+         * Variable reorder statistics callback.
+         *
+         * @param stats The statistics.
+         * @param pre Whether this callback is invoked before ({@code true}) or after ({@code false}) reordering.
+         */
+        public void reorder(ReorderStats stats, boolean pre);
+    }
+
+    /** Node table resize statistics callback. */
+    @FunctionalInterface
+    public static interface ResizeStatsCallback {
+        /**
+         * Node table resize statistics callback.
+         *
+         * @param oldsize The old node table size.
+         * @param newsize The new node table size.
+         */
+        public void resize(int oldsize, int newsize);
+    }
+
+    /** Operator cache statistics callback. */
+    @FunctionalInterface
+    public static interface CacheStatsCallback {
+        /**
+         * Operator cache statistics callback.
+         *
+         * @param stats The statistics.
+         */
+        public void cache(CacheStats stats);
+    }
+
+    /** Maximum BDD nodes usage statistics callback. */
+    @FunctionalInterface
+    public static interface MaxUsedBddNodesStatsCallback {
+        /**
+         * Maximum BDD nodes usage statistics callback.
+         *
+         * @param stats The statistics.
+         */
+        public void maxUsedBddNodes(MaxUsedBddNodesStats stats);
+    }
+
+    /** Continuously BDD nodes usage and BDD operations statistics callback. */
+    @FunctionalInterface
+    public static interface ContinuousStatsCallback {
+        /**
+         * Continuously BDD nodes usage and BDD operations statistics callback.
+         *
+         * @param usedBddNodes The number of currently used BDD nodes. Represents a platform-independent measure that
+         *      approximates memory use.
+         * @param opMiss The number of BDD operations performed until now that could not be taken from the operation
+         *      cache. Represents a platform-independent measure of approximates running time.
+         */
+        public void continuous(int usedBddNodes, long opMiss);
+    }
+
+    /** The registered garbage collection statistics callbacks, or {@code null} if none registered. */
+    protected List<GCStatsCallback> gcCallbacks = null;
+
+    /** The registered variable reorder statistics callbacks, or {@code null} if none registered. */
+    protected List<ReorderStatsCallback> reorderCallbacks = null;
+
+    /** The registered node table resize statistics callbacks, or {@code null} if none registered. */
+    protected List<ResizeStatsCallback> resizeCallbacks = null;
+
+    /** The registered operator cache statistics callbacks, or {@code null} if none registered. */
+    protected List<CacheStatsCallback> cacheCallbacks = null;
 
     /**
-     * Register a callback that is called when garbage collection is about to occur.
-     *
-     * @param o base object
-     * @param m method
+     * The registered maximum BDD nodes usage statistics callback statistics callbacks, or {@code null} if none
+     * registered.
      */
-    public void registerGCCallback(Object o, Method m) {
-        if (gc_callbacks == null) {
-            gc_callbacks = new LinkedList<>();
+    protected List<MaxUsedBddNodesStatsCallback> maxUsedBddNodesCallbacks = null;
+
+    /**
+     * The registered continuously BDD nodes usage and BDD operations statistics callbacks, or {@code null} if none
+     * registered.
+     */
+    protected List<ContinuousStatsCallback> continuousCallbacks = null;
+
+    /**
+     * Register a garbage collection statistics callback.
+     *
+     * @param callback The callback to register.
+     */
+    public void registerGcStatsCallback(GCStatsCallback callback) {
+        if (gcCallbacks == null) {
+            gcCallbacks = new LinkedList<>();
         }
-        registerCallback(gc_callbacks, o, m);
+        gcCallbacks.add(callback);
     }
 
     /**
-     * Unregister a garbage collection callback that was previously registered.
+     * Register a variable reorder statistics callback.
      *
-     * @param o base object
-     * @param m method
+     * @param callback The callback to register.
      */
-    public void unregisterGCCallback(Object o, Method m) {
-        if (gc_callbacks == null) {
-            throw new BDDException();
+    public void registerReorderStatsCallback(ReorderStatsCallback callback) {
+        if (reorderCallbacks == null) {
+            reorderCallbacks = new LinkedList<>();
         }
-        if (!unregisterCallback(gc_callbacks, o, m)) {
-            throw new BDDException();
+        reorderCallbacks.add(callback);
+    }
+
+    /**
+     * Register a node table resize statistics callback.
+     *
+     * @param callback The callback to register.
+     */
+    public void registerResizeStatsCallback(ResizeStatsCallback callback) {
+        if (resizeCallbacks == null) {
+            resizeCallbacks = new LinkedList<>();
+        }
+        resizeCallbacks.add(callback);
+    }
+
+    /**
+     * Register an operator cache statistics callback.
+     *
+     * @param callback The callback to register.
+     */
+    public void registerCacheStatsCallback(CacheStatsCallback callback) {
+        if (cacheCallbacks == null) {
+            cacheCallbacks = new LinkedList<>();
+        }
+        cacheCallbacks.add(callback);
+    }
+
+    /**
+     * Register a maximum BDD nodes usage statistics callback.
+     *
+     * @param callback The callback to register.
+     */
+    public void registerMaxUsedBddNodesStatsCallback(MaxUsedBddNodesStatsCallback callback) {
+        if (maxUsedBddNodesCallbacks == null) {
+            maxUsedBddNodesCallbacks = new LinkedList<>();
+        }
+        maxUsedBddNodesCallbacks.add(callback);
+    }
+
+    /**
+     * Register a continuously BDD nodes usage and BDD operations statistics callback.
+     *
+     * @param callback The callback to register.
+     */
+    public void registerContinuousStatsCallback(ContinuousStatsCallback callback) {
+        if (continuousCallbacks == null) {
+            continuousCallbacks = new LinkedList<>();
+        }
+        continuousCallbacks.add(callback);
+    }
+
+    /**
+     * Unregister a garbage collection statistics callback.
+     *
+     * @param callback The callback to unregister.
+     * @throws IllegalArgumentException If callback is not registered.
+     */
+    public void unregisterGcStatsCallback(GCStatsCallback callback) {
+        if (gcCallbacks != null) {
+            for (Iterator<GCStatsCallback> iter = gcCallbacks.iterator(); iter.hasNext();) {
+                if (iter.next() == callback) {
+                    iter.remove();
+                    if (gcCallbacks.isEmpty()) {
+                        gcCallbacks = null;
+                    }
+                    return;
+                }
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    /**
+     * Unregister a variable reorder statistics callback.
+     *
+     * @param callback The callback to unregister.
+     * @throws IllegalArgumentException If callback is not registered.
+     */
+    public void unregisterReorderStatsCallback(ReorderStatsCallback callback) {
+        if (reorderCallbacks != null) {
+            for (Iterator<ReorderStatsCallback> iter = reorderCallbacks.iterator(); iter.hasNext();) {
+                if (iter.next() == callback) {
+                    iter.remove();
+                    if (reorderCallbacks.isEmpty()) {
+                        reorderCallbacks = null;
+                    }
+                    return;
+                }
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    /**
+     * Unregister a node table resize statistics callback.
+     *
+     * @param callback The callback to unregister.
+     * @throws IllegalArgumentException If callback is not registered.
+     */
+    public void unregisterResizeStatsCallback(ResizeStatsCallback callback) {
+        if (resizeCallbacks != null) {
+            for (Iterator<ResizeStatsCallback> iter = resizeCallbacks.iterator(); iter.hasNext();) {
+                if (iter.next() == callback) {
+                    iter.remove();
+                    if (resizeCallbacks.isEmpty()) {
+                        resizeCallbacks = null;
+                    }
+                    return;
+                }
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    /**
+     * Unregister an operator cache statistics callback.
+     *
+     * @param callback The callback to unregister.
+     * @throws IllegalArgumentException If callback is not registered.
+     */
+    public void unregisterCacheStatsCallback(CacheStatsCallback callback) {
+        if (cacheCallbacks != null) {
+            for (Iterator<CacheStatsCallback> iter = cacheCallbacks.iterator(); iter.hasNext();) {
+                if (iter.next() == callback) {
+                    iter.remove();
+                    if (cacheCallbacks.isEmpty()) {
+                        cacheCallbacks = null;
+                    }
+                    return;
+                }
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    /**
+     * Unregister a maximum BDD nodes usage statistics callback.
+     *
+     * @param callback The callback to unregister.
+     * @throws IllegalArgumentException If callback is not registered.
+     */
+    public void unregisterMaxUsedBddNodesStatsCallback(MaxUsedBddNodesStatsCallback callback) {
+        if (maxUsedBddNodesCallbacks != null) {
+            for (Iterator<MaxUsedBddNodesStatsCallback> iter = maxUsedBddNodesCallbacks.iterator(); iter.hasNext();) {
+                if (iter.next() == callback) {
+                    iter.remove();
+                    if (maxUsedBddNodesCallbacks.isEmpty()) {
+                        maxUsedBddNodesCallbacks = null;
+                    }
+                    return;
+                }
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    /**
+     * Unregister a continuously BDD nodes usage and BDD operations statistics callback.
+     *
+     * @param callback The callback to unregister.
+     * @throws IllegalArgumentException If callback is not registered.
+     */
+    public void unregisterContinuousStatsCallback(ContinuousStatsCallback callback) {
+        if (continuousCallbacks != null) {
+            for (Iterator<ContinuousStatsCallback> iter = continuousCallbacks.iterator(); iter.hasNext();) {
+                if (iter.next() == callback) {
+                    iter.remove();
+                    if (continuousCallbacks.isEmpty()) {
+                        continuousCallbacks = null;
+                    }
+                    return;
+                }
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    /**
+     * Returns whether this BDD factory has a registered garbage collection statistics callback.
+     *
+     * @return {@code true} if such a callback is registered, {@code false} otherwise.
+     */
+    public boolean hasGcStatsCallback() {
+        return gcCallbacks != null;
+    }
+
+    /**
+     * Returns whether this BDD factory has a registered variable reorder statistics callback.
+     *
+     * @return {@code true} if such a callback is registered, {@code false} otherwise.
+     */
+    public boolean hasReorderStatsCallback() {
+        return reorderCallbacks != null;
+    }
+
+    /**
+     * Returns whether this BDD factory has a registered node table resize statistics callback.
+     *
+     * @return {@code true} if such a callback is registered, {@code false} otherwise.
+     */
+    public boolean hasResizeStatsCallback() {
+        return resizeCallbacks != null;
+    }
+
+    /**
+     * Returns whether this BDD factory has a registered operator cache statistics callback.
+     *
+     * @return {@code true} if such a callback is registered, {@code false} otherwise.
+     */
+    public boolean hasCacheStatsCallback() {
+        return cacheCallbacks != null;
+    }
+
+    /**
+     * Returns whether this BDD factory has a registered maximum BDD nodes usage statistics callback.
+     *
+     * @return {@code true} if such a callback is registered, {@code false} otherwise.
+     */
+    public boolean hasMaxUsedBddNodesStatsCallback() {
+        return maxUsedBddNodesCallbacks != null;
+    }
+
+    /**
+     * Returns whether this BDD factory has a registered continuously BDD nodes usage and BDD operations statistics
+     * callback.
+     *
+     * @return {@code true} if such a callback is registered, {@code false} otherwise.
+     */
+    public boolean hasContinuousStatsCallback() {
+        return continuousCallbacks != null;
+    }
+
+    /**
+     * Invoke all registered garbage collection statistics callbacks.
+     *
+     * @param pre Whether this callback is invoked before ({@code true}) or after ({@code false}) garbage collection.
+     */
+    public void invokeGcStatsCallbacks(boolean pre) {
+        if (gcCallbacks != null) {
+            for (GCStatsCallback callback: gcCallbacks) {
+                callback.gc(gcstats, pre);
+            }
         }
     }
 
     /**
-     * Register a callback that is called when reordering is about to occur.
+     * Invoke all registered variable reorder statistics callbacks.
      *
-     * @param o base object
-     * @param m method
+     * @param pre Whether this callback is invoked before ({@code true}) or after ({@code false}) reordering.
      */
-    public void registerReorderCallback(Object o, Method m) {
-        if (reorder_callbacks == null) {
-            reorder_callbacks = new LinkedList<>();
-        }
-        registerCallback(reorder_callbacks, o, m);
-    }
-
-    /**
-     * Unregister a reorder callback that was previously registered.
-     *
-     * @param o base object
-     * @param m method
-     */
-    public void unregisterReorderCallback(Object o, Method m) {
-        if (reorder_callbacks == null) {
-            throw new BDDException();
-        }
-        if (!unregisterCallback(reorder_callbacks, o, m)) {
-            throw new BDDException();
+    public void invokeReorderStatsCallbacks(boolean pre) {
+        if (reorderCallbacks != null) {
+            for (ReorderStatsCallback callback: reorderCallbacks) {
+                callback.reorder(reorderstats, pre);
+            }
         }
     }
 
     /**
-     * Register a callback that is called when node table resizing is about to occur.
+     * Invoke all registered node table resize statistics callbacks.
      *
-     * @param o base object
-     * @param m method
+     * @param oldsize The old node table size.
+     * @param newsize The new node table size.
      */
-    public void registerResizeCallback(Object o, Method m) {
-        if (resize_callbacks == null) {
-            resize_callbacks = new LinkedList<>();
+    public void invokeResizeStatsCallbacks(int oldsize, int newsize) {
+        if (resizeCallbacks != null) {
+            for (ResizeStatsCallback callback: resizeCallbacks) {
+                callback.resize(oldsize, newsize);
+            }
         }
-        registerCallback(resize_callbacks, o, m);
+    }
+
+    /** Invoke all registered operator cache statistics callbacks. */
+    public void invokeCacheStatsCallbacks() {
+        if (cacheCallbacks != null) {
+            for (CacheStatsCallback callback: cacheCallbacks) {
+                callback.cache(cachestats);
+            }
+        }
+    }
+
+    /** Invoke all registered maximum BDD nodes usage statistics callbacks. */
+    public void invokeMaxUsedBddNodesStatsCallbacks() {
+        if (maxUsedBddNodesCallbacks != null) {
+            for (MaxUsedBddNodesStatsCallback callback: maxUsedBddNodesCallbacks) {
+                callback.maxUsedBddNodes(maxusedbddnodesstats);
+            }
+        }
     }
 
     /**
-     * Unregister a reorder callback that was previously registered.
+     * Invoke all registered continuously BDD nodes usage and BDD operations statistics callbacks.
      *
-     * @param o base object
-     * @param m method
+     * @param usedBddNodes The number of currently used BDD nodes. Represents a platform-independent measure that
+     *      approximates memory use.
+     * @param opMiss The number of BDD operations performed until now that could not be taken from the operation
+     *      cache. Represents a platform-independent measure of approximates running time.
      */
-    public void unregisterResizeCallback(Object o, Method m) {
-        if (resize_callbacks == null) {
-            throw new BDDException();
-        }
-        if (!unregisterCallback(resize_callbacks, o, m)) {
-            throw new BDDException();
-        }
-    }
-
-    protected void gbc_handler(boolean pre, GCStats s) {
-        if (gc_callbacks == null) {
-            bdd_default_gbchandler(pre, s);
-        } else {
-            doCallbacks(gc_callbacks, pre ? 1 : 0, s);
+    public void invokeContinuousStatsCallbacks(int usedBddNodes, long opMiss) {
+        if (continuousCallbacks != null) {
+            for (ContinuousStatsCallback callback: continuousCallbacks) {
+                callback.continuous(usedBddNodes, opMiss);
+            }
         }
     }
 
-    protected static void bdd_default_gbchandler(boolean pre, GCStats s) {
+    /**
+     * Default garbage collection statistics callback.
+     *
+     * @param stats The statistics.
+     * @param pre Whether this callback is invoked before ({@code true}) or after ({@code false}) garbage collection.
+     */
+    public static void defaultGcStatsCallback(GCStats stats, boolean pre) {
         if (pre) {
-            if (s.freenodes != 0) {
-                System.err.println(
-                        "Starting GC cycle  #" + (s.num + 1) + ": " + s.nodes + " nodes / " + s.freenodes + " free");
+            if (stats.freenodes != 0) {
+                System.out.println("Starting GC cycle  #" + (stats.num + 1) + ": " + stats.nodes + " nodes / "
+                        + stats.freenodes + " free");
             }
         } else {
-            System.err.println(s.toString());
+            System.out.println(stats.toString());
         }
     }
 
-    void reorder_handler(boolean b, ReorderStats s) {
-        if (b) {
-            s.usednum_before = getNodeNum();
-            s.time = System.currentTimeMillis();
+    /**
+     * Default variable reorder statistics callback.
+     *
+     * @param stats The statistics.
+     * @param pre Whether this callback is invoked before ({@code true}) or after ({@code false}) reordering.
+     */
+    public static void defaultReorderStatsCallback(ReorderStats stats, boolean pre) {
+        if (pre) {
+            System.out.println("Start reordering");
         } else {
-            s.time = System.currentTimeMillis() - s.time;
-            s.usednum_after = getNodeNum();
-        }
-        if (reorder_callbacks == null) {
-            bdd_default_reohandler(b, s);
-        } else {
-            doCallbacks(reorder_callbacks, b, s);
+            System.out.println("End reordering. " + stats);
         }
     }
 
-    protected void bdd_default_reohandler(boolean prestate, ReorderStats s) {
-        if (DEBUG) {
-            if (prestate) {
-                System.out.println("Start reordering");
-            } else {
-                System.out.println("End reordering. " + s);
-            }
-        }
+    /**
+     * Default node table resize statistics callback.
+     *
+     * @param oldsize The old node table size.
+     * @param newsize The new node table size.
+     */
+    public static void defaultResizeStatsCallback(int oldsize, int newsize) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Went from ");
+        sb.append(oldsize);
+        sb.append(" to ");
+        sb.append(newsize);
+        sb.append(" nodes");
+
+        System.out.println(sb.toString());
     }
 
-    protected void resize_handler(int oldsize, int newsize) {
-        if (resize_callbacks == null) {
-            bdd_default_reshandler(oldsize, newsize);
-        } else {
-            doCallbacks(resize_callbacks, oldsize, newsize);
-        }
+    /**
+     * Default operator cache statistics callback.
+     *
+     * @param stats The statistics.
+     */
+    public static void defaultCacheStatsCallback(CacheStats stats) {
+        System.out.println(stats.toString());
     }
 
-    protected static void bdd_default_reshandler(int oldsize, int newsize) {
-        if (DEBUG) {
-            System.out.println("Resizing node table from " + oldsize + " to " + newsize);
-        }
+    /**
+     * Default maximum BDD nodes usage statistics callback.
+     *
+     * @param stats The statistics.
+     */
+    public static void defaultMaxUsedBddNodesStatsCallback(MaxUsedBddNodesStats stats) {
+        System.out.println(stats.toString());
     }
 
-    @SuppressWarnings("deprecation")
-    protected void registerCallback(List<Object[]> callbacks, Object o, Method m) {
-        if (!Modifier.isPublic(m.getModifiers()) && !m.isAccessible()) {
-            throw new BDDException("Callback method not accessible");
-        }
-        if (!Modifier.isStatic(m.getModifiers())) {
-            if (o == null) {
-                throw new BDDException("Base object for callback method is null");
-            }
-            if (!m.getDeclaringClass().isAssignableFrom(o.getClass())) {
-                throw new BDDException("Base object for callback method is the wrong type");
-            }
-        }
-        if (DEBUG) {
-            Class<?>[] params = m.getParameterTypes();
-            if (params.length != 1 || params[0] != int.class) {
-                throw new BDDException("Wrong signature for callback");
-            }
-        }
-        callbacks.add(new Object[] {o, m});
-    }
+    /**
+     * Default continuously BDD nodes usage and BDD operations statistics callback.
+     *
+     * @param usedBddNodes The number of currently used BDD nodes. Represents a platform-independent measure that
+     *      approximates memory use.
+     * @param opMiss The number of BDD operations performed until now that could not be taken from the operation
+     *      cache. Represents a platform-independent measure of approximates running time.
+     */
+    public static void defaultContinuousStatsCallback(int usedBddNodes, long opMiss) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Used BDD nodes: ");
+        sb.append(usedBddNodes);
+        sb.append(", operation count: ");
+        sb.append(opMiss);
 
-    protected boolean unregisterCallback(List<Object[]> callbacks, Object o, Method m) {
-        if (callbacks != null) {
-            for (Iterator<Object[]> i = callbacks.iterator(); i.hasNext();) {
-                Object[] cb = i.next();
-                if (o == cb[0] && m.equals(cb[1])) {
-                    i.remove();
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    protected void doCallbacks(List<Object[]> callbacks, Object arg1, Object arg2) {
-        if (callbacks != null) {
-            for (Iterator<Object[]> i = callbacks.iterator(); i.hasNext();) {
-                Object[] cb = i.next();
-                Object o = cb[0];
-                Method m = (Method)cb[1];
-                try {
-                    switch (m.getParameterTypes().length) {
-                        case 0:
-                            m.invoke(o, new Object[] {});
-                            break;
-                        case 1:
-                            m.invoke(o, new Object[] {arg1});
-                            break;
-                        case 2:
-                            m.invoke(o, new Object[] {arg1, arg2});
-                            break;
-                        default:
-                            throw new BDDException("Wrong number of arguments for " + m);
-                    }
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    if (e.getTargetException() instanceof RuntimeException) {
-                        throw (RuntimeException)e.getTargetException();
-                    }
-                    if (e.getTargetException() instanceof Error) {
-                        throw (Error)e.getTargetException();
-                    }
-                    e.printStackTrace();
-                }
-            }
-        }
+        System.out.println(sb.toString());
     }
 }
