@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1] - unreleased
+
+* Improved license headers, and related changes.
+* Completely reworked the statistics callbacks API.
+* No statistics callbacks are registered by default any more, but they are still available to be registered manually.
+* Added statistics callbacks for operation cache statistics, maximum used BDD node statistics and continuous performance statistics.
+* Removed non-callback use of garbage collection statistics, variable reordering statistics and continuous performance statistics.
+* The maximum used BDD nodes statistics are now properly copied when a `JFactory` is cloned.
+
 ## [2.0.0] - 2021-10-28
 * Added CHANGES.md to track changes between releases.
 * Added the collection of platform-independent performance statistics.
