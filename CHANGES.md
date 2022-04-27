@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.1] - unreleased
+## [3.0.0] - 2022-04-27
 
 * Improved license headers, and related changes.
 * Completely reworked the statistics callbacks API.
