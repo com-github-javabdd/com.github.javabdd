@@ -579,6 +579,7 @@ public class JFactory extends BDDFactoryIntImpl {
         INSTANCE.verbose = this.verbose;
         INSTANCE.cachestats.copyFrom(this.cachestats);
         INSTANCE.maxusedbddnodesstats.copyFrom(this.maxusedbddnodesstats);
+        INSTANCE.maxmemorystats.copyFrom(this.maxmemorystats);
 
         INSTANCE.bddrunning = this.bddrunning;
         INSTANCE.bdderrorcond = this.bdderrorcond;
@@ -6009,6 +6010,11 @@ public class JFactory extends BDDFactoryIntImpl {
             // cachestats.opMiss is the number of BDD operations performed until now that could not
             // be taken from the cache. Thus it approximates time.
             invokeContinuousStatsCallbacks(usedBddNodes, cachestats.opMiss);
+        }
+
+        if (maxmemorystats.enabled || hasMaxMemoryStatsCallback()) {
+            maxmemorystats.newMeasurement();
+            invokeMaxMemoryStatsCallbacks();
         }
     }
 
