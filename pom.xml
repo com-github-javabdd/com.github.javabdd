@@ -51,7 +51,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.10.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <failOnWarning>true</failOnWarning>
@@ -66,7 +66,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
 
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.2</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>default-deploy</id>
@@ -81,7 +81,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
+                <version>3.0.0-M7</version>
                 <configuration>
                     <localCheckout>true</localCheckout>
                     <pushChanges>false</pushChanges>
@@ -97,7 +97,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
                         <artifactId>
                             maven-scm-provider-gitexe
                         </artifactId>
-                        <version>1.9.5</version>
+                        <version>2.0.0-M3</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -105,7 +105,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
+                <version>1.6.13</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
@@ -117,7 +117,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -131,18 +131,26 @@ SPDX-License-Identifier: LGPL-2.0-or-later
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.2.1</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.41</version>
+                        <version>9.3</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -195,8 +203,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
             <id>release-sign-artifacts</id>
             <activation>
                 <property>
-                    <name>performRelease</name>
-                    <value>true</value>
+                    <name>gpg.passphrase</name>
                 </property>
             </activation>
             <build>
@@ -204,7 +211,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
+                        <version>3.0.1</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -214,6 +221,14 @@ SPDX-License-Identifier: LGPL-2.0-or-later
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <!-- Use gpg.passphrase. Don't ask interactively. -->
+                            <!-- See https://myshittycode.com/2017/08/07/maven-gpg-plugin-prevent-signing-prompt-or-gpg-signing-failed-no-such-file-or-directory-error/ -->
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
