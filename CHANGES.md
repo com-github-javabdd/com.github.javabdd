@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0] - 2023-02-16
+
+* Added maximum memory statistics, which are a best-effort approximation only.
+* Small fix in README file.
+
 ## [3.0.0] - 2022-04-27
 
 * Improved license headers, and related changes.
