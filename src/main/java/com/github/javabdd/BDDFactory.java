@@ -1546,6 +1546,67 @@ public abstract class BDDFactory {
         return maxusedbddnodesstats;
     }
 
+    /**
+     * Stores statistics about the maximum memory usage. The data is obtained through best effort, and may not be
+     * entirely accurate.
+     */
+    public static class MaxMemoryStats {
+        protected boolean enabled = false;
+
+        protected long maxMemoryBytes;
+
+        protected MaxMemoryStats() {
+        }
+
+        void copyFrom(MaxMemoryStats that) {
+            this.maxMemoryBytes = that.maxMemoryBytes;
+        }
+
+        public void enableMeasurements() {
+            enabled = true;
+        }
+
+        public void disableMeasurements() {
+            enabled = false;
+        }
+
+        public void resetMeasurements() {
+            maxMemoryBytes = 0;
+        }
+
+        public void newMeasurement() {
+            long newMemoryBytes = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+            maxMemoryBytes = Math.max(newMemoryBytes, maxMemoryBytes);
+        }
+
+        public long getMaxMemoryBytes() {
+            return maxMemoryBytes;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Max memory: ");
+            sb.append(maxMemoryBytes);
+            sb.append(" bytes");
+            return sb.toString();
+        }
+    }
+
+    /**
+     * Singleton object for maximum memory usage statistics.
+     */
+    protected MaxMemoryStats maxmemorystats = new MaxMemoryStats();
+
+    /**
+     * Return the current maximum memory usage statistics for this BDD factory.
+     *
+     * @return maximum memory usage statistics
+     */
+    public MaxMemoryStats getMaxMemoryStats() {
+        return maxmemorystats;
+    }
+
     // TODO: bdd_sizeprobe_hook
     // TODO: bdd_reorder_probe
 
@@ -2098,6 +2159,17 @@ public abstract class BDDFactory {
         public void maxUsedBddNodes(MaxUsedBddNodesStats stats);
     }
 
+    /** Maximum memory usage statistics callback. */
+    @FunctionalInterface
+    public static interface MaxMemoryStatsCallback {
+        /**
+         * Maximum memory usage statistics callback.
+         *
+         * @param stats The statistics.
+         */
+        public void maxMemory(MaxMemoryStats stats);
+    }
+
     /** Continuously BDD nodes usage and BDD operations statistics callback. */
     @FunctionalInterface
     public static interface ContinuousStatsCallback {
@@ -2124,11 +2196,11 @@ public abstract class BDDFactory {
     /** The registered operator cache statistics callbacks, or {@code null} if none registered. */
     protected List<CacheStatsCallback> cacheCallbacks = null;
 
-    /**
-     * The registered maximum BDD nodes usage statistics callback statistics callbacks, or {@code null} if none
-     * registered.
-     */
+    /** The registered maximum BDD nodes usage statistics callbacks, or {@code null} if none registered. */
     protected List<MaxUsedBddNodesStatsCallback> maxUsedBddNodesCallbacks = null;
+
+    /** The registered maximum memory usage statistics callbacks, or {@code null} if none registered. */
+    protected List<MaxMemoryStatsCallback> maxMemoryCallbacks = null;
 
     /**
      * The registered continuously BDD nodes usage and BDD operations statistics callbacks, or {@code null} if none
@@ -2194,6 +2266,18 @@ public abstract class BDDFactory {
             maxUsedBddNodesCallbacks = new LinkedList<>();
         }
         maxUsedBddNodesCallbacks.add(callback);
+    }
+
+    /**
+     * Register a maximum memory usage statistics callback.
+     *
+     * @param callback The callback to register.
+     */
+    public void registerMaxMemoryStatsCallback(MaxMemoryStatsCallback callback) {
+        if (maxMemoryCallbacks == null) {
+            maxMemoryCallbacks = new LinkedList<>();
+        }
+        maxMemoryCallbacks.add(callback);
     }
 
     /**
@@ -2314,6 +2398,27 @@ public abstract class BDDFactory {
     }
 
     /**
+     * Unregister a maximum memory usage statistics callback.
+     *
+     * @param callback The callback to unregister.
+     * @throws IllegalArgumentException If callback is not registered.
+     */
+    public void unregisterMaxMemoryStatsCallback(MaxMemoryStatsCallback callback) {
+        if (maxMemoryCallbacks != null) {
+            for (Iterator<MaxMemoryStatsCallback> iter = maxMemoryCallbacks.iterator(); iter.hasNext();) {
+                if (iter.next() == callback) {
+                    iter.remove();
+                    if (maxMemoryCallbacks.isEmpty()) {
+                        maxMemoryCallbacks = null;
+                    }
+                    return;
+                }
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    /**
      * Unregister a continuously BDD nodes usage and BDD operations statistics callback.
      *
      * @param callback The callback to unregister.
@@ -2380,6 +2485,15 @@ public abstract class BDDFactory {
     }
 
     /**
+     * Returns whether this BDD factory has a registered maximum memory usage statistics callback.
+     *
+     * @return {@code true} if such a callback is registered, {@code false} otherwise.
+     */
+    public boolean hasMaxMemoryStatsCallback() {
+        return maxMemoryCallbacks != null;
+    }
+
+    /**
      * Returns whether this BDD factory has a registered continuously BDD nodes usage and BDD operations statistics
      * callback.
      *
@@ -2443,6 +2557,15 @@ public abstract class BDDFactory {
         if (maxUsedBddNodesCallbacks != null) {
             for (MaxUsedBddNodesStatsCallback callback: maxUsedBddNodesCallbacks) {
                 callback.maxUsedBddNodes(maxusedbddnodesstats);
+            }
+        }
+    }
+
+    /** Invoke all registered maximum memory usage statistics callbacks. */
+    public void invokeMaxMemoryStatsCallbacks() {
+        if (maxMemoryCallbacks != null) {
+            for (MaxMemoryStatsCallback callback: maxMemoryCallbacks) {
+                callback.maxMemory(maxmemorystats);
             }
         }
     }
@@ -2526,6 +2649,15 @@ public abstract class BDDFactory {
      * @param stats The statistics.
      */
     public static void defaultMaxUsedBddNodesStatsCallback(MaxUsedBddNodesStats stats) {
+        System.out.println(stats.toString());
+    }
+
+    /**
+     * Default maximum memory usage statistics callback.
+     *
+     * @param stats The statistics.
+     */
+    public static void defaultMaxMemoryStatsCallback(MaxMemoryStats stats) {
         System.out.println(stats.toString());
     }
 
