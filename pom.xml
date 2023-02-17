@@ -198,7 +198,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
     </scm>
 
     <profiles>
-        <!-- GPG signature on release -->
+        <!-- GPG signature on release. Ensure 'gpg' is your PATH. Use GnuPG 2.1.12 or higher. -->
         <profile>
             <id>release-sign-artifacts</id>
             <activation>
@@ -221,14 +221,6 @@ SPDX-License-Identifier: LGPL-2.0-or-later
                                 </goals>
                             </execution>
                         </executions>
-                        <configuration>
-                            <!-- Use gpg.passphrase. Don't ask interactively. -->
-                            <!-- See https://myshittycode.com/2017/08/07/maven-gpg-plugin-prevent-signing-prompt-or-gpg-signing-failed-no-such-file-or-directory-error/ -->
-                            <gpgArguments>
-                                <arg>--pinentry-mode</arg>
-                                <arg>loopback</arg>
-                            </gpgArguments>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
