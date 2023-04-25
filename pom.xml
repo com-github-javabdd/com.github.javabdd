@@ -39,7 +39,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
     </licenses>
 
     <organization>
-        <name>${project.artifactId}</name>
+        <name>${project.groupId}</name>
     </organization>
 
     <developers>
