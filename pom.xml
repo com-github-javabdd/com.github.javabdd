@@ -11,15 +11,13 @@ available at https://spdx.org/licenses/LGPL-2.0-or-later.html
 SPDX-License-Identifier: LGPL-2.0-or-later
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.com-github-javabdd</groupId>
     <artifactId>com.github.javabdd</artifactId>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>5.0.0</version>
     <packaging>jar</packaging>
 
     <name>JavaBDD</name>
@@ -225,7 +223,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
         <connection>scm:git:git://github.com/dexecutor/dependent-tasks-executor.git</connection>
         <developerConnection>scm:git:git@github.com:dexecutor/dexecutor.git</developerConnection>
         <url>https://github.com/com-github-javabdd/com.github.javabdd</url>
-        <tag>HEAD</tag>
+        <tag>5.0.0</tag>
     </scm>
 
     <profiles>
