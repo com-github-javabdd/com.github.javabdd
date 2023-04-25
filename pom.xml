@@ -26,12 +26,21 @@ SPDX-License-Identifier: LGPL-2.0-or-later
     <url>https://github.com/com-github-javabdd/com.github.javabdd</url>
     <description>JavaBDD: A Java library for Binary Decision Diagrams (BDDs)</description>
 
+    <properties>
+        <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <licenses>
         <license>
             <name>LGPL-2.0-or-later</name>
             <url>https://spdx.org/licenses/LGPL-2.0-or-later.html</url>
         </license>
     </licenses>
+
+    <organization>
+        <name>${project.artifactId}</name>
+    </organization>
 
     <developers>
         <developer>
@@ -42,10 +51,6 @@ SPDX-License-Identifier: LGPL-2.0-or-later
         </developer>
     </developers>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -53,14 +58,52 @@ SPDX-License-Identifier: LGPL-2.0-or-later
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                     <failOnWarning>true</failOnWarning>
                     <parameters>true</parameters>
-                    <release>11</release>
+                    <release>${java.version}</release>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>5.1.8</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <instructions>
+                        <Automatic-Module-Name>${project.artifactId}</Automatic-Module-Name>
+                        <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+                        <Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
+                        <!-- PDE does not support Require-Capability, only Bundle-RequiredExecutionEnvironment. -->
+                        <!-- Bundle-RequiredExecutionEnvironment may not be mixed with Require-Capability. -->
+                        <_noee>true</_noee>
+                    </instructions>
+                    <niceManifest>true</niceManifest>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
                 </configuration>
             </plugin>
 
@@ -81,7 +124,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0-M7</version>
+                <version>3.0.0</version>
                 <configuration>
                     <localCheckout>true</localCheckout>
                     <pushChanges>false</pushChanges>
@@ -93,7 +136,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
                     <dependency>
                         <groupId>org.apache.maven.scm</groupId>
                         <artifactId>maven-scm-provider-gitexe</artifactId>
-                        <version>2.0.0-M3</version>
+                        <version>2.0.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
