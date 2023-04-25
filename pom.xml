@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2020, 2022 John Whaley and others
+Copyright (c) 2020-2023 John Whaley and others
 
 See the CONTRIBUTORS file(s) distributed with this work for additional
 information regarding copyright ownership.
@@ -11,7 +11,9 @@ available at https://spdx.org/licenses/LGPL-2.0-or-later.html
 SPDX-License-Identifier: LGPL-2.0-or-later
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,9 +22,14 @@ SPDX-License-Identifier: LGPL-2.0-or-later
     <version>4.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>com.github.javabdd</name>
+    <name>JavaBDD</name>
     <url>https://github.com/com-github-javabdd/com.github.javabdd</url>
     <description>JavaBDD: A Java library for Binary Decision Diagrams (BDDs)</description>
+
+    <properties>
+        <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <licenses>
         <license>
@@ -30,6 +37,10 @@ SPDX-License-Identifier: LGPL-2.0-or-later
             <url>https://spdx.org/licenses/LGPL-2.0-or-later.html</url>
         </license>
     </licenses>
+
+    <organization>
+        <name>${project.groupId}</name>
+    </organization>
 
     <developers>
         <developer>
@@ -40,12 +51,6 @@ SPDX-License-Identifier: LGPL-2.0-or-later
         </developer>
     </developers>
 
-    <properties>
-        <project.build.sourceEncoding>
-            UTF-8
-        </project.build.sourceEncoding>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -53,14 +58,52 @@ SPDX-License-Identifier: LGPL-2.0-or-later
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                     <failOnWarning>true</failOnWarning>
                     <parameters>true</parameters>
-                    <release>11</release>
+                    <release>${java.version}</release>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>5.1.8</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <instructions>
+                        <Automatic-Module-Name>${project.artifactId}</Automatic-Module-Name>
+                        <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+                        <Bundle-RequiredExecutionEnvironment>JavaSE-${java.version}</Bundle-RequiredExecutionEnvironment>
+                        <!-- PDE does not support Require-Capability, only Bundle-RequiredExecutionEnvironment. -->
+                        <!-- Bundle-RequiredExecutionEnvironment may not be mixed with Require-Capability. -->
+                        <_noee>true</_noee>
+                    </instructions>
+                    <niceManifest>true</niceManifest>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
                 </configuration>
             </plugin>
 
@@ -81,23 +124,19 @@ SPDX-License-Identifier: LGPL-2.0-or-later
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0-M7</version>
+                <version>3.0.0</version>
                 <configuration>
                     <localCheckout>true</localCheckout>
                     <pushChanges>false</pushChanges>
                     <mavenExecutorId>forked-path</mavenExecutorId>
-                    <arguments>
-                        -Dgpg.passphrase=${gpg.passphrase}
-                    </arguments>
+                    <arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
                     <tagNameFormat>@{project.version}</tagNameFormat>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.maven.scm</groupId>
-                        <artifactId>
-                            maven-scm-provider-gitexe
-                        </artifactId>
-                        <version>2.0.0-M3</version>
+                        <artifactId>maven-scm-provider-gitexe</artifactId>
+                        <version>2.0.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -174,25 +213,17 @@ SPDX-License-Identifier: LGPL-2.0-or-later
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
-            <url>
-                https://oss.sonatype.org/content/repositories/snapshots
-            </url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
-            <url>
-                https://oss.sonatype.org/service/local/staging/deploy/maven2/
-            </url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
     <scm>
-        <connection>
-            scm:git:git://github.com/dexecutor/dependent-tasks-executor.git
-        </connection>
-        <developerConnection>
-            scm:git:git@github.com:dexecutor/dexecutor.git
-        </developerConnection>
+        <connection>scm:git:git://github.com/dexecutor/dependent-tasks-executor.git</connection>
+        <developerConnection>scm:git:git@github.com:dexecutor/dexecutor.git</developerConnection>
         <url>https://github.com/com-github-javabdd/com.github.javabdd</url>
         <tag>HEAD</tag>
     </scm>
