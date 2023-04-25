@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.0.0] - 2023-04-25
+
+* Added an OSGi-compatible manifest.
+* Improved Maven metadata.
+
 ## [4.0.0] - 2023-02-16
 
 * Added maximum memory statistics, which are a best-effort approximation only.
