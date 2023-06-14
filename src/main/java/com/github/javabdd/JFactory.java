@@ -434,7 +434,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
     @Override
     public double setCacheRatio(double x) {
-        return bdd_setcacheratio((int)x);
+        return bdd_setcacheratio(x);
     }
 
     @Override
@@ -4726,7 +4726,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
     BddCache countcache; /* Cache for count results */
 
-    int cacheratio;
+    double cacheratio;
 
     boolean satPolarity;
 
@@ -4817,7 +4817,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
     void bdd_operator_noderesize() {
         if (cacheratio > 0) {
-            int newcachesize = bddnodesize / cacheratio;
+            int newcachesize = (int)(bddnodesize * cacheratio);
 
             BddCache_resize(applycache, newcachesize);
             BddCache_resize(itecache, newcachesize);
@@ -6088,8 +6088,8 @@ public class JFactory extends BDDFactoryIntImpl {
         return old;
     }
 
-    int bdd_setcacheratio(int r) {
-        int old = cacheratio;
+    double bdd_setcacheratio(double r) {
+        double old = cacheratio;
 
         if (r <= 0) {
             return bdd_error(BDD_RANGE);

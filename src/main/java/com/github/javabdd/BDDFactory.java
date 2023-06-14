@@ -417,7 +417,8 @@ public abstract class BDDFactory {
 
     /**
      * Sets the cache ratio for the operator caches. When the node table grows, operator caches will also grow to
-     * maintain the ratio.
+     * maintain the ratio. A ratio of {@code 0.5} leads to caches that are half the node table size, while a ratio
+     * of {@code 2.0} leads to caches that are twice the node table size.
      *
      * <p>
      * Compare to bdd_setcacheratio.
