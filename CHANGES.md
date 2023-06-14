@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [6.0.0] - 2023-06-14
+
+* Inverted the meaning of the operation cache ratio option, and improved its precision and documentation.
+
 ## [5.0.0] - 2023-04-25
 
 * Added an OSGi-compatible manifest.
