@@ -4533,8 +4533,29 @@ public class JFactory extends BDDFactoryIntImpl {
         return doResize(doRehash, oldsize, newsize);
     }
 
+    /**
+     * The maximum safe size for the node array, in number of nodes. See e.g.
+     * <a href="https://stackoverflow.com/a/31388054">here</a>, <a href="https://stackoverflow.com/a/3039805">here</a>
+     * and <a href="https://stackoverflow.com/a/8381338">here</a>.
+     */
+    private static final int MAX_SAFE_NODE_SIZE = (Integer.MAX_VALUE - 8) / __node_size;
+
     int doResize(boolean doRehash, int oldsize, int newsize) {
         newsize = bdd_prime_lte(newsize);
+
+        if (newsize < 0) { // Prevent integer overflow causing negative size.
+            newsize = MAX_SAFE_NODE_SIZE;
+        }
+        if (newsize >= MAX_SAFE_NODE_SIZE) {
+            if (oldsize == MAX_SAFE_NODE_SIZE) {
+                // Once we have reached the maximum size, we can't resize any more.
+                throw new OutOfMemoryError(
+                        "Unable to further increase the size of the node array, due to Java array size limits.");
+            } else {
+                // Limit new size to prevent too large array size that is not supported by JVMs.
+                newsize = MAX_SAFE_NODE_SIZE;
+            }
+        }
 
         if (oldsize > newsize) {
             return 0;
