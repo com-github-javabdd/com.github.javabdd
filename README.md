@@ -19,12 +19,21 @@ JavaBDD is designed for high performance applications, so it also exposes
 many of the lower level options of the BDD library, like cache sizes and
 advanced variable reordering.
 
+## Maven
+
+JavaBDD is available on Maven Central:
+
+* `groupId`: `com.github.com-github-javabdd`
+* `artifactId`: `com.github.javabdd`
+
+You can find the different versions of the library on [central.sonatype.com](https://central.sonatype.com/artifact/com.github.com-github-javabdd/com.github.javabdd/versions).
+
 ## History
 
 This version of JavaBDD is a fork of the Sourceforge version, see:
 
- * http://javabdd.sourceforge.net/
- * https://sourceforge.net/projects/javabdd/
+* http://javabdd.sourceforge.net/
+* https://sourceforge.net/projects/javabdd/
 
 It is based on trunk revision r483 from 2011-11-24.
 
