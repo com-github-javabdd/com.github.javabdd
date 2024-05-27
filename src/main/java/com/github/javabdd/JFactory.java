@@ -24,6 +24,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -4549,8 +4550,8 @@ public class JFactory extends BDDFactoryIntImpl {
         if (newsize >= MAX_SAFE_NODE_SIZE) {
             if (oldsize == MAX_SAFE_NODE_SIZE) {
                 // Once we have reached the maximum size, we can't resize any more.
-                throw new OutOfMemoryError(
-                        "Unable to further increase the size of the node array, due to Java array size limits.");
+                throw new OutOfMemoryError(String.format(Locale.US, "Maximum size of node array reached (%,d nodes).",
+                        MAX_SAFE_NODE_SIZE));
             } else {
                 // Limit new size to prevent too large array size that is not supported by JVMs.
                 newsize = MAX_SAFE_NODE_SIZE;
