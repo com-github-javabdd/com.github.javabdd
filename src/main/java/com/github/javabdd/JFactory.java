@@ -5949,10 +5949,6 @@ public class JFactory extends BDDFactoryIntImpl {
         return (BddCacheDataD)cache.table[Math.abs(hash % cache.tablesize)];
     }
 
-    void BddCache_put(BddCache cache, int hash, BddCacheData entry) {
-        cache.table[Math.abs(hash % cache.tablesize)] = entry;
-    }
-
     void BddCache_reset(BddCache cache) {
         if (cache == null) {
             return;
