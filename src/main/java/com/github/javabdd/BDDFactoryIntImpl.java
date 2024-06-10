@@ -86,15 +86,15 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
 
     protected abstract /* bdd */int veccompose_impl(/* bdd */int v, BDDPairing p);
 
-    protected abstract /* bdd */int relnext_impl(/* bdd */int states, /* bdd */int relation, int vars);
+    protected abstract /* bdd */int relnext_impl(/* bdd */int states, /* bdd */int relation, /* bdd */int vars);
 
     protected abstract /* bdd */int relnextRestricted_impl(/* bdd */int states, /* bdd */int relation,
-            /* bdd */int restriction, int vars);
+            /* bdd */int restriction, /* bdd */int vars);
 
-    protected abstract /* bdd */int relprev_impl(/* bdd */int relation, /* bdd */int states, int vars);
+    protected abstract /* bdd */int relprev_impl(/* bdd */int relation, /* bdd */int states, /* bdd */int vars);
 
     protected abstract /* bdd */int relprevRestricted_impl(/* bdd */int relation, /* bdd */int states,
-            /* bdd */int restriction, int vars);
+            /* bdd */int restriction, /* bdd */int vars);
 
     protected abstract int nodeCount_impl(/* bdd */int v);
 
