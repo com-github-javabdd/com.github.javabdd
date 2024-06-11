@@ -3300,7 +3300,6 @@ public class JFactory extends BDDFactoryIntImpl {
                 u1 = restriction;
             }
 
-            // Update the variable set, and while doing so, determine whether the new state variable must be considered.
             int nextVars = HIGH(vars);
 
             boolean quantify = LEVEL(vars) == level_newvar || LEVEL(nextVars) == level_newvar;
