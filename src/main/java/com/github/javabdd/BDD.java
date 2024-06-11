@@ -595,9 +595,9 @@ public abstract class BDD {
      *
      * @param states The BDD representing the set of states.
      * @param vars The BDD representing the set of variables that are relevant to consider for determining successor
-     * states. This variable set <i>must</i> include all variables that occur in the transition relation BDD. Moreover,
-     * for every new-state variable that is in {@code vars}, {@code relnext} considers the corresponding old-state
-     * variable to be relevant as well, regardless of whether it's included in {@code vars} or not.
+     *     states. This variable set <i>must</i> include all variables that occur in the transition relation BDD.
+     *     Moreover, for every new-state variable that is in {@code vars}, {@code relnext} considers the corresponding
+     *     old-state variable to be relevant as well, regardless of whether it's included in {@code vars} or not.
      * @return The BDD representing the set of successor states from {@code states}.
      */
     public abstract BDD relnext(BDD states, BDDVarSet vars);
@@ -608,7 +608,7 @@ public abstract class BDD {
      * @param states The BDD representing the set of states.
      * @param restriction The BDD representing the restriction to apply to the BDD representing the successor states.
      * @param vars The BDD representing the set of relevant variables to consider. See {@link #relnext(BDD, BDDVarSet)
-     * relnext} for further details.
+     *     relnext} for further details.
      * @return The BDD representing the restricted set of successor states from {@code states}.
      */
     public abstract BDD relnextIntersection(BDD states, BDD restriction, BDDVarSet vars);
@@ -622,9 +622,9 @@ public abstract class BDD {
      *
      * @param states The BDD representing the set of states.
      * @param vars The BDD representing the set of variables that are relevant to consider for determining predecessor
-     * states. This variable set <i>must</i> include all variables that occur in the transition relation BDD. Moreover,
-     * for every new-state variable that is in {@code vars}, {@code relprev} considers the corresponding old-state
-     * variable to be relevant as well, regardless of whether it's included in {@code vars} or not.
+     *     states. This variable set <i>must</i> include all variables that occur in the transition relation BDD.
+     *     Moreover, for every new-state variable that is in {@code vars}, {@code relprev} considers the corresponding
+     *     old-state variable to be relevant as well, regardless of whether it's included in {@code vars} or not.
      * @return The BDD representing the set of predecessor states from {@code states}.
      */
     public abstract BDD relprev(BDD states, BDDVarSet vars);
@@ -635,7 +635,7 @@ public abstract class BDD {
      * @param states The BDD representing the set of states.
      * @param restriction The BDD representing the restriction to apply to the BDD representing the predecessor states.
      * @param vars The BDD representing the set of relevant variables to consider. See {@link #relprev(BDD, BDDVarSet)
-     * relprev} for further details.
+     *     relprev} for further details.
      * @return The BDD representing the restricted set of predecessor states from {@code states}.
      */
     public abstract BDD relprevIntersection(BDD states, BDD restriction, BDDVarSet vars);
