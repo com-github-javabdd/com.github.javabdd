@@ -590,7 +590,7 @@ public abstract class BDD {
      * Computes the BDD that represents the set of successor states from {@code states}, i.e., the ones reachable by
      * taking one forward step from states in {@code states}, where this BDD is the (partial) transition relation to
      * consider. It is assumed that old-state and new-state BDD variables are interleaved in this transition relation,
-     * starting with the old-state variable, i.e., the old-state variable comes before the new-state variable.
+     * starting with the old-state variable, i.e., each old-state variable comes directly before its corresponding new-state variable.
      *
      * @param states The BDD representing the set of states.
      * @param vars The BDD representing the set of variables that are relevant to consider for determining successor
@@ -616,7 +616,7 @@ public abstract class BDD {
      * Computes the BDD that represents the set of predecessor states from {@code states}, i.e., the ones reachable by
      * taking one backward step from states in {@code states}, where this BDD is the (partial) transition relation to
      * consider. It is assumed that old-state and new-state BDD variables are interleaved in this transition relation,
-     * starting with the old-state variable, i.e., the old-state variable comes before the new-state variable.
+     * starting with the old-state variable, i.e., each old-state variable comes directly before its corresponding new-state variable.
      *
      * @param states The BDD representing the set of states.
      * @param vars The BDD representing the set of variables that are relevant to consider for determining predecessor
