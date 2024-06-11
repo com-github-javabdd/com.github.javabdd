@@ -611,7 +611,7 @@ public abstract class BDD {
      * relnext} for further details.
      * @return The BDD representing the restricted set of successor states from {@code states}.
      */
-    public abstract BDD relnextRestricted(BDD states, BDD restriction, BDDVarSet vars);
+    public abstract BDD relnextIntersection(BDD states, BDD restriction, BDDVarSet vars);
 
     /**
      * Computes the BDD that represents the set of predecessor states from {@code states}, i.e., the ones reachable by
@@ -638,7 +638,7 @@ public abstract class BDD {
      * relprev} for further details.
      * @return The BDD representing the restricted set of predecessor states from {@code states}.
      */
-    public abstract BDD relprevRestricted(BDD states, BDD restriction, BDDVarSet vars);
+    public abstract BDD relprevIntersection(BDD states, BDD restriction, BDDVarSet vars);
 
     /**
      * Finds all satisfying variable assignments.

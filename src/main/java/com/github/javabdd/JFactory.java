@@ -337,8 +337,8 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     @Override
-    protected int relnextRestricted_impl(int states, int relation, int restriction, int vars) {
-        return bdd_relnextRestricted(states, relation, restriction, vars);
+    protected int relnextIntersection_impl(int states, int relation, int restriction, int vars) {
+        return bdd_relnextIntersection(states, relation, restriction, vars);
     }
 
     @Override
@@ -347,8 +347,8 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     @Override
-    protected int relprevRestricted_impl(int relation, int states, int restriction, int vars) {
-        return bdd_relprevRestricted(relation, states, restriction, vars);
+    protected int relprevIntersection_impl(int relation, int states, int restriction, int vars) {
+        return bdd_relprevIntersection(relation, states, restriction, vars);
     }
 
     // More redirection functions.
@@ -1398,9 +1398,9 @@ public class JFactory extends BDDFactoryIntImpl {
 
     static final int bddop_relprev = 14;
 
-    static final int bddop_relnextRestricted = 15;
+    static final int bddop_relnextIntersection = 15;
 
-    static final int bddop_relprevRestricted = 16;
+    static final int bddop_relprevIntersection = 16;
 
     int bdd_not(int r) {
         int res;
@@ -2643,7 +2643,7 @@ public class JFactory extends BDDFactoryIntImpl {
         return result;
     }
 
-    int bdd_relnextRestricted(int states, int relation, int restriction, int vars) {
+    int bdd_relnextIntersection(int states, int relation, int restriction, int vars) {
         // Check validity of BDD nodes.
         CHECKa(states);
         CHECKa(relation);
@@ -2658,7 +2658,7 @@ public class JFactory extends BDDFactoryIntImpl {
             itecache = BddCacheI_init(cachesize);
         }
 
-        // We may also apply the AND and OR operation while computing 'relnextRestricted'.
+        // We may also apply the AND and OR operation while computing 'relnextIntersection'.
         // Let's configure the OR operation as the default.
         applyop = bddop_or;
 
@@ -2673,7 +2673,7 @@ public class JFactory extends BDDFactoryIntImpl {
                 if (numReorder == 0) {
                     bdd_disable_reorder();
                 }
-                result = relnextRestricted_rec(states, relation, restriction, vars);
+                result = relnextIntersection_rec(states, relation, restriction, vars);
 
                 if (numReorder == 0) {
                     bdd_enable_reorder();
@@ -2690,7 +2690,7 @@ public class JFactory extends BDDFactoryIntImpl {
         return result;
     }
 
-    int relnextRestricted_rec(int states, int relation, int restriction, int vars) {
+    int relnextIntersection_rec(int states, int relation, int restriction, int vars) {
         if (VERIFY_ASSERTIONS) {
             _assert(!ZDD);
         }
@@ -2748,10 +2748,10 @@ public class JFactory extends BDDFactoryIntImpl {
 
         // Consult the operation cache.
         BddCacheDataI entry = BddCache_lookupI(itecache,
-                QUINTUPLE(states, relation, restriction, vars, bddop_relnextRestricted));
+                QUINTUPLE(states, relation, restriction, vars, bddop_relnextIntersection));
 
         if (entry.a == states && entry.b == relation && entry.c == restriction && entry.d == vars
-                && entry.e == bddop_relnextRestricted)
+                && entry.e == bddop_relnextIntersection)
         {
             if (cachestats.enabled) {
                 cachestats.opHit++;
@@ -2769,8 +2769,8 @@ public class JFactory extends BDDFactoryIntImpl {
         int level_restriction = LEVEL(restriction);
 
         if (level_restriction < (level & (~1))) {
-            PUSHREF(relnextRestricted_rec(states, relation, LOW(restriction), vars));
-            PUSHREF(relnextRestricted_rec(states, relation, HIGH(restriction), vars));
+            PUSHREF(relnextIntersection_rec(states, relation, LOW(restriction), vars));
+            PUSHREF(relnextIntersection_rec(states, relation, HIGH(restriction), vars));
             result = bdd_makenode(level_restriction, READREF(2), READREF(1));
             POPREF(2);
         } else if (sameHeight) {
@@ -2818,13 +2818,13 @@ public class JFactory extends BDDFactoryIntImpl {
 
             if (LEVEL(vars) == level_newvar || LEVEL(nextVars) == level_newvar) {
                 // We are considering the new-state variable, so apply both the conjunction and quantification.
-                PUSHREF(relnextRestricted_rec(s0, r00, u0, nextVars));
-                PUSHREF(relnextRestricted_rec(s1, r10, u0, nextVars));
+                PUSHREF(relnextIntersection_rec(s0, r00, u0, nextVars));
+                PUSHREF(relnextIntersection_rec(s1, r10, u0, nextVars));
                 int result0 = or_rec(READREF(2), READREF(1));
                 POPREF(2);
                 PUSHREF(result0);
-                PUSHREF(relnextRestricted_rec(s0, r01, u1, nextVars));
-                PUSHREF(relnextRestricted_rec(s1, r11, u1, nextVars));
+                PUSHREF(relnextIntersection_rec(s0, r01, u1, nextVars));
+                PUSHREF(relnextIntersection_rec(s1, r11, u1, nextVars));
                 int result1 = or_rec(READREF(2), READREF(1));
                 POPREF(2);
                 PUSHREF(result1);
@@ -2832,8 +2832,8 @@ public class JFactory extends BDDFactoryIntImpl {
                 POPREF(2);
             } else {
                 // We are not considering the new-state variable, so do not quantify.
-                PUSHREF(relnextRestricted_rec(s0, r00, u0, nextVars));
-                PUSHREF(relnextRestricted_rec(s1, r11, u1, nextVars));
+                PUSHREF(relnextIntersection_rec(s0, r00, u0, nextVars));
+                PUSHREF(relnextIntersection_rec(s1, r11, u1, nextVars));
                 result = bdd_makenode(level_oldvar, READREF(2), READREF(1));
                 POPREF(2);
             }
@@ -2863,27 +2863,27 @@ public class JFactory extends BDDFactoryIntImpl {
 
             if (r0 != r1) {
                 if (s0 != s1) {
-                    PUSHREF(relnextRestricted_rec(s0, r0, u0, vars));
-                    PUSHREF(relnextRestricted_rec(s0, r1, u0, vars));
+                    PUSHREF(relnextIntersection_rec(s0, r0, u0, vars));
+                    PUSHREF(relnextIntersection_rec(s0, r1, u0, vars));
                     int result0 = or_rec(READREF(2), READREF(1));
                     POPREF(2);
                     PUSHREF(result0);
-                    PUSHREF(relnextRestricted_rec(s1, r0, u1, vars));
-                    PUSHREF(relnextRestricted_rec(s1, r1, u1, vars));
+                    PUSHREF(relnextIntersection_rec(s1, r0, u1, vars));
+                    PUSHREF(relnextIntersection_rec(s1, r1, u1, vars));
                     int result1 = or_rec(READREF(2), READREF(1));
                     POPREF(2);
                     PUSHREF(result1);
                     result = bdd_makenode(level, result0, result1);
                     POPREF(2);
                 } else {
-                    PUSHREF(relnextRestricted_rec(s0, r0, u0, vars));
-                    PUSHREF(relnextRestricted_rec(s1, r1, u1, vars));
+                    PUSHREF(relnextIntersection_rec(s0, r0, u0, vars));
+                    PUSHREF(relnextIntersection_rec(s1, r1, u1, vars));
                     result = or_rec(READREF(2), READREF(1));
                     POPREF(2);
                 }
             } else {
-                PUSHREF(relnextRestricted_rec(s0, r0, u0, vars));
-                PUSHREF(relnextRestricted_rec(s1, r1, u1, vars));
+                PUSHREF(relnextIntersection_rec(s0, r0, u0, vars));
+                PUSHREF(relnextIntersection_rec(s1, r1, u1, vars));
                 result = bdd_makenode(level, READREF(2), READREF(1));
                 POPREF(2);
             }
@@ -2894,7 +2894,7 @@ public class JFactory extends BDDFactoryIntImpl {
         entry.b = relation;
         entry.c = restriction;
         entry.d = vars;
-        entry.e = bddop_relnextRestricted;
+        entry.e = bddop_relnextIntersection;
         entry.res = result;
 
         return result;
@@ -3128,7 +3128,7 @@ public class JFactory extends BDDFactoryIntImpl {
         return result;
     }
 
-    int bdd_relprevRestricted(int relation, int states, int restriction, int vars) {
+    int bdd_relprevIntersection(int relation, int states, int restriction, int vars) {
         // Check validity of BDD nodes.
         CHECKa(relation);
         CHECKa(states);
@@ -3143,7 +3143,7 @@ public class JFactory extends BDDFactoryIntImpl {
             itecache = BddCacheI_init(cachesize);
         }
 
-        // We may also apply the AND and OR operation while computing 'relprevRestricted'.
+        // We may also apply the AND and OR operation while computing 'relprevIntersection'.
         // Let's configure the OR operation as the default.
         applyop = bddop_or;
 
@@ -3158,7 +3158,7 @@ public class JFactory extends BDDFactoryIntImpl {
                 if (numReorder == 0) {
                     bdd_disable_reorder();
                 }
-                result = relprevRestricted_rec(relation, states, restriction, vars);
+                result = relprevIntersection_rec(relation, states, restriction, vars);
 
                 if (numReorder == 0) {
                     bdd_enable_reorder();
@@ -3175,7 +3175,7 @@ public class JFactory extends BDDFactoryIntImpl {
         return result;
     }
 
-    int relprevRestricted_rec(int relation, int states, int restriction, int vars) {
+    int relprevIntersection_rec(int relation, int states, int restriction, int vars) {
         if (VERIFY_ASSERTIONS) {
             _assert(!ZDD);
         }
@@ -3234,10 +3234,10 @@ public class JFactory extends BDDFactoryIntImpl {
 
         // Consult the operation cache.
         BddCacheDataI entry = BddCache_lookupI(itecache,
-                QUINTUPLE(relation, states, restriction, vars, bddop_relprevRestricted));
+                QUINTUPLE(relation, states, restriction, vars, bddop_relprevIntersection));
 
         if (entry.a == relation && entry.b == states && entry.c == restriction && entry.d == vars
-                && entry.e == bddop_relprevRestricted)
+                && entry.e == bddop_relprevIntersection)
         {
             if (cachestats.enabled) {
                 cachestats.opHit++;
@@ -3255,8 +3255,8 @@ public class JFactory extends BDDFactoryIntImpl {
         int level_restriction = LEVEL(restriction);
 
         if (level_restriction < (level & (~1))) {
-            PUSHREF(relprevRestricted_rec(relation, states, LOW(restriction), vars));
-            PUSHREF(relprevRestricted_rec(relation, states, HIGH(restriction), vars));
+            PUSHREF(relprevIntersection_rec(relation, states, LOW(restriction), vars));
+            PUSHREF(relprevIntersection_rec(relation, states, HIGH(restriction), vars));
             result = bdd_makenode(level_restriction, READREF(2), READREF(1));
             POPREF(2);
         } else if (sameHeight) {
@@ -3310,13 +3310,13 @@ public class JFactory extends BDDFactoryIntImpl {
 
             if (quantify) {
                 // We are considering the new-state variable, so apply both the conjunction and quantification.
-                PUSHREF(relprevRestricted_rec(r00, s0, u0, nextVars));
-                PUSHREF(relprevRestricted_rec(r01, s1, u0, nextVars));
+                PUSHREF(relprevIntersection_rec(r00, s0, u0, nextVars));
+                PUSHREF(relprevIntersection_rec(r01, s1, u0, nextVars));
                 int result0 = or_rec(READREF(2), READREF(1));
                 POPREF(2);
                 PUSHREF(result0);
-                PUSHREF(relprevRestricted_rec(r10, s0, u1, nextVars));
-                PUSHREF(relprevRestricted_rec(r11, s1, u1, nextVars));
+                PUSHREF(relprevIntersection_rec(r10, s0, u1, nextVars));
+                PUSHREF(relprevIntersection_rec(r11, s1, u1, nextVars));
                 int result1 = or_rec(READREF(2), READREF(1));
                 POPREF(2);
                 PUSHREF(result1);
@@ -3324,8 +3324,8 @@ public class JFactory extends BDDFactoryIntImpl {
                 POPREF(2);
             } else {
                 // We are not considering the new-state variable, so do not quantify.
-                PUSHREF(relprevRestricted_rec(r00, s0, u0, nextVars));
-                PUSHREF(relprevRestricted_rec(r11, s1, u1, nextVars));
+                PUSHREF(relprevIntersection_rec(r00, s0, u0, nextVars));
+                PUSHREF(relprevIntersection_rec(r11, s1, u1, nextVars));
                 result = bdd_makenode(level_oldvar, READREF(2), READREF(1));
                 POPREF(2);
             }
@@ -3355,27 +3355,27 @@ public class JFactory extends BDDFactoryIntImpl {
 
             if (r0 != r1) {
                 if (s0 != s1) {
-                    PUSHREF(relprevRestricted_rec(r0, s0, u0, vars));
-                    PUSHREF(relprevRestricted_rec(r1, s0, u0, vars));
+                    PUSHREF(relprevIntersection_rec(r0, s0, u0, vars));
+                    PUSHREF(relprevIntersection_rec(r1, s0, u0, vars));
                     int result0 = or_rec(READREF(2), READREF(1));
                     POPREF(2);
                     PUSHREF(result0);
-                    PUSHREF(relprevRestricted_rec(r0, s1, u1, vars));
-                    PUSHREF(relprevRestricted_rec(r1, s1, u1, vars));
+                    PUSHREF(relprevIntersection_rec(r0, s1, u1, vars));
+                    PUSHREF(relprevIntersection_rec(r1, s1, u1, vars));
                     int result1 = or_rec(READREF(2), READREF(1));
                     POPREF(2);
                     PUSHREF(result1);
                     result = bdd_makenode(level, result0, result1);
                     POPREF(2);
                 } else {
-                    PUSHREF(relprevRestricted_rec(r0, s0, u0, vars));
-                    PUSHREF(relprevRestricted_rec(r1, s1, u1, vars));
+                    PUSHREF(relprevIntersection_rec(r0, s0, u0, vars));
+                    PUSHREF(relprevIntersection_rec(r1, s1, u1, vars));
                     result = or_rec(READREF(2), READREF(1));
                     POPREF(2);
                 }
             } else {
-                PUSHREF(relprevRestricted_rec(r0, s0, u0, vars));
-                PUSHREF(relprevRestricted_rec(r1, s1, u1, vars));
+                PUSHREF(relprevIntersection_rec(r0, s0, u0, vars));
+                PUSHREF(relprevIntersection_rec(r1, s1, u1, vars));
                 result = bdd_makenode(level, READREF(2), READREF(1));
                 POPREF(2);
             }
@@ -3386,7 +3386,7 @@ public class JFactory extends BDDFactoryIntImpl {
         entry.b = states;
         entry.c = restriction;
         entry.d = vars;
-        entry.e = bddop_relprevRestricted;
+        entry.e = bddop_relprevIntersection;
         entry.res = result;
 
         return result;
