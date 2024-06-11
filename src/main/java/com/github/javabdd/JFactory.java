@@ -2527,6 +2527,7 @@ public class JFactory extends BDDFactoryIntImpl {
             cachestats.opMiss++;
         }
 
+        // Could not find a cached result, so perform the recursive operation to compute the result.
         int result;
 
         if (sameHeight) {
@@ -2762,6 +2763,7 @@ public class JFactory extends BDDFactoryIntImpl {
             cachestats.opMiss++;
         }
 
+        // Could not find a cached result, so perform the recursive operation to compute the result.
         int result;
 
         int level_restriction = LEVEL(restriction);
@@ -3004,6 +3006,7 @@ public class JFactory extends BDDFactoryIntImpl {
             cachestats.opMiss++;
         }
 
+        // Could not find a cached result, so perform the recursive operation to compute the result.
         int result;
 
         if (sameHeight) {
@@ -3246,6 +3249,7 @@ public class JFactory extends BDDFactoryIntImpl {
             cachestats.opMiss++;
         }
 
+        // Could not find a cached result, so perform the recursive operation to compute the result.
         int result;
 
         int level_restriction = LEVEL(restriction);
