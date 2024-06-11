@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [7.0.0] - 2024-06-11
+
+* Several new operations for BDDs were added, namely `relnext`, `relnextIntersection`, `relprev` and `relprevIntersection`.
+* A proper `OutOfMemoryError` is now thrown when the BDD nodes array is to be resized larger than the Java array limit, rather than crashing with a `NegativeArraySizeException`.
+* The BDD node array can now be resized to the largest size supported by Java, before getting an `OutOfMemoryError` on the next resize, thus allowing slightly larger problems to be solved with JavaBDD.
+* Extended the `README` file with information about where to find the plugin on Maven Central.
+* Improved the copyright headers in source files.
+
 ## [6.0.0] - 2023-06-14
 
 * Inverted the meaning of the operation cache ratio option, and improved its precision and documentation.
