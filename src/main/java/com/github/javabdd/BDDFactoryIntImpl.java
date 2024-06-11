@@ -86,6 +86,16 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
 
     protected abstract /* bdd */int veccompose_impl(/* bdd */int v, BDDPairing p);
 
+    protected abstract /* bdd */int relnext_impl(/* bdd */int states, /* bdd */int relation, /* bdd */int vars);
+
+    protected abstract /* bdd */int relnextRestricted_impl(/* bdd */int states, /* bdd */int relation,
+            /* bdd */int restriction, /* bdd */int vars);
+
+    protected abstract /* bdd */int relprev_impl(/* bdd */int relation, /* bdd */int states, /* bdd */int vars);
+
+    protected abstract /* bdd */int relprevRestricted_impl(/* bdd */int relation, /* bdd */int states,
+            /* bdd */int restriction, /* bdd */int vars);
+
     protected abstract int nodeCount_impl(/* bdd */int v);
 
     protected abstract double pathCount_impl(/* bdd */int v);
@@ -324,6 +334,26 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         @Override
         public BDDVarSet toVarSet() {
             return makeBDDVarSet(v);
+        }
+
+        @Override
+        public BDD relnext(BDD states, BDDVarSet vars) {
+            return makeBDD(relnext_impl(unwrap(states), v, unwrap(vars)));
+        }
+
+        @Override
+        public BDD relnextRestricted(BDD states, BDD restriction, BDDVarSet vars) {
+            return makeBDD(relnextRestricted_impl(unwrap(states), v, unwrap(restriction), unwrap(vars)));
+        }
+
+        @Override
+        public BDD relprev(BDD states, BDDVarSet vars) {
+            return makeBDD(relprev_impl(v, unwrap(states), unwrap(vars)));
+        }
+
+        @Override
+        public BDD relprevRestricted(BDD states, BDD restriction, BDDVarSet vars) {
+            return makeBDD(relprevRestricted_impl(v, unwrap(states), unwrap(restriction), unwrap(vars)));
         }
     }
 
