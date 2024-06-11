@@ -1317,10 +1317,6 @@ public class JFactory extends BDDFactoryIntImpl {
         return TRIPLE(l, r, op);
     }
 
-    static final int ITEHASH(int f, int g, int h) {
-        return TRIPLE(f, g, h);
-    }
-
     static final int RESTRHASH(int r, int var) {
         return PAIR(r, var);
     }
