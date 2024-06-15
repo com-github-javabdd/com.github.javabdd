@@ -603,6 +603,29 @@ public abstract class BDD {
     public abstract BDD relnext(BDD states, BDDVarSet vars);
 
     /**
+     * Computes {@code or(relnext(states, vars), union)} as a single BDD operation.
+     *
+     * @param states The BDD representing the set of states.
+     * @param union The BDD representing the set of states to add to the set of successor states.
+     * @param vars The BDD representing the set of relevant variables to consider. See {@link #relnext(BDD, BDDVarSet)
+     *     relnext} for further details.
+     * @return The BDD representing the set of successor states from {@code states}, plus all {@code union} states.
+     */
+    public abstract BDD relnextUnion(BDD states, BDD union, BDDVarSet vars);
+
+    /**
+     * Computes {@code or(relnext(states, vars), states)} as a single BDD operation.
+     *
+     * @param states The BDD representing the set of states.
+     * @param vars The BDD representing the set of relevant variables to consider. See {@link #relnext(BDD, BDDVarSet)
+     *     relnext} for further details.
+     * @return The BDD representing the set of successor states, plus al original {@code states}.
+     */
+    public BDD relnextUnion(BDD states, BDDVarSet vars) {
+        return relnextUnion(states, states, vars);
+    }
+
+    /**
      * Computes {@code and(relnext(states, vars), restriction)} as a single BDD operation.
      *
      * @param states The BDD representing the set of states.

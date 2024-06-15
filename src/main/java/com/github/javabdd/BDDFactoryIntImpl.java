@@ -88,6 +88,9 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
 
     protected abstract /* bdd */int relnext_impl(/* bdd */int states, /* bdd */int relation, /* bdd */int vars);
 
+    protected abstract /* bdd */int relnextUnion_impl(/* bdd */int states, /* bdd */int relation, /* bdd */int union,
+            /* bdd */int vars);
+
     protected abstract /* bdd */int relnextIntersection_impl(/* bdd */int states, /* bdd */int relation,
             /* bdd */int restriction, /* bdd */int vars);
 
@@ -339,6 +342,11 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         @Override
         public BDD relnext(BDD states, BDDVarSet vars) {
             return makeBDD(relnext_impl(unwrap(states), v, unwrap(vars)));
+        }
+
+        @Override
+        public BDD relnextUnion(BDD states, BDD union, BDDVarSet vars) {
+            return makeBDD(relnextUnion_impl(unwrap(states), v, unwrap(union), unwrap(vars)));
         }
 
         @Override
