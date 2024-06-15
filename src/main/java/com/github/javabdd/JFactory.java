@@ -2782,121 +2782,119 @@ public class JFactory extends BDDFactoryIntImpl {
             PUSHREF(relnextUnion_rec(states, relation, HIGH(union), vars));
             result = bdd_makenode(level_union, READREF(2), READREF(1));
             POPREF(2);
+        } else if (sameHeight) {
+            int level_oldvar = level & (~1);
+            int level_newvar = level_oldvar + 1;
+
+            int s0, s1, r0, r1, r00, r01, r10, r11, u0, u1;
+            if (!ISCONST(states) && level_states == level_oldvar) {
+                s0 = LOW(states);
+                s1 = HIGH(states);
+            } else {
+                s0 = states;
+                s1 = states;
+            }
+            if (!ISCONST(relation) && level_relation == level_oldvar) {
+                r0 = LOW(relation);
+                r1 = HIGH(relation);
+            } else {
+                r0 = relation;
+                r1 = relation;
+            }
+            if (!ISCONST(r0) && LEVEL(r0) == level_newvar) {
+                r00 = LOW(r0);
+                r01 = HIGH(r0);
+            } else {
+                r00 = r0;
+                r01 = r0;
+            }
+            if (!ISCONST(r1) && LEVEL(r1) == level_newvar) {
+                r10 = LOW(r1);
+                r11 = HIGH(r1);
+            } else {
+                r10 = r1;
+                r11 = r1;
+            }
+            if (level_union == level_oldvar) {
+                u0 = LOW(union);
+                u1 = HIGH(union);
+            } else {
+                u0 = union;
+                u1 = union;
+            }
+
+            int nextVars = HIGH(vars);
+
+            if (LEVEL(vars) == level_newvar || LEVEL(nextVars) == level_newvar) {
+                // We are considering the new-state variable, so apply both the conjunction and quantification.
+                PUSHREF(relnextUnion_rec(s0, r00, u0, nextVars));
+                PUSHREF(relnextUnion_rec(s1, r10, u0, nextVars));
+                int result0 = or_rec(READREF(2), READREF(1));
+                POPREF(2);
+                PUSHREF(result0);
+                PUSHREF(relnextUnion_rec(s0, r01, u1, nextVars));
+                PUSHREF(relnextUnion_rec(s1, r11, u1, nextVars));
+                int result1 = or_rec(READREF(2), READREF(1));
+                POPREF(2);
+                PUSHREF(result1);
+                result = bdd_makenode(level_oldvar, result0, result1);
+                POPREF(2);
+            } else {
+                // We are not considering the new-state variable, so do not quantify.
+                PUSHREF(relnextUnion_rec(s0, r00, u0, nextVars));
+                PUSHREF(relnextUnion_rec(s1, r11, u1, nextVars));
+                result = bdd_makenode(level_oldvar, READREF(2), READREF(1));
+                POPREF(2);
+            }
         } else {
-            if (sameHeight) {
-                int level_oldvar = level & (~1);
-                int level_newvar = level_oldvar + 1;
+            int s0, s1, r0, r1, u0, u1;
+            if (!ISCONST(states) && level_states == level) {
+                s0 = LOW(states);
+                s1 = HIGH(states);
+            } else {
+                s0 = states;
+                s1 = states;
+            }
+            if (!ISCONST(relation) && level_relation == level) {
+                r0 = LOW(relation);
+                r1 = HIGH(relation);
+            } else {
+                r0 = relation;
+                r1 = relation;
+            }
+            if (level_union == level) {
+                u0 = LOW(union);
+                u1 = HIGH(union);
+            } else {
+                u0 = union;
+                u1 = union;
+            }
 
-                int s0, s1, r0, r1, r00, r01, r10, r11, u0, u1;
-                if (!ISCONST(states) && level_states == level_oldvar) {
-                    s0 = LOW(states);
-                    s1 = HIGH(states);
-                } else {
-                    s0 = states;
-                    s1 = states;
-                }
-                if (!ISCONST(relation) && level_relation == level_oldvar) {
-                    r0 = LOW(relation);
-                    r1 = HIGH(relation);
-                } else {
-                    r0 = relation;
-                    r1 = relation;
-                }
-                if (!ISCONST(r0) && LEVEL(r0) == level_newvar) {
-                    r00 = LOW(r0);
-                    r01 = HIGH(r0);
-                } else {
-                    r00 = r0;
-                    r01 = r0;
-                }
-                if (!ISCONST(r1) && LEVEL(r1) == level_newvar) {
-                    r10 = LOW(r1);
-                    r11 = HIGH(r1);
-                } else {
-                    r10 = r1;
-                    r11 = r1;
-                }
-                if (level_union == level_oldvar) {
-                    u0 = LOW(union);
-                    u1 = HIGH(union);
-                } else {
-                    u0 = union;
-                    u1 = union;
-                }
-
-                int nextVars = HIGH(vars);
-
-                if (LEVEL(vars) == level_newvar || LEVEL(nextVars) == level_newvar) {
-                    // We are considering the new-state variable, so apply both the conjunction and quantification.
-                    PUSHREF(relnextUnion_rec(s0, r00, u0, nextVars));
-                    PUSHREF(relnextUnion_rec(s1, r10, u0, nextVars));
+            if (r0 != r1) {
+                if (s0 != s1) {
+                    PUSHREF(relnextUnion_rec(s0, r0, u0, vars));
+                    PUSHREF(relnextUnion_rec(s0, r1, u0, vars));
                     int result0 = or_rec(READREF(2), READREF(1));
                     POPREF(2);
                     PUSHREF(result0);
-                    PUSHREF(relnextUnion_rec(s0, r01, u1, nextVars));
-                    PUSHREF(relnextUnion_rec(s1, r11, u1, nextVars));
+                    PUSHREF(relnextUnion_rec(s1, r0, u1, vars));
+                    PUSHREF(relnextUnion_rec(s1, r1, u1, vars));
                     int result1 = or_rec(READREF(2), READREF(1));
                     POPREF(2);
                     PUSHREF(result1);
-                    result = bdd_makenode(level_oldvar, result0, result1);
+                    result = bdd_makenode(level, result0, result1);
                     POPREF(2);
-                } else {
-                    // We are not considering the new-state variable, so do not quantify.
-                    PUSHREF(relnextUnion_rec(s0, r00, u0, nextVars));
-                    PUSHREF(relnextUnion_rec(s1, r11, u1, nextVars));
-                    result = bdd_makenode(level_oldvar, READREF(2), READREF(1));
-                    POPREF(2);
-                }
-            } else {
-                int s0, s1, r0, r1, u0, u1;
-                if (!ISCONST(states) && level_states == level) {
-                    s0 = LOW(states);
-                    s1 = HIGH(states);
-                } else {
-                    s0 = states;
-                    s1 = states;
-                }
-                if (!ISCONST(relation) && level_relation == level) {
-                    r0 = LOW(relation);
-                    r1 = HIGH(relation);
-                } else {
-                    r0 = relation;
-                    r1 = relation;
-                }
-                if (level_union == level) {
-                    u0 = LOW(union);
-                    u1 = HIGH(union);
-                } else {
-                    u0 = union;
-                    u1 = union;
-                }
-
-                if (r0 != r1) {
-                    if (s0 != s1) {
-                        PUSHREF(relnextUnion_rec(s0, r0, u0, vars));
-                        PUSHREF(relnextUnion_rec(s0, r1, u0, vars));
-                        int result0 = or_rec(READREF(2), READREF(1));
-                        POPREF(2);
-                        PUSHREF(result0);
-                        PUSHREF(relnextUnion_rec(s1, r0, u1, vars));
-                        PUSHREF(relnextUnion_rec(s1, r1, u1, vars));
-                        int result1 = or_rec(READREF(2), READREF(1));
-                        POPREF(2);
-                        PUSHREF(result1);
-                        result = bdd_makenode(level, result0, result1);
-                        POPREF(2);
-                    } else {
-                        PUSHREF(relnextUnion_rec(s0, r0, u0, vars));
-                        PUSHREF(relnextUnion_rec(s1, r1, u1, vars));
-                        result = or_rec(READREF(2), READREF(1));
-                        POPREF(2);
-                    }
                 } else {
                     PUSHREF(relnextUnion_rec(s0, r0, u0, vars));
                     PUSHREF(relnextUnion_rec(s1, r1, u1, vars));
-                    result = bdd_makenode(level, READREF(2), READREF(1));
+                    result = or_rec(READREF(2), READREF(1));
                     POPREF(2);
                 }
+            } else {
+                PUSHREF(relnextUnion_rec(s0, r0, u0, vars));
+                PUSHREF(relnextUnion_rec(s1, r1, u1, vars));
+                result = bdd_makenode(level, READREF(2), READREF(1));
+                POPREF(2);
             }
         }
 
