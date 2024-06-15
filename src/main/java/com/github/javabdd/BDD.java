@@ -619,7 +619,7 @@ public abstract class BDD {
      * @param states The BDD representing the set of states.
      * @param vars The BDD representing the set of relevant variables to consider. See {@link #relnext(BDD, BDDVarSet)
      *     relnext} for further details.
-     * @return The BDD representing the set of successor states, plus al original {@code states}.
+     * @return The BDD representing the set of successor states, plus all original {@code states}.
      */
     public BDD relnextUnion(BDD states, BDDVarSet vars) {
         return relnextUnion(states, states, vars);
