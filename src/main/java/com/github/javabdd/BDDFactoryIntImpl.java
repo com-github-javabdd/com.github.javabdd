@@ -88,10 +88,16 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
 
     protected abstract /* bdd */int relnext_impl(/* bdd */int states, /* bdd */int relation, /* bdd */int vars);
 
+    protected abstract /* bdd */int relnextUnion_impl(/* bdd */int states, /* bdd */int relation, /* bdd */int union,
+            /* bdd */int vars);
+
     protected abstract /* bdd */int relnextIntersection_impl(/* bdd */int states, /* bdd */int relation,
             /* bdd */int restriction, /* bdd */int vars);
 
     protected abstract /* bdd */int relprev_impl(/* bdd */int relation, /* bdd */int states, /* bdd */int vars);
+
+    protected abstract /* bdd */int relprevUnion_impl(/* bdd */int relation, /* bdd */int states, /* bdd */int union,
+            /* bdd */int vars);
 
     protected abstract /* bdd */int relprevIntersection_impl(/* bdd */int relation, /* bdd */int states,
             /* bdd */int restriction, /* bdd */int vars);
@@ -342,6 +348,11 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         }
 
         @Override
+        public BDD relnextUnion(BDD states, BDD union, BDDVarSet vars) {
+            return makeBDD(relnextUnion_impl(unwrap(states), v, unwrap(union), unwrap(vars)));
+        }
+
+        @Override
         public BDD relnextIntersection(BDD states, BDD restriction, BDDVarSet vars) {
             return makeBDD(relnextIntersection_impl(unwrap(states), v, unwrap(restriction), unwrap(vars)));
         }
@@ -349,6 +360,11 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         @Override
         public BDD relprev(BDD states, BDDVarSet vars) {
             return makeBDD(relprev_impl(v, unwrap(states), unwrap(vars)));
+        }
+
+        @Override
+        public BDD relprevUnion(BDD states, BDD union, BDDVarSet vars) {
+            return makeBDD(relprevUnion_impl(v, unwrap(states), unwrap(union), unwrap(vars)));
         }
 
         @Override

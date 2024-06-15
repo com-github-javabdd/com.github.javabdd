@@ -603,6 +603,29 @@ public abstract class BDD {
     public abstract BDD relnext(BDD states, BDDVarSet vars);
 
     /**
+     * Computes {@code or(relnext(states, vars), union)} as a single BDD operation.
+     *
+     * @param states The BDD representing the set of states.
+     * @param union The BDD representing the set of states to add to the set of successor states.
+     * @param vars The BDD representing the set of relevant variables to consider. See {@link #relnext(BDD, BDDVarSet)
+     *     relnext} for further details.
+     * @return The BDD representing the set of successor states from {@code states}, plus all {@code union} states.
+     */
+    public abstract BDD relnextUnion(BDD states, BDD union, BDDVarSet vars);
+
+    /**
+     * Computes {@code or(relnext(states, vars), states)} as a single BDD operation.
+     *
+     * @param states The BDD representing the set of states.
+     * @param vars The BDD representing the set of relevant variables to consider. See {@link #relnext(BDD, BDDVarSet)
+     *     relnext} for further details.
+     * @return The BDD representing the set of successor states, plus all original {@code states}.
+     */
+    public BDD relnextUnion(BDD states, BDDVarSet vars) {
+        return relnextUnion(states, states, vars);
+    }
+
+    /**
      * Computes {@code and(relnext(states, vars), restriction)} as a single BDD operation.
      *
      * @param states The BDD representing the set of states.
@@ -628,6 +651,29 @@ public abstract class BDD {
      * @return The BDD representing the set of predecessor states from {@code states}.
      */
     public abstract BDD relprev(BDD states, BDDVarSet vars);
+
+    /**
+     * Computes {@code or(relprev(states, vars), union)} as a single BDD operation.
+     *
+     * @param states The BDD representing the set of states.
+     * @param union The BDD representing the set of states to add to the set of predecessor states.
+     * @param vars The BDD representing the set of relevant variables to consider. See {@link #relprev(BDD, BDDVarSet)
+     *     relprev} for further details.
+     * @return The BDD representing the set of predecessor states from {@code states}, plus all {@code union} states.
+     */
+    public abstract BDD relprevUnion(BDD states, BDD union, BDDVarSet vars);
+
+    /**
+     * Computes {@code or(relprev(states, vars), states)} as a single BDD operation.
+     *
+     * @param states The BDD representing the set of states.
+     * @param vars The BDD representing the set of relevant variables to consider. See {@link #relprev(BDD, BDDVarSet)
+     *     relprev} for further details.
+     * @return The BDD representing the set of predecessor states, plus all original {@code states}.
+     */
+    public BDD relprevUnion(BDD states, BDDVarSet vars) {
+        return relprevUnion(states, states, vars);
+    }
 
     /**
      * Computes {@code and(relprev(states, vars), restriction)} as a single BDD operation.

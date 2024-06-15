@@ -337,6 +337,11 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     @Override
+    protected int relnextUnion_impl(int states, int relation, int union, int vars) {
+        return bdd_relnextUnion(states, relation, union, vars);
+    }
+
+    @Override
     protected int relnextIntersection_impl(int states, int relation, int restriction, int vars) {
         return bdd_relnextIntersection(states, relation, restriction, vars);
     }
@@ -344,6 +349,11 @@ public class JFactory extends BDDFactoryIntImpl {
     @Override
     protected int relprev_impl(int relation, int states, int vars) {
         return bdd_relprev(relation, states, vars);
+    }
+
+    @Override
+    protected int relprevUnion_impl(int relation, int states, int union, int vars) {
+        return bdd_relprevUnion(relation, states, union, vars);
     }
 
     @Override
@@ -1401,6 +1411,10 @@ public class JFactory extends BDDFactoryIntImpl {
     static final int bddop_relnextIntersection = 15;
 
     static final int bddop_relprevIntersection = 16;
+
+    static final int bddop_relnextUnion = 17;
+
+    static final int bddop_relprevUnion = 18;
 
     int bdd_not(int r) {
         int res;
@@ -2643,6 +2657,258 @@ public class JFactory extends BDDFactoryIntImpl {
         return result;
     }
 
+    int bdd_relnextUnion(int states, int relation, int union, int vars) {
+        // Check validity of BDD nodes.
+        CHECKa(states);
+        CHECKa(relation);
+        CHECKa(union);
+        CHECKa(vars);
+
+        // Initialize caches if needed.
+        if (applycache == null) {
+            applycache = BddCacheI_init(cachesize);
+        }
+        if (itecache == null) {
+            itecache = BddCacheI_init(cachesize);
+        }
+
+        // We may also apply the OR operation while computing 'relnextUnion'.
+        applyop = bddop_or;
+
+        int result;
+        int numReorder = 1;
+
+        again:
+        for (;;) {
+            try {
+                INITREF();
+
+                if (numReorder == 0) {
+                    bdd_disable_reorder();
+                }
+                result = relnextUnion_rec(states, relation, union, vars);
+
+                if (numReorder == 0) {
+                    bdd_enable_reorder();
+                }
+            } catch (ReorderException x) {
+                bdd_checkreorder();
+                numReorder--;
+                continue again;
+            }
+            break;
+        }
+
+        checkresize();
+        return result;
+    }
+
+    int relnextUnion_rec(int states, int relation, int union, int vars) {
+        if (VERIFY_ASSERTIONS) {
+            _assert(!ZDD);
+        }
+
+        if (cachestats.enabled) {
+            cachestats.opAccess++;
+        }
+
+        // Terminals cases.
+        if (ISZERO(union)) {
+            return relnext_rec(states, relation, vars);
+        }
+        if (ISONE(union)) {
+            return bddtrue;
+        }
+        if (ISZERO(states) || ISZERO(relation)) {
+            return union;
+        }
+        if (ISONE(states) && ISONE(relation)) {
+            return bddtrue;
+        }
+        if (ISCONST(vars)) {
+            return or_rec(states, union);
+        }
+
+        // Determine the top level of 'states' and 'relation'.
+        int level_states = LEVEL(states);
+        int level_relation = LEVEL(relation);
+        int level = level_states < level_relation ? level_states : level_relation;
+
+        // Skip levels in the variable set until we reach (or exceed) 'level'.
+        boolean sameHeight = false;
+
+        for (;;) {
+            int level_vars = LEVEL(vars);
+
+            if (level == level_vars || (level ^ 1) == level_vars) {
+                sameHeight = true;
+                break;
+            }
+
+            if (level < level_vars) {
+                break;
+            }
+
+            vars = HIGH(vars);
+
+            if (ISCONST(vars)) {
+                return or_rec(states, union);
+            }
+        }
+
+        // Consult the operation cache.
+        BddCacheDataI entry = BddCache_lookupI(itecache, QUINTUPLE(states, relation, union, vars, bddop_relnextUnion));
+
+        if (entry.a == states && entry.b == relation && entry.c == union && entry.d == vars
+                && entry.e == bddop_relnextUnion)
+        {
+            if (cachestats.enabled) {
+                cachestats.opHit++;
+            }
+            return entry.res;
+        }
+
+        if (cachestats.enabled) {
+            cachestats.opMiss++;
+        }
+
+        // Could not find a cached result, so perform the recursive operation to compute the result.
+        int result;
+
+        int level_union = LEVEL(union);
+
+        if (level_union < (level & (~1))) {
+            PUSHREF(relnextUnion_rec(states, relation, LOW(union), vars));
+            PUSHREF(relnextUnion_rec(states, relation, HIGH(union), vars));
+            result = bdd_makenode(level_union, READREF(2), READREF(1));
+            POPREF(2);
+        } else if (sameHeight) {
+            int level_oldvar = level & (~1);
+            int level_newvar = level_oldvar + 1;
+
+            int s0, s1, r0, r1, r00, r01, r10, r11, u0, u1;
+            if (!ISCONST(states) && level_states == level_oldvar) {
+                s0 = LOW(states);
+                s1 = HIGH(states);
+            } else {
+                s0 = states;
+                s1 = states;
+            }
+            if (!ISCONST(relation) && level_relation == level_oldvar) {
+                r0 = LOW(relation);
+                r1 = HIGH(relation);
+            } else {
+                r0 = relation;
+                r1 = relation;
+            }
+            if (!ISCONST(r0) && LEVEL(r0) == level_newvar) {
+                r00 = LOW(r0);
+                r01 = HIGH(r0);
+            } else {
+                r00 = r0;
+                r01 = r0;
+            }
+            if (!ISCONST(r1) && LEVEL(r1) == level_newvar) {
+                r10 = LOW(r1);
+                r11 = HIGH(r1);
+            } else {
+                r10 = r1;
+                r11 = r1;
+            }
+            if (level_union == level_oldvar) {
+                u0 = LOW(union);
+                u1 = HIGH(union);
+            } else {
+                u0 = union;
+                u1 = union;
+            }
+
+            int nextVars = HIGH(vars);
+
+            if (LEVEL(vars) == level_newvar || LEVEL(nextVars) == level_newvar) {
+                // We are considering the new-state variable, so apply both the conjunction and quantification.
+                PUSHREF(relnextUnion_rec(s0, r00, u0, nextVars));
+                PUSHREF(relnextUnion_rec(s1, r10, u0, nextVars));
+                int result0 = or_rec(READREF(2), READREF(1));
+                POPREF(2);
+                PUSHREF(result0);
+                PUSHREF(relnextUnion_rec(s0, r01, u1, nextVars));
+                PUSHREF(relnextUnion_rec(s1, r11, u1, nextVars));
+                int result1 = or_rec(READREF(2), READREF(1));
+                POPREF(2);
+                PUSHREF(result1);
+                result = bdd_makenode(level_oldvar, result0, result1);
+                POPREF(2);
+            } else {
+                // We are not considering the new-state variable, so do not quantify.
+                PUSHREF(relnextUnion_rec(s0, r00, u0, nextVars));
+                PUSHREF(relnextUnion_rec(s1, r11, u1, nextVars));
+                result = bdd_makenode(level_oldvar, READREF(2), READREF(1));
+                POPREF(2);
+            }
+        } else {
+            int s0, s1, r0, r1, u0, u1;
+            if (!ISCONST(states) && level_states == level) {
+                s0 = LOW(states);
+                s1 = HIGH(states);
+            } else {
+                s0 = states;
+                s1 = states;
+            }
+            if (!ISCONST(relation) && level_relation == level) {
+                r0 = LOW(relation);
+                r1 = HIGH(relation);
+            } else {
+                r0 = relation;
+                r1 = relation;
+            }
+            if (level_union == level) {
+                u0 = LOW(union);
+                u1 = HIGH(union);
+            } else {
+                u0 = union;
+                u1 = union;
+            }
+
+            if (r0 != r1) {
+                if (s0 != s1) {
+                    PUSHREF(relnextUnion_rec(s0, r0, u0, vars));
+                    PUSHREF(relnextUnion_rec(s0, r1, u0, vars));
+                    int result0 = or_rec(READREF(2), READREF(1));
+                    POPREF(2);
+                    PUSHREF(result0);
+                    PUSHREF(relnextUnion_rec(s1, r0, u1, vars));
+                    PUSHREF(relnextUnion_rec(s1, r1, u1, vars));
+                    int result1 = or_rec(READREF(2), READREF(1));
+                    POPREF(2);
+                    PUSHREF(result1);
+                    result = bdd_makenode(level, result0, result1);
+                    POPREF(2);
+                } else {
+                    PUSHREF(relnextUnion_rec(s0, r0, u0, vars));
+                    PUSHREF(relnextUnion_rec(s1, r1, u1, vars));
+                    result = or_rec(READREF(2), READREF(1));
+                    POPREF(2);
+                }
+            } else {
+                PUSHREF(relnextUnion_rec(s0, r0, u0, vars));
+                PUSHREF(relnextUnion_rec(s1, r1, u1, vars));
+                result = bdd_makenode(level, READREF(2), READREF(1));
+                POPREF(2);
+            }
+        }
+
+        // Update the operation cache.
+        entry.a = states;
+        entry.b = relation;
+        entry.c = union;
+        entry.d = vars;
+        entry.e = bddop_relnextUnion;
+        entry.res = result;
+
+        return result;
+    }
+
     int bdd_relnextIntersection(int states, int relation, int restriction, int vars) {
         // Check validity of BDD nodes.
         CHECKa(states);
@@ -3123,6 +3389,264 @@ public class JFactory extends BDDFactoryIntImpl {
         entry.c = vars;
         entry.d = 0;
         entry.e = bddop_relprev;
+        entry.res = result;
+
+        return result;
+    }
+
+    int bdd_relprevUnion(int relation, int states, int union, int vars) {
+        // Check validity of BDD nodes.
+        CHECKa(relation);
+        CHECKa(states);
+        CHECKa(union);
+        CHECKa(vars);
+
+        // Initialize caches if needed.
+        if (applycache == null) {
+            applycache = BddCacheI_init(cachesize);
+        }
+        if (itecache == null) {
+            itecache = BddCacheI_init(cachesize);
+        }
+
+        // We may also apply the OR operation while computing 'relprevUnion'.
+        applyop = bddop_or;
+
+        int result;
+        int numReorder = 1;
+
+        again:
+        for (;;) {
+            try {
+                INITREF();
+
+                if (numReorder == 0) {
+                    bdd_disable_reorder();
+                }
+                result = relprevUnion_rec(relation, states, union, vars);
+
+                if (numReorder == 0) {
+                    bdd_enable_reorder();
+                }
+            } catch (ReorderException x) {
+                bdd_checkreorder();
+                numReorder--;
+                continue again;
+            }
+            break;
+        }
+
+        checkresize();
+        return result;
+    }
+
+    int relprevUnion_rec(int relation, int states, int union, int vars) {
+        if (VERIFY_ASSERTIONS) {
+            _assert(!ZDD);
+        }
+
+        if (cachestats.enabled) {
+            cachestats.opAccess++;
+        }
+
+        // Terminals cases.
+        if (ISZERO(union)) {
+            return relprev_rec(relation, states, vars);
+        }
+        if (ISONE(union)) {
+            return bddtrue;
+        }
+        if (ISZERO(states) || ISZERO(relation)) {
+            return union;
+        }
+        if (ISONE(states) && ISONE(relation)) {
+            return bddtrue;
+        }
+        if (ISCONST(vars)) {
+            return or_rec(states, union);
+        }
+
+        // Determine the top level of 'states' and 'relation'.
+        int level_relation = LEVEL(relation);
+        int level_states = LEVEL(states);
+        int level = level_relation < level_states ? level_relation : level_states;
+
+        // Skip levels in the variable set until we reach (or exceed) 'level'.
+        boolean sameHeight = false;
+
+        for (;;) {
+            int level_vars = LEVEL(vars);
+
+            if (level == level_vars || (level ^ 1) == level_vars) {
+                sameHeight = true;
+                break;
+            }
+
+            if (level < level_vars) {
+                break;
+            }
+
+            vars = HIGH(vars);
+
+            if (ISCONST(vars)) {
+                return or_rec(states, union);
+            }
+        }
+
+        // Consult the operation cache.
+        BddCacheDataI entry = BddCache_lookupI(itecache, QUINTUPLE(relation, states, union, vars, bddop_relprevUnion));
+
+        if (entry.a == relation && entry.b == states && entry.c == union && entry.d == vars
+                && entry.e == bddop_relprevUnion)
+        {
+            if (cachestats.enabled) {
+                cachestats.opHit++;
+            }
+            return entry.res;
+        }
+
+        if (cachestats.enabled) {
+            cachestats.opMiss++;
+        }
+
+        // Could not find a cached result, so perform the recursive operation to compute the result.
+        int result;
+
+        int level_union = LEVEL(union);
+
+        if (level_union < (level & (~1))) {
+            PUSHREF(relprevUnion_rec(relation, states, LOW(union), vars));
+            PUSHREF(relprevUnion_rec(relation, states, HIGH(union), vars));
+            result = bdd_makenode(level_union, READREF(2), READREF(1));
+            POPREF(2);
+        } else if (sameHeight) {
+            int level_oldvar = level & (~1);
+            int level_newvar = level_oldvar + 1;
+
+            int s0, s1, r0, r1, r00, r01, r10, r11, u0, u1;
+            if (!ISCONST(relation) && level_relation == level_oldvar) {
+                r0 = LOW(relation);
+                r1 = HIGH(relation);
+            } else {
+                r0 = relation;
+                r1 = relation;
+            }
+            if (!ISCONST(states) && level_states == level_oldvar) {
+                s0 = LOW(states);
+                s1 = HIGH(states);
+            } else {
+                s0 = states;
+                s1 = states;
+            }
+            if (!ISCONST(r0) && LEVEL(r0) == level_newvar) {
+                r00 = LOW(r0);
+                r01 = HIGH(r0);
+            } else {
+                r00 = r0;
+                r01 = r0;
+            }
+            if (!ISCONST(r1) && LEVEL(r1) == level_newvar) {
+                r10 = LOW(r1);
+                r11 = HIGH(r1);
+            } else {
+                r10 = r1;
+                r11 = r1;
+            }
+            if (level_union == level_oldvar) {
+                u0 = LOW(union);
+                u1 = HIGH(union);
+            } else {
+                u0 = union;
+                u1 = union;
+            }
+
+            int nextVars = HIGH(vars);
+
+            boolean quantify = LEVEL(vars) == level_newvar || LEVEL(nextVars) == level_newvar;
+
+            if (LEVEL(nextVars) == level_newvar) {
+                nextVars = HIGH(nextVars);
+            }
+
+            if (quantify) {
+                // We are considering the new-state variable, so apply both the conjunction and quantification.
+                PUSHREF(relprevUnion_rec(r00, s0, u0, nextVars));
+                PUSHREF(relprevUnion_rec(r01, s1, u0, nextVars));
+                int result0 = or_rec(READREF(2), READREF(1));
+                POPREF(2);
+                PUSHREF(result0);
+                PUSHREF(relprevUnion_rec(r10, s0, u1, nextVars));
+                PUSHREF(relprevUnion_rec(r11, s1, u1, nextVars));
+                int result1 = or_rec(READREF(2), READREF(1));
+                POPREF(2);
+                PUSHREF(result1);
+                result = bdd_makenode(level_oldvar, result0, result1);
+                POPREF(2);
+            } else {
+                // We are not considering the new-state variable, so do not quantify.
+                PUSHREF(relprevUnion_rec(r00, s0, u0, nextVars));
+                PUSHREF(relprevUnion_rec(r11, s1, u1, nextVars));
+                result = bdd_makenode(level_oldvar, READREF(2), READREF(1));
+                POPREF(2);
+            }
+        } else {
+            int s0, s1, r0, r1, u0, u1;
+            if (!ISCONST(relation) && level_relation == level) {
+                r0 = LOW(relation);
+                r1 = HIGH(relation);
+            } else {
+                r0 = relation;
+                r1 = relation;
+            }
+            if (!ISCONST(states) && level_states == level) {
+                s0 = LOW(states);
+                s1 = HIGH(states);
+            } else {
+                s0 = states;
+                s1 = states;
+            }
+            if (level_union == level) {
+                u0 = LOW(union);
+                u1 = HIGH(union);
+            } else {
+                u0 = union;
+                u1 = union;
+            }
+
+            if (r0 != r1) {
+                if (s0 != s1) {
+                    PUSHREF(relprevUnion_rec(r0, s0, u0, vars));
+                    PUSHREF(relprevUnion_rec(r1, s0, u0, vars));
+                    int result0 = or_rec(READREF(2), READREF(1));
+                    POPREF(2);
+                    PUSHREF(result0);
+                    PUSHREF(relprevUnion_rec(r0, s1, u1, vars));
+                    PUSHREF(relprevUnion_rec(r1, s1, u1, vars));
+                    int result1 = or_rec(READREF(2), READREF(1));
+                    POPREF(2);
+                    PUSHREF(result1);
+                    result = bdd_makenode(level, result0, result1);
+                    POPREF(2);
+                } else {
+                    PUSHREF(relprevUnion_rec(r0, s0, u0, vars));
+                    PUSHREF(relprevUnion_rec(r1, s1, u1, vars));
+                    result = or_rec(READREF(2), READREF(1));
+                    POPREF(2);
+                }
+            } else {
+                PUSHREF(relprevUnion_rec(r0, s0, u0, vars));
+                PUSHREF(relprevUnion_rec(r1, s1, u1, vars));
+                result = bdd_makenode(level, READREF(2), READREF(1));
+                POPREF(2);
+            }
+        }
+
+        // Update the operation cache.
+        entry.a = relation;
+        entry.b = states;
+        entry.c = union;
+        entry.d = vars;
+        entry.e = bddop_relprevUnion;
         entry.res = result;
 
         return result;
