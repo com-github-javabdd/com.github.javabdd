@@ -6012,7 +6012,7 @@ public class JFactory extends BDDFactoryIntImpl {
                 throw new ReorderException();
             }
 
-            if ((bddfreenum * 100) / bddnodesize <= minfreenodes) {
+            if ((bddfreenum * 100L) / bddnodesize <= minfreenodes) {
                 bdd_noderesize(true);
                 hash2 = NODEHASH(level, low, high);
             }
