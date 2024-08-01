@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.0.0] - 2024-08-01
+
+* Several new operations for BDDs were added, namely `relnextUnion`, `relprevUnion`, `saturationForward`, `boundedSaturationForward`, `saturationBackward` and `boundedSaturationBackward`.
+* Fixed an integer overflow bug, which may trigger while checking for the need to resize the node array, causing large node arrays to grow unnecessary.
+
 ## [7.0.0] - 2024-06-11
 
 * Several new operations for BDDs were added, namely `relnext`, `relnextIntersection`, `relprev` and `relprevIntersection`.
