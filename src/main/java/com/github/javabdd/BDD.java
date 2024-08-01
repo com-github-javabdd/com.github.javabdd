@@ -695,7 +695,7 @@ public abstract class BDD {
      * @param vars The list of relevant BDD variables to consider per transition. This list must be equal in length to
      *     {@code relations}, so that {@code vars[i]} is the set of relevant variables for {@code relation[i]}. See
      *     {@link #relnext(BDD, BDDVarSet) relnext} for further requirements on these sets. Additionally, {@code vars}
-     *     must be sorted on the level of the first/highest variable occurring in each set, in increasing order.
+     *     must be sorted on the level of the first variable occurring in each set, in increasing order.
      * @param instance An instance number that must be unique for the given lists of relations and variables. This
      *     number is used for caching purposes. Instead of storing lists of BDDs in every operation cache entry, which
      *     is memory-wise too expensive, this instance number is stored instead.
@@ -726,7 +726,7 @@ public abstract class BDD {
      * @param vars The list of relevant BDD variables to consider per transition. This list must be equal in length to
      *     {@code relations}, so that {@code vars[i]} is the set of relevant variables for {@code relation[i]}. See
      *     {@link #relprev(BDD, BDDVarSet) relprev} for further requirements on these sets. Additionally, {@code vars}
-     *     must be sorted on the level of the first/highest variable occurring in each set, in increasing order.
+     *     must be sorted on the level of the first variable occurring in each set, in increasing order.
      * @param instance An instance number that must be unique for the given lists of relations and variables. This
      *     number is used for caching purposes. Instead of storing lists of BDDs in every operation cache entry, which
      *     is memory-wise too expensive, this instance number is stored instead.
