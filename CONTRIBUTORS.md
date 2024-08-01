@@ -9,4 +9,5 @@ Contributors for com.github.javabdd:
 * Konstantinos Triantafyllidis
 * Martijn Goorden
 * Sander Thuijsman
+* Sean Mills
 * Wytse Oortwijn
