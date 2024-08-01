@@ -17,7 +17,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
 
     <groupId>com.github.com-github-javabdd</groupId>
     <artifactId>com.github.javabdd</artifactId>
-    <version>7.0.1-SNAPSHOT</version>
+    <version>8.0.0</version>
     <packaging>jar</packaging>
 
     <name>JavaBDD</name>
@@ -223,7 +223,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
         <connection>scm:git:git://github.com/dexecutor/dependent-tasks-executor.git</connection>
         <developerConnection>scm:git:git@github.com:dexecutor/dexecutor.git</developerConnection>
         <url>https://github.com/com-github-javabdd/com.github.javabdd</url>
-        <tag>HEAD</tag>
+        <tag>8.0.0</tag>
     </scm>
 
     <profiles>
