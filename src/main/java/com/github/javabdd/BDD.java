@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -685,6 +686,68 @@ public abstract class BDD {
      * @return The BDD representing the restricted set of predecessor states from {@code states}.
      */
     public abstract BDD relprevIntersection(BDD states, BDD restriction, BDDVarSet vars);
+
+    /**
+     * Computes the set of all states that are forward reachable with respect to the given list of transition relations,
+     * starting from the set of states represented by this BDD, by using the saturation strategy.
+     *
+     * @param relations The list of BDDs representing the transition relations to use for computing reachable states.
+     * @param vars The list of relevant BDD variables to consider per transition. This list must be equal in length to
+     *     {@code relations}, so that {@code vars[i]} is the set of relevant variables for {@code relation[i]}. See
+     *     {@link #relnext(BDD, BDDVarSet) relnext} for further requirements on these sets. Additionally, {@code vars}
+     *     must be sorted on the level of the first/highest variable occurring in each set, in increasing order.
+     * @param instance An instance number that must be unique for the given lists of relations and variables. This
+     *     number is used for caching purposes. Instead of storing lists of BDDs in every operation cache entry, which
+     *     is memory-wise too expensive, this instance number is stored instead.
+     * @return The BDD representing all states that are forward reachable from this BDD.
+     */
+    public abstract BDD saturationForward(List<BDD> relations, List<BDDVarSet> vars, int instance);
+
+    /**
+     * Computes the set of all forward reachable states like {@link #saturationForward(List, List, int)} while bounding
+     * the set of states to consider during the exploration by the given BDD predicate {@code bound}. That is, forward
+     * reachability will not consider states that are not in the set represented by {@code bound}.
+     *
+     * @param bound The BDD representing the upper bound of states to consider during forward reachability.
+     * @param relations The list of BDDs representing the transition relations to use for computing reachable states.
+     * @param vars The list of relevant BDD variables to consider per transition. See
+     *     {@link #saturationForward(List, List, int)} for further details.
+     * @param instance An instance number that must be unique for the given lists of relations and variables. See
+     *     {@link #saturationForward(List, List, int)} for further details.
+     * @return The BDD representing all states that are forward reachable from this BDD within the specified bound.
+     */
+    public abstract BDD boundedSaturationForward(BDD bound, List<BDD> relations, List<BDDVarSet> vars, int instance);
+
+    /**
+     * Computes the set of all states that are backward reachable with respect to the given list of transition
+     * relations, starting from the set of states represented by this BDD, by using the saturation strategy.
+     *
+     * @param relations The list of BDDs representing the transition relations to use for computing reachable states.
+     * @param vars The list of relevant BDD variables to consider per transition. This list must be equal in length to
+     *     {@code relations}, so that {@code vars[i]} is the set of relevant variables for {@code relation[i]}. See
+     *     {@link #relprev(BDD, BDDVarSet) relprev} for further requirements on these sets. Additionally, {@code vars}
+     *     must be sorted on the level of the first/highest variable occurring in each set, in increasing order.
+     * @param instance An instance number that must be unique for the given lists of relations and variables. This
+     *     number is used for caching purposes. Instead of storing lists of BDDs in every operation cache entry, which
+     *     is memory-wise too expensive, this instance number is stored instead.
+     * @return The BDD representing all states that are backward reachable from this BDD.
+     */
+    public abstract BDD saturationBackward(List<BDD> relations, List<BDDVarSet> vars, int instance);
+
+    /**
+     * Computes the set of all backward reachable states like {@link #saturationBackward(List, List, int)} while
+     * bounding the set of states to consider during the exploration by the given BDD predicate {@code bound}. That is,
+     * backward reachability will not consider states that are not in the set represented by {@code bound}.
+     *
+     * @param bound The BDD representing the upper bound of states to consider during backward reachability.
+     * @param relations The list of BDDs representing the transition relations to use for computing reachable states.
+     * @param vars The list of relevant BDD variables to consider per transition. See
+     *     {@link #saturationBackward(List, List, int)} for further details.
+     * @param instance An instance number that must be unique for the given lists of relations and variables. See
+     *     {@link #saturationBackward(List, List, int)} for further details.
+     * @return The BDD representing all states that are backward reachable from this BDD within the specified bound.
+     */
+    public abstract BDD boundedSaturationBackward(BDD bound, List<BDD> relations, List<BDDVarSet> vars, int instance);
 
     /**
      * Finds all satisfying variable assignments.
