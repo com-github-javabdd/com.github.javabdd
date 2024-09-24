@@ -13,6 +13,7 @@
 
 package com.github.javabdd;
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -117,9 +118,9 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
 
     protected abstract int nodeCount_impl(/* bdd */int v);
 
-    protected abstract double pathCount_impl(/* bdd */int v);
+    protected abstract BigInteger pathCount_impl(/* bdd */int v);
 
-    protected abstract double satCount_impl(/* bdd */int v);
+    protected abstract BigInteger satCount_impl(/* bdd */int v);
 
     protected abstract /* bdd */int satOne_impl(/* bdd */int v);
 
@@ -269,7 +270,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         }
 
         @Override
-        public double pathCount() {
+        public BigInteger pathCount() {
             return pathCount_impl(v);
         }
 
@@ -306,7 +307,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         }
 
         @Override
-        public double satCount() {
+        public BigInteger satCount() {
             return satCount_impl(v);
         }
 

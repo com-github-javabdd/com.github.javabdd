@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -297,12 +298,12 @@ public class JFactory extends BDDFactoryIntImpl {
     }
 
     @Override
-    protected double pathCount_impl(int v) {
+    protected BigInteger pathCount_impl(int v) {
         return bdd_pathcount(v);
     }
 
     @Override
-    protected double satCount_impl(int v) {
+    protected BigInteger satCount_impl(int v) {
         return bdd_satcount(v);
     }
 
@@ -1072,6 +1073,20 @@ public class JFactory extends BDDFactoryIntImpl {
             that.b = this.b;
             that.c = this.c;
             that.dres = this.dres;
+            return that;
+        }
+    }
+
+    private static class BddCacheDataBI extends BddCacheData {
+        BigInteger bires;
+
+        @Override
+        BddCacheData copy() {
+            BddCacheDataBI that = new BddCacheDataBI();
+            that.a = this.a;
+            that.b = this.b;
+            that.c = this.c;
+            that.bires = this.bires;
             return that;
         }
     }
@@ -6277,110 +6292,92 @@ public class JFactory extends BDDFactoryIntImpl {
         varprofile_rec(HIGH(r), varprofile);
     }
 
-    double bdd_pathcount(int r) {
+    BigInteger bdd_pathcount(int r) {
         CHECK(r);
 
         miscid = CACHEID_PATHCOU;
 
         if (countcache == null) {
-            countcache = BddCacheD_init(cachesize);
+            countcache = BddCacheBI_init(cachesize);
         }
 
         return bdd_pathcount_rec(r);
     }
 
-    double bdd_pathcount_rec(int r) {
-        BddCacheDataD entry;
-        double size;
+    BigInteger bdd_pathcount_rec(int r) {
+        BddCacheDataBI entry;
 
         if (ISZERO(r)) {
-            return 0.0;
+            return BigInteger.ZERO;
         }
         if (ISONE(r)) {
-            return 1.0;
+            return BigInteger.ONE;
         }
 
-        entry = BddCache_lookupD(countcache, PATHCOUHASH(r));
+        entry = BddCache_lookupBI(countcache, PATHCOUHASH(r));
         if (entry.a == r && entry.c == miscid) {
-            return entry.dres;
+            return entry.bires;
         }
 
-        size = bdd_pathcount_rec(LOW(r)) + bdd_pathcount_rec(HIGH(r));
+        BigInteger size = bdd_pathcount_rec(LOW(r)).add(bdd_pathcount_rec(HIGH(r)));
 
         entry.a = r;
         entry.c = miscid;
-        entry.dres = size;
+        entry.bires = size;
 
         return size;
     }
 
-    double bdd_satcount(int r) {
+    BigInteger bdd_satcount(int r) {
         if (ZDD) {
             return bdd_pathcount(r);
         }
 
-        double size = 1;
-
         CHECK(r);
 
         if (countcache == null) {
-            countcache = BddCacheD_init(cachesize);
+            countcache = BddCacheBI_init(cachesize);
         }
 
         miscid = CACHEID_SATCOU;
-        if (!ZDD) {
-            size = Math.pow(2.0, LEVEL(r));
+        BigInteger size;
+        if (ZDD) {
+            size = BigInteger.ONE;
+        } else {
+            size = BigInteger.TWO.pow(LEVEL(r));
         }
 
-        return size * satcount_rec(r);
+        return size.multiply(satcount_rec(r));
     }
 
-    double bdd_satcountset(int r, int varset) {
-        double unused = bddvarnum;
-        int n;
-
-        if (ISCONST(varset) || ISZERO(r)) { /* empty set */
-            return 0.0;
-        }
-
-        for (n = varset; !ISCONST(n); n = HIGH(n)) {
-            unused--;
-        }
-
-        unused = bdd_satcount(r) / Math.pow(2.0, unused);
-
-        return unused >= 1.0 ? unused : 1.0;
-    }
-
-    double satcount_rec(int root) {
-        BddCacheDataD entry;
-        double size, s;
+    BigInteger satcount_rec(int root) {
+        BddCacheDataBI entry;
 
         if (root < 2) {
-            return root;
+            return (root == 0) ? BigInteger.ZERO : BigInteger.ONE;
         }
 
-        entry = BddCache_lookupD(countcache, SATCOUHASH(root));
+        entry = BddCache_lookupBI(countcache, SATCOUHASH(root));
         if (entry.a == root && entry.c == miscid) {
-            return entry.dres;
+            return entry.bires;
         }
 
-        size = 0;
-        s = 1;
+        BigInteger size = BigInteger.ZERO;
+        BigInteger s = BigInteger.ONE;
         if (!ZDD) {
-            s *= Math.pow(2.0, LEVEL(LOW(root)) - LEVEL(root) - 1);
+            s = s.multiply(BigInteger.TWO.pow(LEVEL(LOW(root)) - LEVEL(root) - 1));
         }
-        size += s * satcount_rec(LOW(root));
+        size = size.add(s.multiply(satcount_rec(LOW(root))));
 
-        s = 1;
+        s = BigInteger.ONE;
         if (!ZDD) {
-            s *= Math.pow(2.0, LEVEL(HIGH(root)) - LEVEL(root) - 1);
+            s = s.multiply(BigInteger.TWO.pow(LEVEL(HIGH(root)) - LEVEL(root) - 1));
         }
-        size += s * satcount_rec(HIGH(root));
+        size = size.add(s.multiply(satcount_rec(HIGH(root))));
 
         entry.a = root;
         entry.c = miscid;
-        entry.dres = size;
+        entry.bires = size;
 
         return size;
     }
@@ -6942,7 +6939,7 @@ public class JFactory extends BDDFactoryIntImpl {
             appexcache = BddCacheI_init(cachesize);
             replacecache = BddCacheI_init(cachesize);
             misccache = BddCacheI_init(cachesize);
-            countcache = BddCacheD_init(cachesize);
+            countcache = BddCacheBI_init(cachesize);
         }
 
         quantvarsetID = 0;
@@ -7067,6 +7064,23 @@ public class JFactory extends BDDFactoryIntImpl {
         return cache;
     }
 
+    BddCache BddCacheBI_init(int size) {
+        int n;
+
+        size = bdd_prime_gte(size);
+
+        BddCache cache = new BddCache();
+        cache.table = new BddCacheDataBI[size];
+
+        for (n = 0; n < size; n++) {
+            cache.table[n] = new BddCacheDataBI();
+            cache.table[n].a = -1;
+        }
+        cache.tablesize = size;
+
+        return cache;
+    }
+
     void BddCache_done(BddCache cache) {
         if (cache == null) {
             return;
@@ -7082,20 +7096,25 @@ public class JFactory extends BDDFactoryIntImpl {
         }
         int n;
 
+        boolean is_bi = cache.table instanceof BddCacheDataBI[];
         boolean is_d = cache.table instanceof BddCacheDataD[];
 
         cache.table = null;
 
         newsize = bdd_prime_gte(newsize);
 
-        if (is_d) {
+        if (is_bi) {
+            cache.table = new BddCacheDataBI[newsize];
+        } else if (is_d) {
             cache.table = new BddCacheDataD[newsize];
         } else {
             cache.table = new BddCacheDataI[newsize];
         }
 
         for (n = 0; n < newsize; n++) {
-            if (is_d) {
+            if (is_bi) {
+                cache.table[n] = new BddCacheDataBI();
+            } else if (is_d) {
                 cache.table[n] = new BddCacheDataD();
             } else {
                 cache.table[n] = new BddCacheDataI();
@@ -7113,6 +7132,10 @@ public class JFactory extends BDDFactoryIntImpl {
 
     BddCacheDataD BddCache_lookupD(BddCache cache, int hash) {
         return (BddCacheDataD)cache.table[Math.abs(hash % cache.tablesize)];
+    }
+
+    BddCacheDataBI BddCache_lookupBI(BddCache cache, int hash) {
+        return (BddCacheDataBI)cache.table[Math.abs(hash % cache.tablesize)];
     }
 
     void BddCache_reset(BddCache cache) {
