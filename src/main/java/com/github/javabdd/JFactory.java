@@ -1063,20 +1063,6 @@ public class JFactory extends BDDFactoryIntImpl {
         }
     }
 
-    private static class BddCacheDataD extends BddCacheData {
-        double dres;
-
-        @Override
-        BddCacheData copy() {
-            BddCacheDataD that = new BddCacheDataD();
-            that.a = this.a;
-            that.b = this.b;
-            that.c = this.c;
-            that.dres = this.dres;
-            return that;
-        }
-    }
-
     private static class BddCacheDataBI extends BddCacheData {
         BigInteger bires;
 
@@ -1098,11 +1084,8 @@ public class JFactory extends BDDFactoryIntImpl {
 
         BddCache copy() {
             BddCache that = new BddCache();
-            boolean is_d = this.table instanceof BddCacheDataD[];
             boolean is_bi = this.table instanceof BddCacheDataBI[];
-            if (is_d) {
-                that.table = new BddCacheDataD[this.table.length];
-            } else if (is_bi) {
+            if (is_bi) {
                 that.table = new BddCacheDataBI[this.table.length];
             } else {
                 that.table = new BddCacheDataI[this.table.length];
@@ -7050,23 +7033,6 @@ public class JFactory extends BDDFactoryIntImpl {
         return cache;
     }
 
-    BddCache BddCacheD_init(int size) {
-        int n;
-
-        size = bdd_prime_gte(size);
-
-        BddCache cache = new BddCache();
-        cache.table = new BddCacheDataD[size];
-
-        for (n = 0; n < size; n++) {
-            cache.table[n] = new BddCacheDataD();
-            cache.table[n].a = -1;
-        }
-        cache.tablesize = size;
-
-        return cache;
-    }
-
     BddCache BddCacheBI_init(int size) {
         int n;
 
@@ -7100,7 +7066,6 @@ public class JFactory extends BDDFactoryIntImpl {
         int n;
 
         boolean is_bi = cache.table instanceof BddCacheDataBI[];
-        boolean is_d = cache.table instanceof BddCacheDataD[];
 
         cache.table = null;
 
@@ -7108,8 +7073,6 @@ public class JFactory extends BDDFactoryIntImpl {
 
         if (is_bi) {
             cache.table = new BddCacheDataBI[newsize];
-        } else if (is_d) {
-            cache.table = new BddCacheDataD[newsize];
         } else {
             cache.table = new BddCacheDataI[newsize];
         }
@@ -7117,8 +7080,6 @@ public class JFactory extends BDDFactoryIntImpl {
         for (n = 0; n < newsize; n++) {
             if (is_bi) {
                 cache.table[n] = new BddCacheDataBI();
-            } else if (is_d) {
-                cache.table[n] = new BddCacheDataD();
             } else {
                 cache.table[n] = new BddCacheDataI();
             }
@@ -7131,10 +7092,6 @@ public class JFactory extends BDDFactoryIntImpl {
 
     BddCacheDataI BddCache_lookupI(BddCache cache, int hash) {
         return (BddCacheDataI)cache.table[Math.abs(hash % cache.tablesize)];
-    }
-
-    BddCacheDataD BddCache_lookupD(BddCache cache, int hash) {
-        return (BddCacheDataD)cache.table[Math.abs(hash % cache.tablesize)];
     }
 
     BddCacheDataBI BddCache_lookupBI(BddCache cache, int hash) {
