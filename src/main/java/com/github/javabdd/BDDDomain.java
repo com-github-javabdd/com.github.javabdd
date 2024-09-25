@@ -405,7 +405,7 @@ public abstract class BDDDomain {
      */
     public BigInteger[] getVarIndices(BDD that, int max) {
         BDDVarSet myvarset = set(); // can't use var here, must respect subclass a factory may provide
-        int n = (int)that.satCount(myvarset);
+        int n = that.satCount(myvarset).intValueExact();
         if (max != -1 && n > max) {
             n = max;
         }

@@ -14,6 +14,7 @@
 package com.github.javabdd;
 
 import java.io.PrintStream;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -1443,7 +1444,7 @@ public abstract class BDD {
      *
      * @return the number of paths leading to the true terminal
      */
-    public abstract double pathCount();
+    public abstract BigInteger pathCount();
 
     /**
      * Calculates the number of satisfying variable assignments.
@@ -1454,7 +1455,7 @@ public abstract class BDD {
      *
      * @return the number of satisfying variable assignments
      */
-    public abstract double satCount();
+    public abstract BigInteger satCount();
 
     /**
      * Calculates the number of satisfying variable assignments to the variables in the given varset. ASSUMES THAT THE
@@ -1468,18 +1469,19 @@ public abstract class BDD {
      * @param varset the given varset
      * @return the number of satisfying variable assignments
      */
-    public double satCount(BDDVarSet varset) {
+    public BigInteger satCount(BDDVarSet varset) {
         BDDFactory factory = getFactory();
 
         if (varset.isEmpty() || isZero()) { /* empty set */
-            return 0.;
+            return BigInteger.ZERO;
         }
 
-        double unused = factory.varNum();
+        int unused = factory.varNum();
         unused -= varset.size();
-        unused = satCount() / Math.pow(2.0, unused);
+        BigDecimal unused2 = new BigDecimal(satCount()).divide(new BigDecimal(BigInteger.TWO.pow(unused)));
 
-        return unused >= 1.0 ? unused : 1.0;
+        BigDecimal rslt = unused2.compareTo(BigDecimal.ONE) >= 0 ? unused2 : BigDecimal.ONE;
+        return rslt.toBigIntegerExact();
     }
 
     /**
@@ -1489,10 +1491,14 @@ public abstract class BDD {
      * Compare to bdd_satcount.
      * </p>
      *
+     * <p>
+     * Note that this returns a double, so it has more limited precision.
+     * </p>
+     *
      * @return the logarithm of the number of satisfying variable assignments
      */
     public double logSatCount() {
-        return Math.log(satCount());
+        return Math.log(satCount().doubleValue());
     }
 
     /**
@@ -1502,11 +1508,15 @@ public abstract class BDD {
      * Compare to bdd_satcountset.
      * </p>
      *
+     * <p>
+     * Note that this returns a double, so it has more limited precision.
+     * </p>
+     *
      * @param varset the given varset
      * @return the logarithm of the number of satisfying variable assignments
      */
     public double logSatCount(BDDVarSet varset) {
-        return Math.log(satCount(varset));
+        return Math.log(satCount(varset).doubleValue());
     }
 
     /**
