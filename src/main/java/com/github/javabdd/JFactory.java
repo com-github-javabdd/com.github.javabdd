@@ -6354,7 +6354,7 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCacheDataBI entry;
 
         if (root < 2) {
-            return (root == 0) ? BigInteger.ZERO : BigInteger.ONE;
+            return BigInteger.valueOf(root);
         }
 
         entry = BddCache_lookupBI(countcache, SATCOUHASH(root));
