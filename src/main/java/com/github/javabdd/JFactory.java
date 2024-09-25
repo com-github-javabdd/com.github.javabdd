@@ -1099,8 +1099,11 @@ public class JFactory extends BDDFactoryIntImpl {
         BddCache copy() {
             BddCache that = new BddCache();
             boolean is_d = this.table instanceof BddCacheDataD[];
+            boolean is_bi = this.table instanceof BddCacheDataBI[];
             if (is_d) {
                 that.table = new BddCacheDataD[this.table.length];
+            } else if (is_bi) {
+                that.table = new BddCacheDataBI[this.table.length];
             } else {
                 that.table = new BddCacheDataI[this.table.length];
             }
