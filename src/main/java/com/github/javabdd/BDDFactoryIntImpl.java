@@ -132,6 +132,29 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
 
     protected abstract void printTable_impl(/* bdd */int v);
 
+    protected abstract void setSaturationCallback_impl(SaturationDebugCallback<Integer> callback);
+
+    @Override
+    public void setSaturationCallback(SaturationSimpleCallback callback) {
+        setSaturationCallback_impl((transition, before, after) -> callback.accept(transition));
+    }
+
+    @Override
+    public void setSaturationCallback(SaturationDebugCallback<BDD> callback) {
+        setSaturationCallback_impl((transition, before, after) -> {
+            BDD beforeBdd = makeBDD(before);
+            BDD afterBdd = makeBDD(after);
+            callback.accept(transition, beforeBdd, afterBdd);
+            beforeBdd.free();
+            afterBdd.free();
+        });
+    }
+
+    @Override
+    public void unsetSaturationCallback() {
+        setSaturationCallback_impl(null);
+    }
+
     public class IntBDD extends BDD {
         protected /* bdd */int v;
 
