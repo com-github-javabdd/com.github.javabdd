@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [9.0.0] - 2024-09-26
+
+* `BDD.pathCount` and `BDD.satCount` now return a `BigInteger` rather than a `double`, giving better precision for larger BDDs, and preventing wrong results for very large BDDs, at the cost of being a bit slower and requiring more memory for the cache in which the results for these operations are stored.
+* `BDDDomain.getVarIndices` methods no longer produce invalid results in case of too many satisfying assignments to fit in a Java array, but instead throw an exception.
+* `BDDFactory` now has `setSaturationCallback` and `unsetSaturationCallback` methods, that allow configuring a callback for the various saturation reachability computation operations.
+  The callback is invoked after each application of a transition during saturation reachability computations, allowing to print debug information, check for termination requests, and so on.
+
 ## [8.0.0] - 2024-08-01
 
 * Several new operations for BDDs were added, namely `relnextUnion`, `relprevUnion`, `saturationForward`, `boundedSaturationForward`, `saturationBackward` and `boundedSaturationBackward`.
