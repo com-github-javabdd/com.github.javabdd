@@ -136,7 +136,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
 
     @Override
     public void setSaturationCallback(SaturationSimpleCallback callback) {
-        setSaturationCallback_impl((transition, before, after) -> callback.accept(transition));
+        setSaturationCallback_impl((transition, before, after) -> callback.invoke(transition));
     }
 
     @Override
@@ -144,7 +144,7 @@ public abstract class BDDFactoryIntImpl extends BDDFactory {
         setSaturationCallback_impl((transition, before, after) -> {
             BDD beforeBdd = makeBDD(before);
             BDD afterBdd = makeBDD(after);
-            callback.accept(transition, beforeBdd, afterBdd);
+            callback.invoke(transition, beforeBdd, afterBdd);
             beforeBdd.free();
             afterBdd.free();
         });

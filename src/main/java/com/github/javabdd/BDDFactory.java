@@ -2193,7 +2193,7 @@ public abstract class BDDFactory {
          *
          * @param transition The index of the transition that was applied.
          */
-        public void accept(int transition);
+        public void invoke(int transition);
     }
 
     /**
@@ -2210,7 +2210,7 @@ public abstract class BDDFactory {
          * @param before The BDD to which the transition was applied.
          * @param after The resulting BDD after applying the transition.
          */
-        public void accept(int transition, T before, T after);
+        public void invoke(int transition, T before, T after);
     }
 
     /** The registered garbage collection statistics callbacks, or {@code null} if none registered. */

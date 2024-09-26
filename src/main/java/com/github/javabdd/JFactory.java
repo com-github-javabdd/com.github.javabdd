@@ -4072,7 +4072,7 @@ public class JFactory extends BDDFactoryIntImpl {
                     PUSHREF(result);
                     int prevResult = result;
                     result = relnextUnion_rec(result, relations[i], result, vars[i]);
-                    saturationCallback.accept(i, prevResult, result);
+                    saturationCallback.invoke(i, prevResult, result);
                     POPREF(1);
                 }
 
@@ -4242,7 +4242,7 @@ public class JFactory extends BDDFactoryIntImpl {
                     PUSHREF(result);
                     int prevResult = result;
                     result = or_rec(PUSHREF(relnextIntersection_rec(result, relations[i], bound, vars[i])), result);
-                    saturationCallback.accept(i, prevResult, result);
+                    saturationCallback.invoke(i, prevResult, result);
                     POPREF(2);
                 }
 
@@ -4384,7 +4384,7 @@ public class JFactory extends BDDFactoryIntImpl {
                     PUSHREF(result);
                     int prevResult = result;
                     result = relprevUnion_rec(relations[i], result, result, vars[i]);
-                    saturationCallback.accept(i, prevResult, result);
+                    saturationCallback.invoke(i, prevResult, result);
                     POPREF(1);
                 }
 
@@ -4554,7 +4554,7 @@ public class JFactory extends BDDFactoryIntImpl {
                     PUSHREF(result);
                     int prevResult = result;
                     result = or_rec(PUSHREF(relprevIntersection_rec(relations[i], result, bound, vars[i])), result);
-                    saturationCallback.accept(i, prevResult, result);
+                    saturationCallback.invoke(i, prevResult, result);
                     POPREF(2);
                 }
 
