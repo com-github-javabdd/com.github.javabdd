@@ -41,6 +41,10 @@ See [CHANGES.md](CHANGES.md) for all changes that have been made in this fork.
 
 See [CONTRIBUTORS.md](CONTRIBUTORS.md) for all contributors.
 
+## Further information
+
+* [Performing a release](release-steps.md)
+
 ## License
 
 This project inherits the license from the Sourceforge project it is forked
