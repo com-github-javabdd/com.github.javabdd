@@ -2185,6 +2185,34 @@ public abstract class BDDFactory {
         public void continuous(int usedBddNodes, long opMiss);
     }
 
+    /** Saturation callback with simple information. */
+    @FunctionalInterface
+    public static interface SaturationSimpleCallback {
+        /**
+         * The callback function that is invoked after every transition application performed by saturation.
+         *
+         * @param transition The index of the transition that was applied.
+         */
+        public void invoke(int transition);
+    }
+
+    /**
+     * Saturation callback with debug information, notably the BDDs before and after applying a transition.
+     *
+     * @param <T> The BDD representation type.
+     */
+    @FunctionalInterface
+    public static interface SaturationDebugCallback<T> {
+        /**
+         * The callback function that is invoked after every transition application performed by saturation.
+         *
+         * @param transition The index of the transition that was applied.
+         * @param before The BDD to which the transition was applied.
+         * @param after The resulting BDD after applying the transition.
+         */
+        public void invoke(int transition, T before, T after);
+    }
+
     /** The registered garbage collection statistics callbacks, or {@code null} if none registered. */
     protected List<GCStatsCallback> gcCallbacks = null;
 
@@ -2292,6 +2320,23 @@ public abstract class BDDFactory {
         }
         continuousCallbacks.add(callback);
     }
+
+    /**
+     * Sets the callback function that is invoked after every transition application performed by saturation.
+     *
+     * @param callback The non-{@code null} callback function.
+     */
+    public abstract void setSaturationCallback(SaturationSimpleCallback callback);
+
+    /**
+     * Sets the callback function that is invoked after every transition application performed by saturation.
+     *
+     * @param callback The non-{@code null} callback function.
+     */
+    public abstract void setSaturationCallback(SaturationDebugCallback<BDD> callback);
+
+    /** Unsets the saturation callback function. */
+    public abstract void unsetSaturationCallback();
 
     /**
      * Unregister a garbage collection statistics callback.

@@ -50,6 +50,15 @@ public class JFactory extends BDDFactoryIntImpl {
 
     static final boolean SWAPCOUNT = false;
 
+    /** The default saturation callback function that does nothing. */
+    private static final SaturationDebugCallback<Integer> DEFAULT_SATURATION_CALLBACK = (t, b, a) -> { };
+
+    /**
+     * The non-{@code null} saturation callback function that is invoked after every transition application performed by
+     * saturation.
+     */
+    private SaturationDebugCallback<Integer> saturationCallback = DEFAULT_SATURATION_CALLBACK;
+
     private JFactory() {
     }
 
@@ -4061,7 +4070,9 @@ public class JFactory extends BDDFactoryIntImpl {
 
                 for (int i = current; i < next; i++) {
                     PUSHREF(result);
+                    int prevResult = result;
                     result = relnextUnion_rec(result, relations[i], result, vars[i]);
+                    saturationCallback.invoke(i, prevResult, result);
                     POPREF(1);
                 }
 
@@ -4229,7 +4240,9 @@ public class JFactory extends BDDFactoryIntImpl {
 
                 for (int i = current; i < next; i++) {
                     PUSHREF(result);
+                    int prevResult = result;
                     result = or_rec(PUSHREF(relnextIntersection_rec(result, relations[i], bound, vars[i])), result);
+                    saturationCallback.invoke(i, prevResult, result);
                     POPREF(2);
                 }
 
@@ -4369,7 +4382,9 @@ public class JFactory extends BDDFactoryIntImpl {
 
                 for (int i = current; i < next; i++) {
                     PUSHREF(result);
+                    int prevResult = result;
                     result = relprevUnion_rec(relations[i], result, result, vars[i]);
+                    saturationCallback.invoke(i, prevResult, result);
                     POPREF(1);
                 }
 
@@ -4537,7 +4552,9 @@ public class JFactory extends BDDFactoryIntImpl {
 
                 for (int i = current; i < next; i++) {
                     PUSHREF(result);
+                    int prevResult = result;
                     result = or_rec(PUSHREF(relprevIntersection_rec(relations[i], result, bound, vars[i])), result);
+                    saturationCallback.invoke(i, prevResult, result);
                     POPREF(2);
                 }
 
@@ -4558,6 +4575,11 @@ public class JFactory extends BDDFactoryIntImpl {
         entry.res = result;
 
         return result;
+    }
+
+    @Override
+    protected void setSaturationCallback_impl(SaturationDebugCallback<Integer> callback) {
+        saturationCallback = callback == null ? DEFAULT_SATURATION_CALLBACK : callback;
     }
 
     int relprod_rec(int l, int r) {
