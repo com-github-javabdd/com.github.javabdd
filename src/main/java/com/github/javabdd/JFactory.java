@@ -7177,24 +7177,6 @@ public class JFactory extends BDDFactoryIntImpl {
         }
     }
 
-    void BddCache_clean_abc(BddCache cache) {
-        if (cache == null) {
-            return;
-        }
-        int n;
-        for (n = 0; n < cache.tablesize; n++) {
-            int a = cache.table[n].a;
-            if (a < 0) {
-                continue;
-            }
-            if (LOW(a) == -1 || LOW(cache.table[n].b) == INVALID_BDD || LOW(cache.table[n].c) == INVALID_BDD
-                    || LOW(((BddCacheDataI)cache.table[n]).res) == INVALID_BDD)
-            {
-                cache.table[n].a = -1;
-            }
-        }
-    }
-
     void BddCache_clean_itecache(BddCache cache) {
         if (cache == null) {
             return;
