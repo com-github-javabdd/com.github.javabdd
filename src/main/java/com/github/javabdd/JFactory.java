@@ -40,7 +40,7 @@ public class JFactory extends BDDFactoryIntImpl {
      * Flush the operation cache on every garbage collection. If this is false, we only clean the collected entries on
      * every GC, rather than emptying the whole cache. For most problems, you should keep this set to true.
      */
-    public static boolean FLUSH_CACHE_ON_GC = true;
+    public static boolean FLUSH_CACHE_ON_GC = false;
 
     static final boolean VERIFY_ASSERTIONS = false;
 
