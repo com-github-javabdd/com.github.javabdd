@@ -6995,7 +6995,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
     void bdd_operator_clean() {
         BddCache_clean_ab(applycache);
-        BddCache_clean_abc(itecache);
+        BddCache_clean_itecache(itecache);
         BddCache_clean_a(quantcache);
         BddCache_clean_ab(appexcache);
         BddCache_clean_ab(replacecache);
@@ -7191,6 +7191,62 @@ public class JFactory extends BDDFactoryIntImpl {
                     || LOW(((BddCacheDataI)cache.table[n]).res) == INVALID_BDD)
             {
                 cache.table[n].a = -1;
+            }
+        }
+    }
+
+    void BddCache_clean_itecache(BddCache cache) {
+        if (cache == null) {
+            return;
+        }
+
+        for (int i = 0; i < cache.tablesize; i++) {
+            BddCacheDataI entry = (BddCacheDataI)cache.table[i];
+
+            if (entry == null) {
+                throw new RuntimeException("Expected a non-null cache entry.");
+            }
+
+            if (entry.a < 0) {
+                continue;
+            }
+
+            boolean isInvalid = false;
+
+            switch (entry.e) {
+                case bddop_ite:
+                case bddop_relnext:
+                case bddop_relprev:
+                    isInvalid = LOW(entry.a) == INVALID_BDD || LOW(entry.b) == INVALID_BDD
+                            || LOW(entry.c) == INVALID_BDD || LOW(entry.res) == INVALID_BDD;
+                    break;
+
+                case bddop_relnextUnion:
+                case bddop_relnextIntersection:
+                case bddop_relprevUnion:
+                case bddop_relprevIntersection:
+                    isInvalid = LOW(entry.a) == INVALID_BDD || LOW(entry.b) == INVALID_BDD
+                            || LOW(entry.c) == INVALID_BDD || LOW(entry.d) == INVALID_BDD
+                            || LOW(entry.res) == INVALID_BDD;
+                    break;
+
+                case bddop_saturationForward:
+                case bddop_saturationBackward:
+                    isInvalid = LOW(entry.a) == INVALID_BDD || LOW(entry.res) == INVALID_BDD;
+                    break;
+
+                case bddop_boundedSaturationForward:
+                case bddop_boundedSaturationBackward:
+                    isInvalid = LOW(entry.a) == INVALID_BDD || LOW(entry.b) == INVALID_BDD
+                            || LOW(entry.res) == INVALID_BDD;
+                    break;
+
+                default:
+                    throw new RuntimeException("Unknown cache entry.");
+            }
+
+            if (isInvalid) {
+                entry.a = -1;
             }
         }
     }
