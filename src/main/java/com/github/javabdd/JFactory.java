@@ -7195,6 +7195,8 @@ public class JFactory extends BDDFactoryIntImpl {
 
             boolean isInvalid = false;
 
+            // Cache cleanup doesn't consider the 'instance' fields of saturation cache entries. This means that cache
+            // cleanup assumes that the transition relation BDDs used for saturation are not garbage collected.
             switch (entry.e) {
                 case bddop_ite:
                 case bddop_relnext:
