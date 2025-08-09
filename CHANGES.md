@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [10.0.0] - 2025-08-09
+
+* Fix cache cleanup for `relnext*`, `relprev*`, `saturation*` and `boundedSaturation*` cache entries.
+  This only has an effect if `JFactory.FLUSH_CACHE_ON_GC` is `false`.
+  Note that cache cleanup doesn't consider the `instance` fields of saturation cache entries, which means that cache cleanup assumes that the transition relation BDDs used for saturation are not garbage collected.
+* `JFactory.FLUSH_CACHE_ON_GC` is now `false` by default, preserving all still-valid cache entries while cleaning the cache when garbage collection is performed.
+  Set it to `true` to restore the behavior of the previous release, which by default flushed the entire cache when garbage collection is performed.
+
 ## [9.0.0] - 2024-09-26
 
 * `BDD.pathCount` and `BDD.satCount` now return a `BigInteger` rather than a `double`, giving better precision for larger BDDs, and preventing wrong results for very large BDDs, at the cost of being a bit slower and requiring more memory for the cache in which the results for these operations are stored.
