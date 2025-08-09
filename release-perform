@@ -18,7 +18,6 @@ if [[ ! -f release.properties ]]; then
     exit 1
 fi
 mvn release:perform
-mvn deploy
 echo
 echo "Don't forgot push the changes and tags for this release."
 echo "After a successful release, execute e.g. 'git push' and 'git push --tags'."
