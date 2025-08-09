@@ -17,7 +17,7 @@ SPDX-License-Identifier: LGPL-2.0-or-later
 
     <groupId>com.github.com-github-javabdd</groupId>
     <artifactId>com.github.javabdd</artifactId>
-    <version>9.0.1-SNAPSHOT</version>
+    <version>10.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>JavaBDD</name>
@@ -140,14 +140,14 @@ SPDX-License-Identifier: LGPL-2.0-or-later
             </plugin>
 
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.13</version>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.8.0</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>true</autoPublish>
+                    <waitUntil>published</waitUntil>
                 </configuration>
             </plugin>
 
@@ -207,17 +207,6 @@ SPDX-License-Identifier: LGPL-2.0-or-later
             </plugin>
         </plugins>
     </build>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
 
     <scm>
         <connection>scm:git:git://github.com/dexecutor/dependent-tasks-executor.git</connection>
