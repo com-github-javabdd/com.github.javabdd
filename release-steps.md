@@ -69,4 +69,3 @@
 * Also push the new tag using `git push --tags`.
 * Manually create a new GitHub release, basing it on the new tag, setting the version as release title, and copying the changelog entry from `CHANGES.md` as the release notes text.
 * Check that the new release is available at https://central.sonatype.com/artifact/com.github.com-github-javabdd/com.github.javabdd/versions.
-* Check that the new release can be found at https://oss.sonatype.org/#nexus-search;quick~javabdd.
