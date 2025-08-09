@@ -2,8 +2,8 @@
 
 ## General information for publishing to Maven Central
 
-* https://central.sonatype.org/register/central-portal/
-* https://central.sonatype.org/publish/publish-guide/
+* https://central.sonatype.org/publish/publish-portal-guide/
+* https://central.sonatype.org/publish/publish-portal-maven/
 
 ## Steps for (mostly) one-time setup
 
@@ -15,45 +15,45 @@
       name = FirstName LastName
       email = EmailAddress
   ```
-  By fulling in your `FirstName` and `LastName` and your GitHub `EmailAddress`.
+  By filling in your `FirstName` and `LastName` and your GitHub `EmailAddress`.
 * Create a GitHub personal access token, at https://github.com/settings/tokens.
   Use it as a password.
   It expires after some time, so create a new one if needed.
-* Create a Sonatype personal access token, at https://oss.sonatype.org.
-  Log in and go to your profile.
-  Instead of *Summary*, select *User Token*.
-  Create a user token.
+* Create a Sonatype publishing token, at https://central.sonatype.com/account.
+  Log in and go to https://central.sonatype.com/account.
+  Click *Generate User Token*.
+  Follow the steps, and note the configuration snippet that is generated, which is to be used in a later step.
 * Create a local GPG key.
-* Configure "ossrh" server credentials in Maven settings.
+* Configure GPG key and "central" server credentials in Maven settings.
   Create/edit `$HOME/.m2/settings.xml`, to have the following settings:
   ```xml
   <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                         http://maven.apache.org/xsd/settings-1.0.0.xsd">
-  
+
     <profiles>
       <profile>
-        <id>ossrh</id>
+        <id>central</id>
         <activation>
           <activeByDefault>true</activeByDefault>
         </activation>
         <properties>
-          <gpg.passphrase>GPG_KEY</gpg.passphrase>
+          <gpg.passphrase>GPG_KEY_PASSPHRASE</gpg.passphrase>
         </properties>
       </profile>
     </profiles>
-  
+
     <servers>
       <server>
-        <id>ossrh</id>
-        <username>SONATYPE_USERNAME</username>
-        <password>SONATYPE_TOKEN</password>
+        <id>central</id>
+        <username>SONATYPE_PUBLISHING_USERNAME</username>
+        <password>SONATYPE_PUBLISHING_TOKEN</password>
       </server>
     </servers>
   </settings>
   ```
-  Fill in your `GPG_KEY`, `SONATYPE_USERNAME` and `SONATYPE_TOKEN`.
+  Fill in your `GPG_KEY_PASSPHRASE`, `SONATYPE_PUBLISHING_USERNAME` and `SONATYPE_PUBLISHING_TOKEN`.
 
 ## Steps for each release
 
