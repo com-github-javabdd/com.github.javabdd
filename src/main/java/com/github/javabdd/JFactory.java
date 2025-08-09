@@ -38,7 +38,7 @@ public class JFactory extends BDDFactoryIntImpl {
 
     /**
      * Flush the operation cache on every garbage collection. If this is false, we only clean the collected entries on
-     * every GC, rather than emptying the whole cache. For most problems, you should keep this set to true.
+     * every GC, rather than emptying the whole cache.
      */
     public static boolean FLUSH_CACHE_ON_GC = false;
 
@@ -7195,6 +7195,8 @@ public class JFactory extends BDDFactoryIntImpl {
 
             boolean isInvalid = false;
 
+            // Cache cleanup doesn't consider the 'instance' fields of saturation cache entries. This means that cache
+            // cleanup assumes that the transition relation BDDs used for saturation are not garbage collected.
             switch (entry.e) {
                 case bddop_ite:
                 case bddop_relnext:
