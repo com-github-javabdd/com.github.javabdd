@@ -4045,7 +4045,7 @@ public class JFactory extends BDDFactoryIntImpl {
         // Could not find a cached result, so perform the recursive operation to compute the result.
         int result;
 
-        if (LEVEL(states) < LEVEL(vars[current])) {
+        if (LEVEL(states) + 1 < LEVEL(vars[current])) {
             PUSHREF(saturationForward_rec(LOW(states), relations, vars, instance, current));
             PUSHREF(saturationForward_rec(HIGH(states), relations, vars, instance, current));
             result = bdd_makenode(LEVEL(states), READREF(2), READREF(1));
@@ -4199,7 +4199,7 @@ public class JFactory extends BDDFactoryIntImpl {
         int level_bound = LEVEL(bound);
         int level = level_states < level_bound ? level_states : level_bound;
 
-        if (level < LEVEL(vars[current])) {
+        if (level + 1 < LEVEL(vars[current])) {
             int s0, s1, b0, b1;
             if (level_states == level) {
                 s0 = LOW(states);
@@ -4357,7 +4357,7 @@ public class JFactory extends BDDFactoryIntImpl {
         // Could not find a cached result, so perform the recursive operation to compute the result.
         int result;
 
-        if (LEVEL(states) < LEVEL(vars[current])) {
+        if (LEVEL(states) + 1 < LEVEL(vars[current])) {
             PUSHREF(saturationBackward_rec(LOW(states), relations, vars, instance, current));
             PUSHREF(saturationBackward_rec(HIGH(states), relations, vars, instance, current));
             result = bdd_makenode(LEVEL(states), READREF(2), READREF(1));
@@ -4511,7 +4511,7 @@ public class JFactory extends BDDFactoryIntImpl {
         int level_bound = LEVEL(bound);
         int level = level_states < level_bound ? level_states : level_bound;
 
-        if (level < LEVEL(vars[current])) {
+        if (level + 1 < LEVEL(vars[current])) {
             int s0, s1, b0, b1;
             if (level_states == level) {
                 s0 = LOW(states);
