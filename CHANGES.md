@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [10.0.1] - 2026-02-07
+
+* Fix `*saturation*` computations to find all states for certain specific input combinations.
+  See #84 for more information.
+
 ## [10.0.0] - 2025-08-09
 
 * Fix cache cleanup for `relnext*`, `relprev*`, `saturation*` and `boundedSaturation*` cache entries.
