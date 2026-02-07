@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2003-2025 John Whaley and com.github.javabdd contributors
+// Copyright (c) 2003-2026 John Whaley and com.github.javabdd contributors
 //
 // See the CONTRIBUTORS file(s) distributed with this work for additional
 // information regarding copyright ownership.
